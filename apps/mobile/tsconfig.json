@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [
+    "nativewind-env.d.ts"
+  ],
+  "references": [
+    {
+      "path": "../../ui"
+    },
+    {
+      "path": "../../i18n"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

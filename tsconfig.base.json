@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "lib": ["es2022", "DOM"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2022",
+    "customConditions": ["@fbanking/source"],
+    "baseUrl": ".",
+    "paths": {
+      "@fbanking/ui": ["ui/src/index.ts"],
+      "@fbanking/theme": ["theme/src/index.ts"],
+      "@fbanking/i18n": ["i18n/src/index.ts"]
+    }
+  }
+}

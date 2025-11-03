@@ -1,0 +1,187 @@
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+
+// English translations
+const en = {
+  common: {
+    login: "Login",
+    logout: "Logout",
+    signOut: "Sign Out",
+    email: "Email",
+    password: "Password",
+    submit: "Submit",
+    cancel: "Cancel",
+    save: "Save",
+    delete: "Delete",
+    edit: "Edit",
+    search: "Search",
+    loading: "Loading...",
+    error: "Error",
+    success: "Success",
+  },
+  auth: {
+    welcomeBack: "Welcome Back",
+    signIn: "Sign In",
+    signInDescription: "Enter your credentials to access your account",
+    emailPlaceholder: "Enter your email",
+    passwordPlaceholder: "Enter your password",
+    forgotPassword: "Forgot Password?",
+    rememberMe: "Remember me",
+  },
+  dashboard: {
+    title: "Dashboard",
+    totalBalance: "Total Balance",
+    accounts: "Accounts",
+    recentTransactions: "Recent Transactions",
+    quickActions: "Quick Actions",
+    viewAll: "View All",
+  },
+  accounts: {
+    title: "Accounts",
+    selectAccount: "Select an account",
+    accountNumber: "Account Number",
+    balance: "Balance",
+    available: "Available",
+    checkingAccount: "Checking Account",
+    savingsAccount: "Savings Account",
+    creditCard: "Credit Card",
+    viewTransactions: "View Transactions",
+    accountTransactions: "Account Transactions",
+  },
+  transactions: {
+    title: "Transactions",
+    date: "Date",
+    description: "Description",
+    amount: "Amount",
+    status: "Status",
+    pending: "Pending",
+    completed: "Completed",
+    failed: "Failed",
+    noTransactions: "No transactions found",
+  },
+  navigation: {
+    home: "Home",
+    dashboard: "Dashboard",
+    accounts: "Accounts",
+    transactions: "Transactions",
+    transfers: "Transfers",
+    payments: "Payments",
+    settings: "Settings",
+  },
+  payments: {
+    title: "New Payment",
+    description: "Create a new payment transaction",
+    recipient: "Recipient",
+    recipientPlaceholder: "Enter recipient name or account",
+    amount: "Amount",
+    amountPlaceholder: "Enter amount",
+    reference: "Reference",
+    referencePlaceholder: "Enter payment reference",
+    fromAccount: "From Account",
+    selectAccount: "Select account",
+    createPayment: "Create Payment",
+    success: "Payment created successfully!",
+    signOut: "Sign Out",
+  },
+};
+
+// German translations
+const de = {
+  common: {
+    login: "Anmelden",
+    logout: "Abmelden",
+    signOut: "Abmelden",
+    email: "E-Mail",
+    password: "Passwort",
+    submit: "Absenden",
+    cancel: "Abbrechen",
+    save: "Speichern",
+    delete: "Löschen",
+    edit: "Bearbeiten",
+    search: "Suchen",
+    loading: "Laden...",
+    error: "Fehler",
+    success: "Erfolg",
+  },
+  auth: {
+    welcomeBack: "Willkommen zurück",
+    signIn: "Anmelden",
+    signInDescription:
+      "Geben Sie Ihre Anmeldedaten ein, um auf Ihr Konto zuzugreifen",
+    emailPlaceholder: "Geben Sie Ihre E-Mail ein",
+    passwordPlaceholder: "Geben Sie Ihr Passwort ein",
+    forgotPassword: "Passwort vergessen?",
+    rememberMe: "Angemeldet bleiben",
+  },
+  dashboard: {
+    title: "Dashboard",
+    totalBalance: "Gesamtsaldo",
+    accounts: "Konten",
+    recentTransactions: "Letzte Transaktionen",
+    quickActions: "Schnellaktionen",
+    viewAll: "Alle anzeigen",
+  },
+  accounts: {
+    title: "Konten",
+    selectAccount: "Konto auswählen",
+    accountNumber: "Kontonummer",
+    balance: "Saldo",
+    available: "Verfügbar",
+    checkingAccount: "Girokonto",
+    savingsAccount: "Sparkonto",
+    creditCard: "Kreditkarte",
+    viewTransactions: "Transaktionen anzeigen",
+    accountTransactions: "Kontotransaktionen",
+  },
+  transactions: {
+    title: "Transaktionen",
+    date: "Datum",
+    description: "Beschreibung",
+    amount: "Betrag",
+    status: "Status",
+    pending: "Ausstehend",
+    completed: "Abgeschlossen",
+    failed: "Fehlgeschlagen",
+    noTransactions: "Keine Transaktionen gefunden",
+  },
+  navigation: {
+    home: "Startseite",
+    dashboard: "Dashboard",
+    accounts: "Konten",
+    transactions: "Transaktionen",
+    transfers: "Überweisungen",
+    payments: "Zahlungen",
+    settings: "Einstellungen",
+  },
+  payments: {
+    title: "Neue Zahlung",
+    description: "Neue Zahlungstransaktion erstellen",
+    recipient: "Empfänger",
+    recipientPlaceholder: "Empfängername oder Konto eingeben",
+    amount: "Betrag",
+    amountPlaceholder: "Betrag eingeben",
+    reference: "Referenz",
+    referencePlaceholder: "Zahlungsreferenz eingeben",
+    fromAccount: "Von Konto",
+    selectAccount: "Konto auswählen",
+    createPayment: "Zahlung erstellen",
+    success: "Zahlung erfolgreich erstellt!",
+    signOut: "Abmelden",
+  },
+};
+
+// Initialize i18next
+i18n.use(initReactI18next).init({
+  resources: {
+    en: { translation: en },
+    de: { translation: de },
+  },
+  lng: "en", // default language
+  fallbackLng: "en",
+  interpolation: {
+    escapeValue: false, // React already escapes values
+  },
+});
+
+export { i18n };
+export default i18n;

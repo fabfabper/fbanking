@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/mobile-e2e"
+    },
+    {
+      "path": "./apps/mobile"
+    },
+    {
+      "path": "./web-e2e"
+    },
+    {
+      "path": "./web"
+    },
+    {
+      "path": "./ui"
+    },
+    {
+      "path": "./theme"
+    },
+    {
+      "path": "./i18n"
+    }
+  ]
+}
