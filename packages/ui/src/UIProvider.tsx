@@ -1,6 +1,6 @@
-import React from 'react';
-import { TamaguiProvider } from '@tamagui/core';
-import config from './tamagui.config';
+import React from "react";
+import { TamaguiProvider } from "@tamagui/core";
+import config from "./tamagui.config";
 
 export interface UIProviderProps {
   children: React.ReactNode;

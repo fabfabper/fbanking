@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { YStack, Text, Button, Input, Card } from '@ebanking/ui';
+import React, { useState } from "react";
+import { YStack, Text, Button, Input, Card } from "@ebanking/ui";
 
 interface LoginScreenProps {
   onLogin: () => void;
 }
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    console.log('Login:', { email, password });
+    console.log("Login:", { email, password });
     onLogin();
   };
 
@@ -24,12 +24,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
     >
       <YStack width="100%" maxWidth={400} gap="$6">
         {/* Header */}
-        <YStack alignItems="center" gap="$2">
+        <YStack alignItems="center">
           <Text size="3xl" weight="bold" color="primary">
             E-Banking
-          </Text>
-          <Text size="md" color="secondary">
-            Sign in to your account
           </Text>
         </YStack>
 

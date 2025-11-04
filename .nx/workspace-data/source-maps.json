@@ -1,4 +1,258 @@
 {
+  "apps/mobile": {
+    "root": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "name": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "tags": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "tags.npm:public": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups.NPM Scripts": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups.NPM Scripts.0": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups.NPM Scripts.1": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups.NPM Scripts.2": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageName": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageMain": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.isInPackageManagerWorkspaces": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.android": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.android.executor": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.android.options": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.android.metadata": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.android.options.script": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.android.metadata.scriptContent": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.android.metadata.runCommand": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.ios": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.ios.executor": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.ios.options": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.ios.metadata": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.ios.options.script": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.ios.metadata.scriptContent": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.ios.metadata.runCommand": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.web": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.web.executor": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.web.options": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.web.metadata": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.web.options.script": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.web.metadata.scriptContent": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.web.metadata.runCommand": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.executor": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.dependsOn": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.options": [
+      "apps/mobile/package.json",
+      "nx/core/package-json"
+    ],
+    "$schema": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "projectType": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.start": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.start.executor": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.start.options": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.start.options.port": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.executor": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.options": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.options.port": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.run-ios": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.run-ios.executor": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.run-ios.options": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.run-ios.options.platform": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.run-android": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.run-android.executor": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.run-android.options": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.run-android.options.platform": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.export": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.export.executor": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.export.options": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.export.options.platform": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.export.options.outputDir": [
+      "apps/mobile/project.json",
+      "nx/core/project-json"
+    ]
+  },
   "apps/web": {
     "root": [
       "apps/web/project.json",

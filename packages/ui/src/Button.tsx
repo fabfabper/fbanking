@@ -1,85 +1,85 @@
-import { styled } from '@tamagui/core';
-import { Button as TamaguiButton } from '@tamagui/button';
+import { styled } from "@tamagui/core";
+import { Button as TamaguiButton } from "@tamagui/button";
 
 export const Button = styled(TamaguiButton, {
-  name: 'Button',
-  backgroundColor: '$primary',
-  color: 'white',
-  borderRadius: '$4',
-  paddingHorizontal: '$4',
-  paddingVertical: '$3',
-  fontSize: '$4',
-  fontWeight: '600',
-  cursor: 'pointer',
-  
+  name: "Button",
+  backgroundColor: "$primary",
+  color: "white",
+  borderRadius: "$4",
+  paddingHorizontal: "$4",
+  paddingVertical: "$3",
+  fontSize: "$4",
+  fontWeight: "600",
+  cursor: "pointer",
+
   hoverStyle: {
-    backgroundColor: '$primaryDark',
+    backgroundColor: "$primaryDark",
   },
-  
+
   pressStyle: {
-    backgroundColor: '$primaryDark',
+    backgroundColor: "$primaryDark",
     scale: 0.98,
   },
-  
+
   variants: {
     variant: {
       primary: {
-        backgroundColor: '$primary',
-        color: 'white',
+        backgroundColor: "$primary",
+        color: "white",
         hoverStyle: {
-          backgroundColor: '$primaryDark',
+          backgroundColor: "$primaryDark",
         },
       },
       secondary: {
-        backgroundColor: '$backgroundGray',
-        color: '$text',
+        backgroundColor: "$backgroundGray",
+        color: "$text",
         hoverStyle: {
-          backgroundColor: '$border',
+          backgroundColor: "$border",
         },
       },
       outline: {
-        backgroundColor: 'transparent',
+        backgroundColor: "transparent",
         borderWidth: 2,
-        borderColor: '$primary',
-        color: '$primary',
+        borderColor: "$primary",
+        color: "$primary",
         hoverStyle: {
-          backgroundColor: '$backgroundGray',
+          backgroundColor: "$backgroundGray",
         },
       },
       ghost: {
-        backgroundColor: 'transparent',
-        color: '$primary',
+        backgroundColor: "transparent",
+        color: "$primary",
         hoverStyle: {
-          backgroundColor: '$backgroundGray',
+          backgroundColor: "$backgroundGray",
         },
       },
     },
     size: {
       sm: {
-        paddingHorizontal: '$3',
-        paddingVertical: '$2',
-        fontSize: '$3',
+        paddingHorizontal: "$3",
+        paddingVertical: "$2",
+        fontSize: "$3",
       },
       md: {
-        paddingHorizontal: '$4',
-        paddingVertical: '$3',
-        fontSize: '$4',
+        paddingHorizontal: "$4",
+        paddingVertical: "$3",
+        fontSize: "$4",
       },
       lg: {
-        paddingHorizontal: '$5',
-        paddingVertical: '$4',
-        fontSize: '$5',
+        paddingHorizontal: "$5",
+        paddingVertical: "$4",
+        fontSize: "$5",
       },
     },
     fullWidth: {
       true: {
-        width: '100%',
+        width: "100%",
       },
     },
   } as const,
-  
+
   defaultVariants: {
-    variant: 'primary',
-    size: 'md',
+    variant: "primary",
+    size: "md",
   },
 });

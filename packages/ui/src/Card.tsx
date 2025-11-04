@@ -1,32 +1,32 @@
-import { styled } from '@tamagui/core';
-import { YStack as TamaguiYStack } from '@tamagui/stacks';
+import { styled } from "@tamagui/core";
+import { YStack as TamaguiYStack } from "@tamagui/stacks";
 
 export const Card = styled(TamaguiYStack, {
-  name: 'Card',
-  backgroundColor: '$cardBg',
-  borderRadius: '$4',
-  padding: '$4',
+  name: "Card",
+  backgroundColor: "$cardBg",
+  borderRadius: "$4",
+  padding: "$4",
   borderWidth: 1,
-  borderColor: '$border',
-  
+  borderColor: "$border",
+
   variants: {
     hoverable: {
       true: {
-        cursor: 'pointer',
+        cursor: "pointer",
         hoverStyle: {
-          borderColor: '$primary',
+          borderColor: "$primary",
         },
       },
     },
     padding: {
       none: { padding: 0 },
-      sm: { padding: '$2' },
-      md: { padding: '$4' },
-      lg: { padding: '$6' },
+      sm: { padding: "$2" },
+      md: { padding: "$4" },
+      lg: { padding: "$6" },
     },
   } as const,
-  
+
   defaultVariants: {
-    padding: 'md',
+    padding: "md",
   },
 });
