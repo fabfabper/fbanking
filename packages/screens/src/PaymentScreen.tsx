@@ -1,7 +1,22 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, Dimensions, Platform, Pressable, Switch } from "react-native";
-import { YStack, XStack, Text, Card, Input, DateInput, Button, useAppTheme } from "@ebanking/ui";
+import {
+  ScrollView,
+  Dimensions,
+  Platform,
+  Pressable,
+  Switch,
+} from "react-native";
+import {
+  YStack,
+  XStack,
+  Text,
+  Card,
+  Input,
+  DateInput,
+  Button,
+  useAppTheme,
+} from "@ebanking/ui";
 
 const { width: screenWidth } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
@@ -20,7 +35,7 @@ export const PaymentScreen: React.FC = () => {
   const [note, setNote] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchResults, setShowSearchResults] = useState(false);
-  
+
   // Standing payment fields
   const [isStandingPayment, setIsStandingPayment] = useState(false);
   const [frequency, setFrequency] = useState("monthly");
@@ -32,21 +47,21 @@ export const PaymentScreen: React.FC = () => {
   const accounts = [
     {
       id: 1,
-      name: t('accounts.checking'),
+      name: t("accounts.checking"),
       number: "****1234",
       balance: 5430.0,
       type: "checking",
     },
     {
       id: 2,
-      name: t('accounts.savings'),
+      name: t("accounts.savings"),
       number: "****5678",
       balance: 12850.0,
       type: "savings",
     },
     {
       id: 3,
-      name: t('accounts.credit'),
+      name: t("accounts.credit"),
       number: "****9012",
       balance: -1230.5,
       type: "credit",
@@ -55,11 +70,46 @@ export const PaymentScreen: React.FC = () => {
 
   // Previous payments data
   const previousPayments = [
-    { id: 1, recipient: "John Smith", account: "****3456", amount: "150.00", note: "Rent share", date: "2025-11-01" },
-    { id: 2, recipient: "Sarah Johnson", account: "****7890", amount: "45.50", note: "Dinner split", date: "2025-10-28" },
-    { id: 3, recipient: "Mike Davis", account: "****2345", amount: "200.00", note: "Loan repayment", date: "2025-10-25" },
-    { id: 4, recipient: "Electric Company", account: "****5555", amount: "120.00", note: "Monthly bill", date: "2025-10-20" },
-    { id: 5, recipient: "Internet Provider", account: "****6666", amount: "75.00", note: "Internet service", date: "2025-10-15" },
+    {
+      id: 1,
+      recipient: "John Smith",
+      account: "****3456",
+      amount: "150.00",
+      note: "Rent share",
+      date: "2025-11-01",
+    },
+    {
+      id: 2,
+      recipient: "Sarah Johnson",
+      account: "****7890",
+      amount: "45.50",
+      note: "Dinner split",
+      date: "2025-10-28",
+    },
+    {
+      id: 3,
+      recipient: "Mike Davis",
+      account: "****2345",
+      amount: "200.00",
+      note: "Loan repayment",
+      date: "2025-10-25",
+    },
+    {
+      id: 4,
+      recipient: "Electric Company",
+      account: "****5555",
+      amount: "120.00",
+      note: "Monthly bill",
+      date: "2025-10-20",
+    },
+    {
+      id: 5,
+      recipient: "Internet Provider",
+      account: "****6666",
+      amount: "75.00",
+      note: "Internet service",
+      date: "2025-10-15",
+    },
   ];
 
   const selectedAccount = accounts[selectedAccountIndex];
@@ -96,7 +146,7 @@ export const PaymentScreen: React.FC = () => {
     setShowSearchResults(text.trim().length > 0);
   };
 
-  const selectPreviousPayment = (payment: typeof previousPayments[0]) => {
+  const selectPreviousPayment = (payment: (typeof previousPayments)[0]) => {
     setRecipient(payment.recipient);
     setAmount(payment.amount);
     setNote(payment.note);
@@ -133,29 +183,35 @@ export const PaymentScreen: React.FC = () => {
           {/* Search Field */}
           <YStack paddingHorizontal="$6" paddingBottom="$4" zIndex={1000}>
             <YStack gap="$2" position="relative">
-              <Text size="md" weight="semibold" style={{ color: theme.colors.textPrimary }}>
-                {t('payment.searchPrevious')}
+              <Text
+                size="md"
+                weight="semibold"
+                style={{ color: theme.colors.textPrimary }}
+              >
+                {t("payment.searchPrevious")}
               </Text>
               <Input
                 value={searchQuery}
                 onChangeText={handleSearchChange}
-                placeholder={t('payment.searchPlaceholder')}
+                placeholder={t("payment.searchPlaceholder")}
                 fullWidth
-                onFocus={() => setShowSearchResults(searchQuery.trim().length > 0)}
+                onFocus={() =>
+                  setShowSearchResults(searchQuery.trim().length > 0)
+                }
               />
-              
+
               {/* Search Results Dropdown */}
               {showSearchResults && filteredPayments.length > 0 && (
                 <YStack
                   style={{
-                    position: 'absolute',
-                    top: '100%',
+                    position: "absolute",
+                    top: "100%",
                     left: 0,
                     right: 0,
                     marginTop: 4,
                     backgroundColor: theme.colors.cardBg,
                     borderRadius: 8,
-                    shadowColor: '#000',
+                    shadowColor: "#000",
                     shadowOffset: { width: 0, height: 4 },
                     shadowOpacity: 0.15,
                     shadowRadius: 12,
@@ -181,21 +237,37 @@ export const PaymentScreen: React.FC = () => {
                             backgroundColor: theme.colors.backgroundGray,
                           }}
                         >
-                          <XStack justifyContent="space-between" alignItems="center">
+                          <XStack
+                            justifyContent="space-between"
+                            alignItems="center"
+                          >
                             <YStack gap="$1" flex={1}>
                               <Text size="md" weight="semibold">
                                 {payment.recipient}
                               </Text>
-                              <Text size="sm" style={{ color: theme.colors.textSecondary }}>
+                              <Text
+                                size="sm"
+                                style={{ color: theme.colors.textSecondary }}
+                              >
                                 {payment.account} • {payment.date}
                               </Text>
                               {payment.note && (
-                                <Text size="xs" style={{ color: theme.colors.textSecondary, fontStyle: 'italic' }}>
+                                <Text
+                                  size="xs"
+                                  style={{
+                                    color: theme.colors.textSecondary,
+                                    fontStyle: "italic",
+                                  }}
+                                >
                                   "{payment.note}"
                                 </Text>
                               )}
                             </YStack>
-                            <Text size="lg" weight="bold" style={{ color: theme.colors.primary }}>
+                            <Text
+                              size="lg"
+                              weight="bold"
+                              style={{ color: theme.colors.primary }}
+                            >
                               ${payment.amount}
                             </Text>
                           </XStack>
@@ -211,8 +283,12 @@ export const PaymentScreen: React.FC = () => {
           {/* Account Cards Carousel */}
           <YStack marginBottom="$4">
             <YStack paddingHorizontal="$6" marginBottom="$2">
-              <Text size="md" weight="semibold" style={{ color: theme.colors.textPrimary }}>
-                {t('payment.fromAccount')}
+              <Text
+                size="md"
+                weight="semibold"
+                style={{ color: theme.colors.textPrimary }}
+              >
+                {t("payment.fromAccount")}
               </Text>
             </YStack>
             <ScrollView
@@ -328,7 +404,7 @@ export const PaymentScreen: React.FC = () => {
             >
               <YStack gap="$5" padding="$4">
                 <Text size="xl" weight="bold" style={{ marginBottom: 4 }}>
-                  {t('payment.paymentDetails')}
+                  {t("payment.paymentDetails")}
                 </Text>
 
                 <YStack gap="$2">
@@ -337,12 +413,12 @@ export const PaymentScreen: React.FC = () => {
                     weight="semibold"
                     style={{ color: theme.colors.textPrimary }}
                   >
-                    {t('payment.recipient')}
+                    {t("payment.recipient")}
                   </Text>
                   <Input
                     value={recipient}
                     onChangeText={setRecipient}
-                    placeholder={t('payment.recipientPlaceholder')}
+                    placeholder={t("payment.recipientPlaceholder")}
                     fullWidth
                   />
                 </YStack>
@@ -353,12 +429,12 @@ export const PaymentScreen: React.FC = () => {
                     weight="semibold"
                     style={{ color: theme.colors.textPrimary }}
                   >
-                    {t('payment.amount')}
+                    {t("payment.amount")}
                   </Text>
                   <Input
                     value={amount}
                     onChangeText={setAmount}
-                    placeholder={t('payment.amountPlaceholder')}
+                    placeholder={t("payment.amountPlaceholder")}
                     keyboardType="numeric"
                     fullWidth
                   />
@@ -370,12 +446,12 @@ export const PaymentScreen: React.FC = () => {
                     weight="semibold"
                     style={{ color: theme.colors.textPrimary }}
                   >
-                    {t('payment.note')}
+                    {t("payment.note")}
                   </Text>
                   <Input
                     value={note}
                     onChangeText={setNote}
-                    placeholder={t('payment.notePlaceholder')}
+                    placeholder={t("payment.notePlaceholder")}
                     fullWidth
                   />
                 </YStack>
@@ -395,13 +471,13 @@ export const PaymentScreen: React.FC = () => {
                       weight="semibold"
                       style={{ color: theme.colors.textPrimary }}
                     >
-                      {t('payment.standingPayment')}
+                      {t("payment.standingPayment")}
                     </Text>
                     <Text
                       size="sm"
                       style={{ color: theme.colors.textSecondary }}
                     >
-                      {t('payment.recurringPayment')}
+                      {t("payment.recurringPayment")}
                     </Text>
                   </YStack>
                   <Switch
@@ -430,20 +506,28 @@ export const PaymentScreen: React.FC = () => {
                         weight="semibold"
                         style={{ color: theme.colors.textPrimary }}
                       >
-                        {t('payment.frequency')}
+                        {t("payment.frequency")}
                       </Text>
                       <XStack gap="$2" flexWrap="wrap">
-                        {["weekly", "monthly", "quarterly", "yearly"].map((freq) => (
-                          <Button
-                            key={freq}
-                            variant={frequency === freq ? "primary" : "outline"}
-                            size="sm"
-                            onPress={() => setFrequency(freq)}
-                            style={{ flex: 1, minWidth: 100 }}
-                          >
-                            {t(`payment.frequency${freq.charAt(0).toUpperCase() + freq.slice(1)}`)}
-                          </Button>
-                        ))}
+                        {["weekly", "monthly", "quarterly", "yearly"].map(
+                          (freq) => (
+                            <Button
+                              key={freq}
+                              variant={
+                                frequency === freq ? "primary" : "outline"
+                              }
+                              size="sm"
+                              onPress={() => setFrequency(freq)}
+                              style={{ flex: 1, minWidth: 100 }}
+                            >
+                              {t(
+                                `payment.frequency${
+                                  freq.charAt(0).toUpperCase() + freq.slice(1)
+                                }`
+                              )}
+                            </Button>
+                          )
+                        )}
                       </XStack>
                     </YStack>
 
@@ -454,7 +538,7 @@ export const PaymentScreen: React.FC = () => {
                         weight="semibold"
                         style={{ color: theme.colors.textPrimary }}
                       >
-                        {t('payment.paymentPeriod')}
+                        {t("payment.paymentPeriod")}
                       </Text>
                       <XStack gap="$3">
                         <YStack gap="$2" flex={1}>
@@ -462,7 +546,7 @@ export const PaymentScreen: React.FC = () => {
                             size="sm"
                             style={{ color: theme.colors.textSecondary }}
                           >
-                            {t('payment.startDate')}
+                            {t("payment.startDate")}
                           </Text>
                           <DateInput
                             value={startDate}
@@ -476,7 +560,7 @@ export const PaymentScreen: React.FC = () => {
                             size="sm"
                             style={{ color: theme.colors.textSecondary }}
                           >
-                            {t('payment.endDate')}
+                            {t("payment.endDate")}
                           </Text>
                           <DateInput
                             value={endDate}
@@ -487,9 +571,12 @@ export const PaymentScreen: React.FC = () => {
                       </XStack>
                       <Text
                         size="xs"
-                        style={{ color: theme.colors.textSecondary, marginTop: 4 }}
+                        style={{
+                          color: theme.colors.textSecondary,
+                          marginTop: 4,
+                        }}
                       >
-                        {t('payment.endDateHint')}
+                        {t("payment.endDateHint")}
                       </Text>
                     </YStack>
 
@@ -499,17 +586,22 @@ export const PaymentScreen: React.FC = () => {
                         weight="semibold"
                         style={{ color: theme.colors.textPrimary }}
                       >
-                        {t('payment.executionDay')}
+                        {t("payment.executionDay")}
                       </Text>
                       <Input
                         value={executionDay}
                         onChangeText={setExecutionDay}
-                        placeholder={t(`payment.executionDayPlaceholder.${frequency}`)}
+                        placeholder={t(
+                          `payment.executionDayPlaceholder.${frequency}`
+                        )}
                         fullWidth
                       />
                       <Text
                         size="xs"
-                        style={{ color: theme.colors.textSecondary, marginTop: 4 }}
+                        style={{
+                          color: theme.colors.textSecondary,
+                          marginTop: 4,
+                        }}
                       >
                         {t(`payment.executionDayHint.${frequency}`)}
                       </Text>
@@ -523,7 +615,9 @@ export const PaymentScreen: React.FC = () => {
                   size="lg"
                   style={{ marginTop: 8 }}
                 >
-                  {isStandingPayment ? t('payment.setupStandingPayment') : t('payment.sendPayment')}
+                  {isStandingPayment
+                    ? t("payment.setupStandingPayment")
+                    : t("payment.sendPayment")}
                 </Button>
               </YStack>
             </Card>

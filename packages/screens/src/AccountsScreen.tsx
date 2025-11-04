@@ -19,21 +19,21 @@ export const AccountsScreen: React.FC = () => {
   const accounts = [
     {
       id: 1,
-      name: t('accounts.checking'),
+      name: t("accounts.checking"),
       number: "****1234",
       balance: 5430.0,
       type: "checking",
     },
     {
       id: 2,
-      name: t('accounts.savings'),
+      name: t("accounts.savings"),
       number: "****5678",
       balance: 12850.0,
       type: "savings",
     },
     {
       id: 3,
-      name: t('accounts.credit'),
+      name: t("accounts.credit"),
       number: "****9012",
       balance: -1230.5,
       type: "credit",
@@ -47,35 +47,35 @@ export const AccountsScreen: React.FC = () => {
         description: "Grocery Store",
         amount: -85.5,
         date: "2025-11-03",
-        category: t('categories.food'),
+        category: t("categories.food"),
       },
       {
         id: 2,
         description: "Salary Deposit",
         amount: 3500.0,
         date: "2025-11-01",
-        category: t('categories.income'),
+        category: t("categories.income"),
       },
       {
         id: 3,
         description: "Electric Bill",
         amount: -120.0,
         date: "2025-10-30",
-        category: t('categories.utilities'),
+        category: t("categories.utilities"),
       },
       {
         id: 4,
         description: "Restaurant",
         amount: -45.0,
         date: "2025-10-28",
-        category: t('categories.food'),
+        category: t("categories.food"),
       },
       {
         id: 5,
         description: "Gas Station",
         amount: -60.0,
         date: "2025-10-27",
-        category: t('categories.transport'),
+        category: t("categories.transport"),
       },
     ],
     2: [
@@ -84,21 +84,21 @@ export const AccountsScreen: React.FC = () => {
         description: "Monthly Transfer",
         amount: 500.0,
         date: "2025-11-01",
-        category: t('categories.transfer'),
+        category: t("categories.transfer"),
       },
       {
         id: 7,
         description: "Interest Payment",
         amount: 12.5,
         date: "2025-10-31",
-        category: t('categories.interest'),
+        category: t("categories.interest"),
       },
       {
         id: 8,
         description: "Withdrawal",
         amount: -200.0,
         date: "2025-10-25",
-        category: t('categories.transfer'),
+        category: t("categories.transfer"),
       },
     ],
     3: [
@@ -107,28 +107,28 @@ export const AccountsScreen: React.FC = () => {
         description: "Online Shopping",
         amount: -230.0,
         date: "2025-11-02",
-        category: t('categories.shopping'),
+        category: t("categories.shopping"),
       },
       {
         id: 10,
         description: "Payment Received",
         amount: 500.0,
         date: "2025-11-01",
-        category: t('categories.payment'),
+        category: t("categories.payment"),
       },
       {
         id: 11,
         description: "Subscription",
         amount: -15.99,
         date: "2025-10-28",
-        category: t('categories.services'),
+        category: t("categories.services"),
       },
       {
         id: 12,
         description: "Hotel Booking",
         amount: -450.0,
         date: "2025-10-20",
-        category: t('categories.travel'),
+        category: t("categories.travel"),
       },
     ],
   };
@@ -247,7 +247,7 @@ export const AccountsScreen: React.FC = () => {
       {/* Transactions Section */}
       <YStack flex={1} paddingHorizontal="$6" paddingTop="$4" gap="$4">
         <Text size="xl" weight="bold" style={{ marginBottom: 4 }}>
-          {t('accounts.transactions')}
+          {t("accounts.transactions")}
         </Text>
 
         <ScrollView showsVerticalScrollIndicator={false}>

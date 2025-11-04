@@ -5,7 +5,5 @@ import { useDarkMode } from "../_layout";
 export default function Settings() {
   const { darkMode, setDarkMode } = useDarkMode();
 
-  return (
-    <SettingsScreen darkMode={darkMode} onToggleDarkMode={setDarkMode} />
-  );
+  return <SettingsScreen darkMode={darkMode} onToggleDarkMode={setDarkMode} />;
 }

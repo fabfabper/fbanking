@@ -32,7 +32,7 @@ export interface InputProps {
 export const Input = React.forwardRef<TextInput, InputProps>(
   ({ size = "md", fullWidth = false, error = false, ...props }, ref) => {
     const { theme } = useTheme();
-    
+
     const sizeStyles = {
       sm: {
         paddingHorizontal: 12,

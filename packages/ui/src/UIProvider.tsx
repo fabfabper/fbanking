@@ -20,7 +20,10 @@ export interface UIProviderProps {
   darkMode?: boolean;
 }
 
-export const UIProvider: React.FC<UIProviderProps> = ({ children, darkMode = false }) => {
+export const UIProvider: React.FC<UIProviderProps> = ({
+  children,
+  darkMode = false,
+}) => {
   const themeValue = {
     isDark: darkMode,
     theme: getTheme(darkMode),
@@ -28,7 +31,10 @@ export const UIProvider: React.FC<UIProviderProps> = ({ children, darkMode = fal
 
   return (
     <ThemeContext.Provider value={themeValue}>
-      <TamaguiProvider config={config} defaultTheme={darkMode ? "dark" : "light"}>
+      <TamaguiProvider
+        config={config}
+        defaultTheme={darkMode ? "dark" : "light"}
+      >
         <Theme name={darkMode ? "dark" : "light"} forceClassName>
           {children}
         </Theme>

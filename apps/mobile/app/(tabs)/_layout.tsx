@@ -57,47 +57,47 @@ export default function TabsLayout() {
           ),
         }}
       >
-      <Tabs.Screen
-        name="dashboard"
-        options={{
-          title: t('nav.dashboard'),
-          tabBarLabel: t('nav.dashboard'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="accounts"
-        options={{
-          title: t('nav.accounts'),
-          tabBarLabel: t('nav.accounts'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="wallet" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="payment"
-        options={{
-          title: t('nav.payment'),
-          tabBarLabel: t('nav.payment'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="send" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: t('nav.settings'),
-          tabBarLabel: t('nav.settings'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings" size={size} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+        <Tabs.Screen
+          name="dashboard"
+          options={{
+            title: t("nav.dashboard"),
+            tabBarLabel: t("nav.dashboard"),
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="accounts"
+          options={{
+            title: t("nav.accounts"),
+            tabBarLabel: t("nav.accounts"),
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="wallet" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="payment"
+          options={{
+            title: t("nav.payment"),
+            tabBarLabel: t("nav.payment"),
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="send" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: t("nav.settings"),
+            tabBarLabel: t("nav.settings"),
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="settings" size={size} color={color} />
+            ),
+          }}
+        />
+      </Tabs>
     </>
   );
 }

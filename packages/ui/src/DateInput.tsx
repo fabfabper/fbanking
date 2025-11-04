@@ -16,7 +16,7 @@ export const DateInput: React.FC<DateInputProps> = ({
   style,
 }) => {
   const { theme } = useTheme();
-  
+
   if (Platform.OS === "web") {
     // Use native HTML5 date input for web
     return React.createElement("input", {
@@ -45,7 +45,7 @@ export const DateInput: React.FC<DateInputProps> = ({
   // For mobile, we'll use a simple text input
   // In a production app, you might want to use a library like react-native-date-picker
   const TextInput = require("react-native").TextInput;
-  
+
   return (
     <TextInput
       value={value}

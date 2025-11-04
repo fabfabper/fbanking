@@ -52,7 +52,7 @@ export const de: Translations = {
     noteOptional: "Notiz (Optional)",
     notePlaceholder: "Notiz hinzufügen",
     sendPayment: "Zahlung senden",
-    
+
     // Standing Payment
     standingPayment: "Dauerauftrag",
     recurringPayment: "Wiederkehrende Zahlung einrichten",
@@ -84,12 +84,16 @@ export const de: Translations = {
     },
     executionDayHelper: {
       weekly: "Geben Sie den Wochentag für die Zahlungsausführung ein",
-      monthly: "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
-      quarterly: "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
-      yearly: "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
-      other: "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
+      monthly:
+        "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
+      quarterly:
+        "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
+      yearly:
+        "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
+      other:
+        "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
     },
-    
+
     // Recent Recipients
     recentRecipients: "Letzte Empfänger",
     pay: "Bezahlen",
@@ -134,13 +138,13 @@ export const de: Translations = {
   settings: {
     title: "Einstellungen",
     subtitle: "Verwalten Sie Ihre Kontoeinstellungen",
-    
+
     // Language
     language: {
       title: "Sprache",
       description: "Wählen Sie Ihre bevorzugte Sprache",
     },
-    
+
     // Appearance
     appearance: {
       title: "Darstellung",
@@ -149,7 +153,7 @@ export const de: Translations = {
       darkModeEnabled: "Dunkler Modus aktiviert",
       lightModeEnabled: "Heller Modus aktiviert",
     },
-    
+
     // Security
     security: {
       title: "Sicherheit",
@@ -157,7 +161,7 @@ export const de: Translations = {
       changePassword: "Passwort ändern",
       twoFactor: "Zwei-Faktor-Authentifizierung",
     },
-    
+
     // Notifications
     notifications: {
       title: "Benachrichtigungen",
@@ -165,7 +169,7 @@ export const de: Translations = {
       email: "E-Mail-Benachrichtigungen",
       push: "Push-Benachrichtigungen",
     },
-    
+
     // About
     about: {
       title: "Über",

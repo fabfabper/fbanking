@@ -77,112 +77,119 @@ export const Drawer: React.FC<DrawerProps> = ({
             transform: [{ translateX: slideAnim }],
           }}
         >
-          <Pressable
-            style={{ flex: 1 }}
-            onPress={(e) => e.stopPropagation()}
-          >
-          <YStack flex={1}>
-            {/* Header */}
-            <XStack
-              backgroundColor={theme.colors.primary}
-              padding="$4"
-              paddingTop="$8"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Text
-                size="xl"
-                weight="bold"
-                style={{ color: theme.colors.textWhite }}
+          <Pressable style={{ flex: 1 }} onPress={(e) => e.stopPropagation()}>
+            <YStack flex={1}>
+              {/* Header */}
+              <XStack
+                backgroundColor={theme.colors.primary}
+                padding="$4"
+                paddingTop="$8"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                {t("auth.title")}
-              </Text>
-              <Pressable onPress={onClose}>
-                <Ionicons name="close" size={28} color={theme.colors.textWhite} />
-              </Pressable>
-            </XStack>
+                <Text
+                  size="xl"
+                  weight="bold"
+                  style={{ color: theme.colors.textWhite }}
+                >
+                  {t("auth.title")}
+                </Text>
+                <Pressable onPress={onClose}>
+                  <Ionicons
+                    name="close"
+                    size={28}
+                    color={theme.colors.textWhite}
+                  />
+                </Pressable>
+              </XStack>
 
-            {/* Menu Items */}
-            <ScrollView style={{ flex: 1 }}>
-              <YStack padding="$4" gap="$2">
-                {menuItems.map((item) => (
-                  <Pressable
-                    key={item.key}
-                    onPress={() => {
-                      onNavigate(item.key);
-                      onClose();
-                    }}
-                  >
-                    <XStack
-                      padding="$4"
-                      gap="$3"
-                      alignItems="center"
-                      style={{
-                        backgroundColor:
-                          currentScreen === item.key
-                            ? theme.colors.backgroundGray
-                            : "transparent",
-                        borderRadius: 8,
+              {/* Menu Items */}
+              <ScrollView style={{ flex: 1 }}>
+                <YStack padding="$4" gap="$2">
+                  {menuItems.map((item) => (
+                    <Pressable
+                      key={item.key}
+                      onPress={() => {
+                        onNavigate(item.key);
+                        onClose();
                       }}
                     >
-                      <Ionicons
-                        name={item.icon}
-                        size={24}
-                        color={
-                          currentScreen === item.key
-                            ? theme.colors.primary
-                            : theme.colors.textSecondary
-                        }
-                      />
-                      <Text
-                        size="md"
-                        weight={currentScreen === item.key ? "bold" : "medium"}
+                      <XStack
+                        padding="$4"
+                        gap="$3"
+                        alignItems="center"
                         style={{
-                          color:
+                          backgroundColor:
                             currentScreen === item.key
-                              ? theme.colors.primary
-                              : theme.colors.textPrimary,
+                              ? theme.colors.backgroundGray
+                              : "transparent",
+                          borderRadius: 8,
                         }}
                       >
-                        {item.label}
-                      </Text>
-                    </XStack>
-                  </Pressable>
-                ))}
-              </YStack>
-            </ScrollView>
+                        <Ionicons
+                          name={item.icon}
+                          size={24}
+                          color={
+                            currentScreen === item.key
+                              ? theme.colors.primary
+                              : theme.colors.textSecondary
+                          }
+                        />
+                        <Text
+                          size="md"
+                          weight={
+                            currentScreen === item.key ? "bold" : "medium"
+                          }
+                          style={{
+                            color:
+                              currentScreen === item.key
+                                ? theme.colors.primary
+                                : theme.colors.textPrimary,
+                          }}
+                        >
+                          {item.label}
+                        </Text>
+                      </XStack>
+                    </Pressable>
+                  ))}
+                </YStack>
+              </ScrollView>
 
-            {/* Logout Button */}
-            <YStack
-              padding="$4"
-              borderTopWidth={1}
-              borderTopColor="$border"
-              style={{ backgroundColor: "white" }}
-            >
-              <Button
-                variant="outline"
-                size="lg"
-                onPress={() => {
-                  onLogout();
-                  onClose();
-                }}
-                style={{
-                  borderColor: theme.colors.error,
-                }}
+              {/* Logout Button */}
+              <YStack
+                padding="$4"
+                borderTopWidth={1}
+                borderTopColor="$border"
+                style={{ backgroundColor: "white" }}
               >
-                <XStack gap="$2" alignItems="center">
-                  <Ionicons name="log-out" size={20} color={theme.colors.error} />
-                  <Text
-                    size="md"
-                    weight="semibold"
-                    style={{ color: theme.colors.error }}
-                  >
-                    {t("common.logout")}
-                  </Text>
-                </XStack>
-              </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onPress={() => {
+                    onLogout();
+                    onClose();
+                  }}
+                  style={{
+                    borderColor: theme.colors.error,
+                  }}
+                >
+                  <XStack gap="$2" alignItems="center">
+                    <Ionicons
+                      name="log-out"
+                      size={20}
+                      color={theme.colors.error}
+                    />
+                    <Text
+                      size="md"
+                      weight="semibold"
+                      style={{ color: theme.colors.error }}
+                    >
+                      {t("common.logout")}
+                    </Text>
+                  </XStack>
+                </Button>
+              </YStack>
             </YStack>
-          </YStack>
           </Pressable>
         </Animated.View>
       </Pressable>

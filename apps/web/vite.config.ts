@@ -28,10 +28,7 @@ export default defineConfig({
         __dirname,
         "../../packages/screens/src"
       ),
-      "@ebanking/i18n": path.resolve(
-        __dirname,
-        "../../packages/i18n/src"
-      ),
+      "@ebanking/i18n": path.resolve(__dirname, "../../packages/i18n/src"),
       "react-native": "react-native-web",
     },
   },

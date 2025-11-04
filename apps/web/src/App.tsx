@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { YStack, XStack, Text, Button, useAppTheme } from "@ebanking/ui";
 import { IoSettings } from "react-icons/io5";
 import {
@@ -19,8 +25,12 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
 
   const getNavButtonStyle = (path: string) => ({
     borderColor: theme.colors.textWhite,
-    color: location.pathname === path ? theme.colors.primary : theme.colors.textWhite,
-    backgroundColor: location.pathname === path ? theme.colors.textWhite : "transparent",
+    color:
+      location.pathname === path
+        ? theme.colors.primary
+        : theme.colors.textWhite,
+    backgroundColor:
+      location.pathname === path ? theme.colors.textWhite : "transparent",
     transition: "all 0.2s ease",
   });
 
@@ -32,12 +42,8 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
       gap="$3"
       alignItems="center"
     >
-      <Text
-        size="xl"
-        weight="bold"
-        style={{ color: theme.colors.textWhite }}
-      >
-        {t('auth.title')}
+      <Text size="xl" weight="bold" style={{ color: theme.colors.textWhite }}>
+        {t("auth.title")}
       </Text>
       <XStack flex={1} justifyContent="center" gap="$3">
         <Button
@@ -47,7 +53,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           style={getNavButtonStyle("/dashboard")}
           className="nav-button"
         >
-          {t('nav.dashboard')}
+          {t("nav.dashboard")}
         </Button>
         <Button
           variant="outline"
@@ -56,7 +62,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           style={getNavButtonStyle("/accounts")}
           className="nav-button"
         >
-          {t('nav.accounts')}
+          {t("nav.accounts")}
         </Button>
         <Button
           variant="outline"
@@ -65,7 +71,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           style={getNavButtonStyle("/payment")}
           className="nav-button"
         >
-          {t('nav.payment')}
+          {t("nav.payment")}
         </Button>
       </XStack>
       <Button
@@ -81,11 +87,15 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           minWidth: 40,
         }}
         className="nav-button"
-        title={t('nav.settings')}
+        title={t("nav.settings")}
       >
-        <IoSettings 
-          size={20} 
-          color={location.pathname === "/settings" ? theme.colors.primary : theme.colors.textWhite} 
+        <IoSettings
+          size={20}
+          color={
+            location.pathname === "/settings"
+              ? theme.colors.primary
+              : theme.colors.textWhite
+          }
         />
       </Button>
       <Button
@@ -100,7 +110,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         }}
         className="nav-button"
       >
-        {t('common.logout')}
+        {t("common.logout")}
       </Button>
       <style>{`
         .nav-button:hover {

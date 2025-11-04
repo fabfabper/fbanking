@@ -1,8 +1,8 @@
-import React, { useState, createContext, useContext } from 'react';
-import { Stack, useRouter } from 'expo-router';
-import { I18nextProvider } from 'react-i18next';
-import { i18n } from '@ebanking/i18n';
-import { UIProvider } from '@ebanking/ui';
+import React, { useState, createContext, useContext } from "react";
+import { Stack, useRouter } from "expo-router";
+import { I18nextProvider } from "react-i18next";
+import { i18n } from "@ebanking/i18n";
+import { UIProvider } from "@ebanking/ui";
 
 interface DarkModeContextType {
   darkMode: boolean;

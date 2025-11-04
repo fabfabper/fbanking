@@ -28,7 +28,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         {/* Header */}
         <YStack alignItems="center">
           <Text size="3xl" weight="bold" color="primary">
-            {t('auth.title')}
+            {t("auth.title")}
           </Text>
         </YStack>
 
@@ -37,12 +37,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           <YStack gap="$4">
             <YStack gap="$2">
               <Text size="sm" weight="medium">
-                {t('common.email')}
+                {t("common.email")}
               </Text>
               <Input
                 value={email}
                 onChangeText={setEmail}
-                placeholder={t('auth.emailPlaceholder')}
+                placeholder={t("auth.emailPlaceholder")}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 fullWidth
@@ -51,19 +51,19 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 
             <YStack gap="$2">
               <Text size="sm" weight="medium">
-                {t('common.password')}
+                {t("common.password")}
               </Text>
               <Input
                 value={password}
                 onChangeText={setPassword}
-                placeholder={t('auth.passwordPlaceholder')}
+                placeholder={t("auth.passwordPlaceholder")}
                 secureTextEntry
                 fullWidth
               />
             </YStack>
 
             <Button onPress={handleLogin} fullWidth size="lg">
-              {t('common.signIn')}
+              {t("common.signIn")}
             </Button>
           </YStack>
         </Card>

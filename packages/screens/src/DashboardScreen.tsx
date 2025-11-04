@@ -2,7 +2,14 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, Platform } from "react-native";
 import { YStack, XStack, Text, Card, Button, useAppTheme } from "@ebanking/ui";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Legend,
+  Tooltip,
+} from "recharts";
 import { useCamera } from "./hooks/useCamera";
 
 const isWeb = Platform.OS === "web";
@@ -11,16 +18,16 @@ export const DashboardScreen: React.FC = () => {
   const { t } = useTranslation();
   const { theme } = useAppTheme();
   const { openCamera } = useCamera();
-  
+
   // Expense categories data for pie chart
   const expenseData = [
-    { name: t('categories.food'), value: 450, color: "#3B82F6" },
-    { name: t('categories.utilities'), value: 280, color: "#10B981" },
-    { name: t('categories.transport'), value: 180, color: "#F59E0B" },
-    { name: t('categories.entertainment'), value: 220, color: "#EF4444" },
-    { name: t('categories.shopping'), value: 340, color: "#8B5CF6" },
+    { name: t("categories.food"), value: 450, color: "#3B82F6" },
+    { name: t("categories.utilities"), value: 280, color: "#10B981" },
+    { name: t("categories.transport"), value: 180, color: "#F59E0B" },
+    { name: t("categories.entertainment"), value: 220, color: "#EF4444" },
+    { name: t("categories.shopping"), value: 340, color: "#8B5CF6" },
   ];
-  
+
   const transactions = [
     {
       id: 1,
@@ -104,28 +111,40 @@ export const DashboardScreen: React.FC = () => {
           {/* Quick Actions */}
           <YStack gap="$4">
             <Text size="xl" weight="bold" style={{ marginBottom: 4 }}>
-              {t('dashboard.quickActions')}
+              {t("dashboard.quickActions")}
             </Text>
             <XStack gap="$3" flexWrap="wrap">
-              <Button variant="outline" size="md" style={{ flex: 1, minWidth: 140 }}>
-                {t('dashboard.transferMoney')}
+              <Button
+                variant="outline"
+                size="md"
+                style={{ flex: 1, minWidth: 140 }}
+              >
+                {t("dashboard.transferMoney")}
               </Button>
-              <Button variant="outline" size="md" style={{ flex: 1, minWidth: 140 }}>
-                {t('dashboard.payBills')}
+              <Button
+                variant="outline"
+                size="md"
+                style={{ flex: 1, minWidth: 140 }}
+              >
+                {t("dashboard.payBills")}
               </Button>
-              <Button variant="outline" size="md" style={{ flex: 1, minWidth: 140 }}>
-                {t('dashboard.viewAccounts')}
+              <Button
+                variant="outline"
+                size="md"
+                style={{ flex: 1, minWidth: 140 }}
+              >
+                {t("dashboard.viewAccounts")}
               </Button>
               <Button
                 variant="outline"
                 size="md"
                 onPress={handleCameraOpen}
-                style={{ 
+                style={{
                   minWidth: isWeb ? 56 : 64,
                   width: isWeb ? 56 : 64,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   padding: 8,
                 }}
                 title="Scan QR Code"

@@ -39,10 +39,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             <YStack gap="$4" padding="$4">
               <YStack gap="$1">
                 <Text size="lg" weight="bold">
-                  {t('settings.language.title')}
+                  {t("settings.language.title")}
                 </Text>
                 <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                  {t('settings.language.description')}
+                  {t("settings.language.description")}
                 </Text>
               </YStack>
 
@@ -80,10 +80,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             <YStack gap="$4" padding="$4">
               <YStack gap="$1">
                 <Text size="lg" weight="bold">
-                  {t('settings.appearance.title')}
+                  {t("settings.appearance.title")}
                 </Text>
                 <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                  {t('settings.appearance.description')}
+                  {t("settings.appearance.description")}
                 </Text>
               </YStack>
 
@@ -94,12 +94,12 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
               >
                 <YStack gap="$1">
                   <Text size="md" weight="semibold">
-                    {t('settings.appearance.darkMode')}
+                    {t("settings.appearance.darkMode")}
                   </Text>
                   <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                     {darkMode
-                      ? t('settings.appearance.darkModeEnabled')
-                      : t('settings.appearance.lightModeEnabled')}
+                      ? t("settings.appearance.darkModeEnabled")
+                      : t("settings.appearance.lightModeEnabled")}
                   </Text>
                 </YStack>
                 <Switch
@@ -129,10 +129,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             <YStack gap="$4" padding="$4">
               <YStack gap="$1">
                 <Text size="lg" weight="bold">
-                  {t('settings.security.title')}
+                  {t("settings.security.title")}
                 </Text>
                 <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                  {t('settings.security.description')}
+                  {t("settings.security.description")}
                 </Text>
               </YStack>
 
@@ -143,10 +143,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                   paddingVertical="$2"
                 >
                   <Text size="md" weight="medium">
-                    {t('settings.security.changePassword')}
+                    {t("settings.security.changePassword")}
                   </Text>
                   <Button variant="outline" size="sm" disabled>
-                    {t('common.edit')}
+                    {t("common.edit")}
                   </Button>
                 </XStack>
 
@@ -158,7 +158,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                   borderTopColor="$border"
                 >
                   <Text size="md" weight="medium">
-                    {t('settings.security.twoFactor')}
+                    {t("settings.security.twoFactor")}
                   </Text>
                   <Switch
                     value={false}
@@ -187,10 +187,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             <YStack gap="$4" padding="$4">
               <YStack gap="$1">
                 <Text size="lg" weight="bold">
-                  {t('settings.notifications.title')}
+                  {t("settings.notifications.title")}
                 </Text>
                 <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                  {t('settings.notifications.description')}
+                  {t("settings.notifications.description")}
                 </Text>
               </YStack>
 
@@ -201,7 +201,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                   paddingVertical="$2"
                 >
                   <Text size="md" weight="medium">
-                    {t('settings.notifications.email')}
+                    {t("settings.notifications.email")}
                   </Text>
                   <Switch
                     value={true}
@@ -222,7 +222,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                   borderTopColor="$border"
                 >
                   <Text size="md" weight="medium">
-                    {t('settings.notifications.push')}
+                    {t("settings.notifications.push")}
                   </Text>
                   <Switch
                     value={false}
@@ -251,14 +251,14 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             <YStack gap="$4" padding="$4">
               <YStack gap="$1">
                 <Text size="lg" weight="bold">
-                  {t('settings.about.title')}
+                  {t("settings.about.title")}
                 </Text>
               </YStack>
 
               <YStack gap="$3">
                 <XStack justifyContent="space-between" paddingVertical="$2">
                   <Text size="md" style={{ color: theme.colors.textSecondary }}>
-                    {t('settings.about.version')}
+                    {t("settings.about.version")}
                   </Text>
                   <Text size="md" weight="medium">
                     1.0.0
@@ -272,7 +272,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                   borderTopColor="$border"
                 >
                   <Text size="md" style={{ color: theme.colors.textSecondary }}>
-                    {t('settings.about.buildNumber')}
+                    {t("settings.about.buildNumber")}
                   </Text>
                   <Text size="md" weight="medium">
                     2025.11.04

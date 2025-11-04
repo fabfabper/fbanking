@@ -50,7 +50,7 @@ export const en = {
     noteOptional: "Note (Optional)",
     notePlaceholder: "Add a note",
     sendPayment: "Send Payment",
-    
+
     // Standing Payment
     standingPayment: "Standing Payment",
     recurringPayment: "Set up recurring payment",
@@ -87,7 +87,7 @@ export const en = {
       yearly: "Enter the day of the month (1-31) for payment execution",
       other: "Enter the day of the month (1-31) for payment execution",
     },
-    
+
     // Recent Recipients
     recentRecipients: "Recent Recipients",
     pay: "Pay",
@@ -132,13 +132,13 @@ export const en = {
   settings: {
     title: "Settings",
     subtitle: "Manage your account preferences",
-    
+
     // Language
     language: {
       title: "Language",
       description: "Choose your preferred language",
     },
-    
+
     // Appearance
     appearance: {
       title: "Appearance",
@@ -147,7 +147,7 @@ export const en = {
       darkModeEnabled: "Dark mode enabled",
       lightModeEnabled: "Light mode enabled",
     },
-    
+
     // Security
     security: {
       title: "Security",
@@ -155,7 +155,7 @@ export const en = {
       changePassword: "Change Password",
       twoFactor: "Two-Factor Authentication",
     },
-    
+
     // Notifications
     notifications: {
       title: "Notifications",
@@ -163,7 +163,7 @@ export const en = {
       email: "Email Notifications",
       push: "Push Notifications",
     },
-    
+
     // About
     about: {
       title: "About",
