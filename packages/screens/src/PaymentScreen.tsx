@@ -17,6 +17,7 @@ import {
   Button,
   useAppTheme,
 } from "@ebanking/ui";
+import { formatCurrency } from "./utils/formatCurrency";
 
 const { width: screenWidth } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
@@ -113,11 +114,6 @@ export const PaymentScreen: React.FC = () => {
   ];
 
   const selectedAccount = accounts[selectedAccountIndex];
-
-  const formatCurrency = (amount: number) => {
-    const formatted = Math.abs(amount).toFixed(2);
-    return amount >= 0 ? `$${formatted}` : `-$${formatted}`;
-  };
 
   const handleScroll = (event: any) => {
     const scrollX = event.nativeEvent.contentOffset.x;
@@ -268,7 +264,7 @@ export const PaymentScreen: React.FC = () => {
                               weight="bold"
                               style={{ color: theme.colors.primary }}
                             >
-                              ${payment.amount}
+                              {formatCurrency(parseFloat(payment.amount))}
                             </Text>
                           </XStack>
                         </YStack>

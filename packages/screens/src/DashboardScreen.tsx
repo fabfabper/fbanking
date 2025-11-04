@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from "recharts";
 import { useCamera } from "./hooks/useCamera";
+import { formatCurrency } from "./utils/formatCurrency";
 
 const isWeb = Platform.OS === "web";
 
@@ -59,11 +60,6 @@ export const DashboardScreen: React.FC = () => {
     },
   ];
 
-  const formatCurrency = (amount: number) => {
-    const formatted = Math.abs(amount).toFixed(2);
-    return amount >= 0 ? `+$${formatted}` : `-$${formatted}`;
-  };
-
   const handleCameraOpen = () => {
     openCamera();
   };
@@ -91,7 +87,7 @@ export const DashboardScreen: React.FC = () => {
                 weight="bold"
                 style={{ color: theme.colors.primary }}
               >
-                $12,450.00
+                CHF 9'450.00
               </Text>
               <XStack gap="$2" alignItems="center">
                 <Text
@@ -231,7 +227,7 @@ export const DashboardScreen: React.FC = () => {
                         textAlign: "right",
                       }}
                     >
-                      {formatCurrency(transaction.amount)}
+                      {formatCurrency(transaction.amount, true)}
                     </Text>
                   </XStack>
                 </Card>

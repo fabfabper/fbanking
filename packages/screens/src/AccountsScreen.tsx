@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, Dimensions, Platform, Pressable } from "react-native";
 import { YStack, XStack, Text, Card, useAppTheme } from "@ebanking/ui";
+import { formatCurrency } from "./utils/formatCurrency";
 
 const { width: screenWidth } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
@@ -135,11 +136,6 @@ export const AccountsScreen: React.FC = () => {
 
   const selectedAccount = accounts[selectedAccountIndex];
   const selectedTransactions = transactions[selectedAccount.id] || [];
-
-  const formatCurrency = (amount: number) => {
-    const formatted = Math.abs(amount).toFixed(2);
-    return amount >= 0 ? `$${formatted}` : `-$${formatted}`;
-  };
 
   return (
     <YStack flex={1} backgroundColor="$backgroundGray" paddingTop="$4">
@@ -323,8 +319,7 @@ export const AccountsScreen: React.FC = () => {
                       textAlign: "right",
                     }}
                   >
-                    {transaction.amount >= 0 ? "+" : ""}
-                    {formatCurrency(transaction.amount)}
+                    {formatCurrency(transaction.amount, true)}
                   </Text>
                 </XStack>
               </Card>

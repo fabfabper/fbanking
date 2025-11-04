@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { YStack, XStack, Text, Button, Input, Card, useAppTheme } from "@ebanking/ui";
+import {
+  YStack,
+  XStack,
+  Text,
+  Button,
+  Input,
+  Card,
+  useAppTheme,
+} from "@ebanking/ui";
 
 interface LoginScreenProps {
   onLogin: () => void;
@@ -48,7 +56,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
             </Text>
           </YStack>
           <YStack alignItems="center" gap="$1">
-            <Text size="3xl" weight="bold" style={{ color: theme.colors.primary }}>
+            <Text
+              size="3xl"
+              weight="bold"
+              style={{ color: theme.colors.primary }}
+            >
               {t("auth.title")}
             </Text>
             <Text size="md" style={{ color: theme.colors.textSecondary }}>
@@ -69,7 +81,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         >
           <YStack gap="$5" padding="$5">
             <YStack gap="$2">
-              <Text size="sm" weight="semibold" style={{ color: theme.colors.textPrimary }}>
+              <Text
+                size="sm"
+                weight="semibold"
+                style={{ color: theme.colors.textPrimary }}
+              >
                 {t("common.email")}
               </Text>
               <Input
@@ -84,13 +100,17 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 
             <YStack gap="$2">
               <XStack justifyContent="space-between" alignItems="center">
-                <Text size="sm" weight="semibold" style={{ color: theme.colors.textPrimary }}>
+                <Text
+                  size="sm"
+                  weight="semibold"
+                  style={{ color: theme.colors.textPrimary }}
+                >
                   {t("common.password")}
                 </Text>
-                <Text 
-                  size="sm" 
+                <Text
+                  size="sm"
                   style={{ color: theme.colors.primary }}
-                  onPress={() => console.log('Forgot password')}
+                  onPress={() => console.log("Forgot password")}
                 >
                   {t("auth.forgotPassword")}
                 </Text>
@@ -104,9 +124,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               />
             </YStack>
 
-            <Button 
-              onPress={handleLogin} 
-              fullWidth 
+            <Button
+              onPress={handleLogin}
+              fullWidth
               size="lg"
               style={{
                 marginTop: 8,
@@ -125,11 +145,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                 <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                   {t("auth.noAccount")}
                 </Text>
-                <Text 
-                  size="sm" 
+                <Text
+                  size="sm"
                   weight="semibold"
                   style={{ color: theme.colors.primary }}
-                  onPress={() => console.log('Sign up')}
+                  onPress={() => console.log("Sign up")}
                 >
                   {t("auth.signUp")}
                 </Text>
@@ -140,7 +160,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 
         {/* Footer */}
         <YStack alignItems="center" gap="$2">
-          <Text size="xs" style={{ color: theme.colors.textSecondary, opacity: 0.7 }}>
+          <Text
+            size="xs"
+            style={{ color: theme.colors.textSecondary, opacity: 0.7 }}
+          >
             {t("auth.termsAgreement")}
           </Text>
         </YStack>

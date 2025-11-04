@@ -27,7 +27,8 @@ export const de: Translations = {
     rememberMe: "Angemeldet bleiben",
     noAccount: "Noch kein Konto?",
     signUp: "Registrieren",
-    termsAgreement: "Mit der Anmeldung stimmen Sie unseren AGB & Datenschutzrichtlinien zu",
+    termsAgreement:
+      "Mit der Anmeldung stimmen Sie unseren AGB & Datenschutzrichtlinien zu",
   },
 
   // Navigation
