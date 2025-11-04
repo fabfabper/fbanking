@@ -7,7 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 export const LoginScreen = () => {
   const { t } = useTranslation();
   const { login } = useAuth();
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("fabian");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {

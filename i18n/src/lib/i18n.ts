@@ -18,6 +18,7 @@ const en = {
     loading: "Loading...",
     error: "Error",
     success: "Success",
+    back: "Back",
   },
   auth: {
     welcomeBack: "Welcome Back",
@@ -82,6 +83,36 @@ const en = {
     createPayment: "Create Payment",
     success: "Payment created successfully!",
     signOut: "Sign Out",
+    searchPreviousPayments: "Search previous payments...",
+    noResultsFound: "No payments found",
+    standingPayment: "Standing Payment",
+    standingPaymentDescription: "Set up a recurring payment",
+    standingPaymentDetails: "Standing Payment Details",
+    frequency: "Frequency",
+    weekly: "Weekly",
+    biweekly: "Every 2 Weeks",
+    monthly: "Monthly",
+    quarterly: "Quarterly",
+    yearly: "Yearly",
+    startDate: "Start Date",
+    endDate: "End Date",
+    optional: "optional",
+  },
+  settings: {
+    title: "Settings",
+    notifications: "Notifications",
+    pushNotifications: "Push Notifications",
+    pushNotificationsDescription:
+      "Receive alerts about payments and account activity",
+    account: "Account",
+    privacy: "Privacy & Security",
+    disableNotificationsInfo:
+      "To disable notifications, please go to your device settings",
+    notificationsEnabledSuccess: "Notifications enabled successfully!",
+    notificationsEnabledError:
+      "Failed to enable notifications. Please try again.",
+    language: "Language",
+    selectLanguage: "Choose your preferred language for the application",
   },
 };
 
@@ -102,6 +133,7 @@ const de = {
     loading: "Laden...",
     error: "Fehler",
     success: "Erfolg",
+    back: "Zurück",
   },
   auth: {
     welcomeBack: "Willkommen zurück",
@@ -167,6 +199,36 @@ const de = {
     createPayment: "Zahlung erstellen",
     success: "Zahlung erfolgreich erstellt!",
     signOut: "Abmelden",
+    searchPreviousPayments: "Frühere Zahlungen suchen...",
+    noResultsFound: "Keine Zahlungen gefunden",
+    standingPayment: "Dauerauftrag",
+    standingPaymentDescription: "Wiederkehrende Zahlung einrichten",
+    standingPaymentDetails: "Dauerauftrag Details",
+    frequency: "Häufigkeit",
+    weekly: "Wöchentlich",
+    biweekly: "Alle 2 Wochen",
+    monthly: "Monatlich",
+    quarterly: "Vierteljährlich",
+    yearly: "Jährlich",
+    startDate: "Startdatum",
+    endDate: "Enddatum",
+    optional: "optional",
+  },
+  settings: {
+    title: "Einstellungen",
+    notifications: "Benachrichtigungen",
+    pushNotifications: "Push-Benachrichtigungen",
+    pushNotificationsDescription:
+      "Erhalten Sie Benachrichtigungen über Zahlungen und Kontoaktivitäten",
+    account: "Konto",
+    privacy: "Datenschutz & Sicherheit",
+    disableNotificationsInfo:
+      "Um Benachrichtigungen zu deaktivieren, gehen Sie bitte zu Ihren Geräteeinstellungen",
+    notificationsEnabledSuccess: "Benachrichtigungen erfolgreich aktiviert!",
+    notificationsEnabledError:
+      "Benachrichtigungen konnten nicht aktiviert werden. Bitte versuchen Sie es erneut.",
+    language: "Sprache",
+    selectLanguage: "Wählen Sie Ihre bevorzugte Sprache für die Anwendung",
   },
 };
 

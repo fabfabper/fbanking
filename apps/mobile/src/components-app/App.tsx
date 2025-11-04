@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView, StyleSheet, StatusBar, View } from "react-native";
 import { I18nextProvider } from "react-i18next";
 import { i18n } from "@fbanking/i18n";
@@ -7,10 +7,15 @@ import LoginScreen from "./screens/LoginScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import AccountsScreen from "./screens/AccountsScreen";
 import PaymentScreen from "./screens/PaymentScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 import TabNavigation from "./components/TabNavigation";
+import {
+  registerForPushNotifications,
+  setupNotificationHandlers,
+} from "./services/notificationService";
 import "../../global.css";
 
-type Screen = "dashboard" | "accounts" | "payments";
+type Screen = "dashboard" | "accounts" | "payments" | "settings";
 
 const AppContent = () => {
   const { isAuthenticated } = useAuth();
@@ -23,13 +28,15 @@ const AppContent = () => {
   const renderScreen = () => {
     switch (currentScreen) {
       case "dashboard":
-        return <DashboardScreen />;
+        return <DashboardScreen onNavigate={setCurrentScreen} />;
       case "accounts":
-        return <AccountsScreen />;
+        return <AccountsScreen onNavigate={setCurrentScreen} />;
       case "payments":
-        return <PaymentScreen />;
+        return <PaymentScreen onNavigate={setCurrentScreen} />;
+      case "settings":
+        return <SettingsScreen onNavigate={setCurrentScreen} />;
       default:
-        return <DashboardScreen />;
+        return <DashboardScreen onNavigate={setCurrentScreen} />;
     }
   };
 
@@ -38,16 +45,30 @@ const AppContent = () => {
       <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
         <SafeAreaView style={styles.content}>{renderScreen()}</SafeAreaView>
-        <TabNavigation
-          currentScreen={currentScreen}
-          onNavigate={setCurrentScreen}
-        />
+        {currentScreen !== "settings" && (
+          <TabNavigation
+            currentScreen={
+              currentScreen as "dashboard" | "accounts" | "payments"
+            }
+            onNavigate={setCurrentScreen}
+          />
+        )}
       </View>
     </>
   );
 };
 
 export const App = () => {
+  useEffect(() => {
+    // Register for push notifications on app startup
+    const initNotifications = async () => {
+      setupNotificationHandlers();
+      await registerForPushNotifications();
+    };
+
+    initNotifications();
+  }, []);
+
   return (
     <I18nextProvider i18n={i18n}>
       <AuthProvider>

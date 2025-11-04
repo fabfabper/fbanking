@@ -184,8 +184,7 @@ export const AccountsScreen: React.FC = () => {
           {/* Transaction List */}
           <div className="flex flex-col gap-4">
             <h2 className="text-xl font-semibold text-slate-800 m-0">
-              {t("accounts.accountTransactions")} -{" "}
-              {selectedAccount && t(`accounts.${selectedAccount.type}`)}
+              {t("accounts.accountTransactions")}
             </h2>
             <Card>
               <div className="flex flex-col">

@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Card } from "@fbanking/ui";
+import SlideOutMenu from "../components/SlideOutMenu";
+
+type Screen = "dashboard" | "accounts" | "payments" | "settings";
+
+interface AccountsScreenProps {
+  onNavigate?: (screen: Screen) => void;
+}
 
 interface Account {
   id: string;
@@ -19,7 +26,9 @@ interface Transaction {
   accountId: string;
 }
 
-export const AccountsScreen = () => {
+export const AccountsScreen: React.FC<AccountsScreenProps> = ({
+  onNavigate,
+}) => {
   const { t } = useTranslation();
 
   // Mock data
@@ -115,9 +124,12 @@ export const AccountsScreen = () => {
   return (
     <ScrollView className="flex-1 bg-slate-50">
       <View className="p-6 pb-4">
-        <Text className="text-3xl font-bold text-slate-800">
-          {t("accounts.title")}
-        </Text>
+        <View className="flex-row justify-between items-start">
+          <Text className="text-3xl font-bold text-slate-800">
+            {t("accounts.title")}
+          </Text>
+          <SlideOutMenu onNavigate={onNavigate || ((s) => console.log(s))} />
+        </View>
       </View>
 
       {/* Account Selector */}
@@ -187,8 +199,7 @@ export const AccountsScreen = () => {
       {/* Transaction List */}
       <View className="px-6 mb-6">
         <Text className="text-lg font-semibold text-slate-800 mb-4">
-          {t("accounts.accountTransactions")} -{" "}
-          {selectedAccount && t(`accounts.${selectedAccount.type}`)}
+          {t("accounts.accountTransactions")}
         </Text>
         <Card>
           <View className="py-2">

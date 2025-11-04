@@ -1,8 +1,15 @@
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Card, Button } from "@fbanking/ui";
+import { Card } from "@fbanking/ui";
 import { useAuth } from "../contexts/AuthContext";
+import SlideOutMenu from "../components/SlideOutMenu";
+
+type Screen = "dashboard" | "accounts" | "payments" | "settings";
+
+interface DashboardScreenProps {
+  onNavigate?: (screen: Screen) => void;
+}
 
 interface Account {
   id: string;
@@ -19,9 +26,11 @@ interface Transaction {
   status: "pending" | "completed" | "failed";
 }
 
-export const DashboardScreen = () => {
+export const DashboardScreen: React.FC<DashboardScreenProps> = ({
+  onNavigate,
+}) => {
   const { t } = useTranslation();
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
 
   // Mock data
   const accounts: Account[] = [
@@ -83,9 +92,7 @@ export const DashboardScreen = () => {
               <Text className="text-sm text-slate-500 mt-1">{user.email}</Text>
             )}
           </View>
-          <Button onPress={logout} variant="secondary" size="small">
-            {t("common.signOut")}
-          </Button>
+          <SlideOutMenu onNavigate={onNavigate || ((s) => console.log(s))} />
         </View>
       </View>
 
