@@ -139,22 +139,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
             >
               {t("common.signIn")}
             </Button>
-
-            <YStack alignItems="center" marginTop="$2">
-              <XStack gap="$2" alignItems="center">
-                <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                  {t("auth.noAccount")}
-                </Text>
-                <Text
-                  size="sm"
-                  weight="semibold"
-                  style={{ color: theme.colors.primary }}
-                  onPress={() => console.log("Sign up")}
-                >
-                  {t("auth.signUp")}
-                </Text>
-              </XStack>
-            </YStack>
           </YStack>
         </Card>
 

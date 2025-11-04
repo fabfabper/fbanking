@@ -22,6 +22,8 @@ export const en = {
     emailPlaceholder: "Enter your email",
     passwordPlaceholder: "Enter your password",
     forgotPassword: "Forgot password?",
+    forgotYourPassword: "Forgot your password?",
+    resetPassword: "Reset it here",
     rememberMe: "Remember me",
     noAccount: "Don't have an account?",
     signUp: "Sign up",

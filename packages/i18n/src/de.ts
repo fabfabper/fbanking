@@ -24,6 +24,8 @@ export const de: Translations = {
     emailPlaceholder: "Geben Sie Ihre E-Mail ein",
     passwordPlaceholder: "Geben Sie Ihr Passwort ein",
     forgotPassword: "Passwort vergessen?",
+    forgotYourPassword: "Passwort vergessen?",
+    resetPassword: "Hier zurücksetzen",
     rememberMe: "Angemeldet bleiben",
     noAccount: "Noch kein Konto?",
     signUp: "Registrieren",

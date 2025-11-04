@@ -25,14 +25,13 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
 
   const getNavButtonStyle = (path: string) => ({
     borderColor: theme.colors.textWhite,
-    color:
-      location.pathname === path
-        ? theme.colors.primary
-        : theme.colors.textWhite,
     backgroundColor:
       location.pathname === path ? theme.colors.textWhite : "transparent",
     transition: "all 0.2s ease",
   });
+
+  const getNavButtonTextColor = (path: string) =>
+    location.pathname === path ? theme.colors.primary : theme.colors.textWhite;
 
   return (
     <XStack
@@ -53,7 +52,9 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           style={getNavButtonStyle("/dashboard")}
           className="nav-button"
         >
-          {t("nav.dashboard")}
+          <Text style={{ color: getNavButtonTextColor("/dashboard") }}>
+            {t("nav.dashboard")}
+          </Text>
         </Button>
         <Button
           variant="outline"
@@ -62,7 +63,9 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           style={getNavButtonStyle("/accounts")}
           className="nav-button"
         >
-          {t("nav.accounts")}
+          <Text style={{ color: getNavButtonTextColor("/accounts") }}>
+            {t("nav.accounts")}
+          </Text>
         </Button>
         <Button
           variant="outline"
@@ -71,7 +74,9 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           style={getNavButtonStyle("/payment")}
           className="nav-button"
         >
-          {t("nav.payment")}
+          <Text style={{ color: getNavButtonTextColor("/payment") }}>
+            {t("nav.payment")}
+          </Text>
         </Button>
       </XStack>
       <Button
@@ -104,13 +109,14 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         onPress={onLogout}
         style={{
           borderColor: theme.colors.textWhite,
-          color: theme.colors.textWhite,
           backgroundColor: "transparent",
           transition: "all 0.2s ease",
         }}
         className="nav-button"
       >
-        {t("common.logout")}
+        <Text style={{ color: theme.colors.textWhite }}>
+          {t("common.logout")}
+        </Text>
       </Button>
       <style>{`
         .nav-button:hover {
