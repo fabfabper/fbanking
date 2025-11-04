@@ -1,24 +1,31 @@
 {
-  "name": "@fbanking/mobile",
-  "version": "0.0.1",
-  "private": true,
+  "name": "mobile",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
   "scripts": {
-    "eas-build-post-install": "cd ../../ && node tools/scripts/eas-build-post-install.mjs . apps/mobile"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/metro-config": "*",
-    "@testing-library/react-native": "*",
-    "expo": "*",
-    "expo-splash-screen": "*",
-    "expo-status-bar": "*",
-    "expo-system-ui": "*",
-    "jest-expo": "*",
-    "metro-config": "*",
-    "metro-resolver": "*",
-    "react": "*",
-    "react-native": "*",
-    "react-native-svg": "*",
-    "react-native-svg-transformer": "*",
-    "react-native-web": "*"
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "@tamagui/button": "^1.111.6",
+    "@tamagui/config": "^1.111.6",
+    "@tamagui/core": "^1.111.6",
+    "@tamagui/input": "^1.111.6",
+    "@tamagui/scroll-view": "^1.111.6",
+    "@tamagui/stacks": "^1.111.6",
+    "@tamagui/text": "^1.111.6",
+    "@tamagui/themes": "^1.111.6",
+    "expo": "~54.0.0",
+    "expo-constants": "~18.0.10",
+    "expo-linking": "~8.0.8",
+    "expo-router": "~6.0.14",
+    "expo-status-bar": "~3.0.8",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0"
   }
 }

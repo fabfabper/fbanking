@@ -1,122 +1,242 @@
-# Dependencies
-node_modules
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Dependencies# Dependencies
+
+node_modules/node_modules
+
+npm-debug.log*npm-debug.log*
+
+yarn-debug.log*yarn-debug.log*
+
+yarn-error.log*yarn-error.log*
+
+lerna-debug.log*pnpm-debug.log*
+
+.pnpm-debug.log*lerna-debug.log*
+
 .pnp
-.pnp.js
 
-# Nx
+# Nx.pnp.js
+
 .nx/cache
-.nx/workspace-data
 
-# Build outputs
-dist
+.nx/workspace-data# Nx
+
+.nx/cache
+
+# Build outputs.nx/workspace-data
+
+dist/
+
+build/# Build outputs
+
+*.tsbuildinfodist
+
 build
-out
-out-tsc
-*.tsbuildinfo
 
-# Testing
-coverage
-.nyc_output
-junit.xml
+# Testingout
 
-# IDEs and editors
+coverage/out-tsc
+
+*.lcov*.tsbuildinfo
+
+
+
+# Environment variables# Testing
+
+.envcoverage
+
+.env.local.nyc_output
+
+.env.development.localjunit.xml
+
+.env.test.local
+
+.env.production.local# IDEs and editors
+
 .idea
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-*.swp
-*.swo
-*~
-.DS_Store
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
 
-# Misc
-.cache
-.parcel-cache
-.sass-cache
-*.log
-*.pid
-*.seed
+# IDEs and editors.vscode/*
+
+.idea/!.vscode/extensions.json
+
+.vscode/!.vscode/settings.json
+
+*.swp*.swp
+
+*.swo*.swo
+
+*~*~
+
+.DS_Store.DS_Store
+
+*.sublime-workspace.project
+
+*.sublime-project.classpath
+
+.c9/
+
+# Expo*.launch
+
+.expo/.settings/
+
+.expo-shared/*.sublime-workspace
+
+*.jks
+
+*.p8# Misc
+
+*.p12.cache
+
+*.key.parcel-cache
+
+*.mobileprovision.sass-cache
+
+*.orig.**.log
+
+web-build/*.pid
+
+dist/*.seed
+
 *.pid.lock
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Metro
 
-# React Native / Expo
+.metro-health-check*# Environment variables
+
+.env
+
+# Native.env.local
+
+*.apk.env.development.local
+
+*.app.env.test.local
+
+*.ipa.env.production.local
+
+*.xcodeproj
+
+*.xcworkspace# React Native / Expo
+
 .expo
-.expo-shared
-*.jks
-*.p8
-*.p12
+
+# macOS.expo-shared
+
+.DS_Store*.jks
+
+.AppleDouble*.p8
+
+.LSOverride*.p12
+
 *.key
-*.mobileprovision
-*.orig.*
+
+# Thumbnails*.mobileprovision
+
+._**.orig.*
+
 web-build/
 
-# Metro
-.metro-health-check*
+# Files that might appear in the root of a volume
 
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
+.DocumentRevisions-V100# Metro
+
+.fseventsd.metro-health-check*
+
+.Spotlight-V100
+
+.TemporaryItems# macOS
+
+.Trashes.DS_Store
+
+.VolumeIcon.icns.AppleDouble
+
+.com.apple.timemachine.donotpresent.LSOverride
+
 ._*
 
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
+# Directories potentially created on remote AFP share
+
+.AppleDB# Windows
+
+.AppleDesktopThumbs.db
+
+Network Trash Folderehthumbs.db
+
+Temporary ItemsDesktop.ini
+
+.apdisk
 
 # Linux
-*~
 
-# Temporary files
-*.tmp
-*.temp
-tmp/
-temp/
+# TypeScript*~
 
-# TypeScript
 *.tsbuildinfo
 
+# Temporary files
+
+# Logs*.tmp
+
+logs*.temp
+
+*.logtmp/
+
+temp/
+
+# Misc
+
+.cache/# TypeScript
+
+tmp/*.tsbuildinfo
+
+temp/
+
 # Optional npm cache directory
-.npm
+
+# Vite.npm
+
+.vite/
 
 # Optional eslint cache
-.eslintcache
 
-# Optional stylelint cache
+# React Native.eslintcache
+
+*.log
+
+*.lock# Optional stylelint cache
+
 .stylelintcache
 
-# Microbundle cache
-.rpt2_cache/
+# iOS
+
+ios/Pods/# Microbundle cache
+
+ios/.xcode.env.local.rpt2_cache/
+
 .rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
 
-# Optional REPL history
-.node_repl_history
+# Android.rts2_cache_es/
 
-# Yarn
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
+android/.gradle.rts2_cache_umd/
+
+android/build/
+
+android/app/build/# Optional REPL history
+
+android/.idea.node_repl_history
+
+android/local.properties
+
+android/app/debug# Yarn
+
+android/app/release.yarn/cache
+
+*.keystore.yarn/unplugged
+
+!debug.keystore.yarn/build-state.yml
+
 .yarn/install-state.gz
-.pnp.*
+
+# Watchman.pnp.*
+
+.watchmanconfig.lock
 
 # Cypress
 cypress/videos

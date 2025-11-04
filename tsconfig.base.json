@@ -1,27 +1,32 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": true,
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "importHelpers": true,
-    "isolatedModules": true,
-    "lib": ["es2022", "DOM"],
+    "target": "es2015",
     "module": "esnext",
-    "moduleResolution": "bundler",
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
-    "strict": true,
-    "target": "es2022",
-    "customConditions": ["@fbanking/source"],
+    "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@fbanking/ui": ["ui/src/index.ts"],
-      "@fbanking/theme": ["theme/src/index.ts"],
-      "@fbanking/i18n": ["i18n/src/index.ts"]
-    }
-  }
+      "@ebanking/ui": ["packages/ui/src/index.ts"],
+      "@ebanking/screens": ["packages/screens/src/index.ts"]
+    },
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "incremental": true
+  },
+  "exclude": ["node_modules", "tmp"]
 }

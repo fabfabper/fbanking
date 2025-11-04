@@ -1,0 +1,40 @@
+{
+  "name": "mobile",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/mobile",
+  "projectType": "application",
+  "targets": {
+    "start": {
+      "executor": "@nx/expo:start",
+      "options": {
+        "port": 8081
+      }
+    },
+    "serve": {
+      "executor": "@nx/expo:serve",
+      "options": {
+        "port": 8081
+      }
+    },
+    "run-ios": {
+      "executor": "@nx/expo:run",
+      "options": {
+        "platform": "ios"
+      }
+    },
+    "run-android": {
+      "executor": "@nx/expo:run",
+      "options": {
+        "platform": "android"
+      }
+    },
+    "export": {
+      "executor": "@nx/expo:export",
+      "options": {
+        "platform": "all",
+        "outputDir": "dist/apps/mobile"
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,21 +1,21 @@
 {
   "extends": "../../tsconfig.base.json",
-  "files": [],
+  "compilerOptions": {
+    "jsx": "react-native",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true
+  },
   "include": [
-    "nativewind-env.d.ts"
+    "**/*.ts",
+    "**/*.tsx"
   ],
-  "references": [
-    {
-      "path": "../../ui"
-    },
-    {
-      "path": "../../i18n"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
+  "exclude": [
+    "node_modules"
   ]
 }
