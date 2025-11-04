@@ -1,8 +1,9 @@
+import React from "react";
+import { TextInput, Platform } from "react-native";
 import { styled } from "@tamagui/core";
-import { Input as TamaguiInput } from "@tamagui/input";
+import { useTheme } from "./UIProvider";
 
-export const Input = styled(TamaguiInput, {
-  name: "Input",
+const StyledTextInput = styled(TextInput, {
   borderWidth: 1,
   borderColor: "$border",
   borderRadius: "$3",
@@ -11,43 +12,65 @@ export const Input = styled(TamaguiInput, {
   fontSize: "$4",
   color: "$text",
   backgroundColor: "$background",
+  outlineStyle: "none",
+} as any);
 
-  focusStyle: {
-    borderColor: "$primary",
-    outlineWidth: 0,
-  },
+export interface InputProps {
+  value?: string;
+  onChangeText?: (text: string) => void;
+  placeholder?: string;
+  keyboardType?: "default" | "email-address" | "numeric" | "phone-pad";
+  secureTextEntry?: boolean;
+  autoCapitalize?: "none" | "sentences" | "words" | "characters";
+  fullWidth?: boolean;
+  error?: boolean;
+  size?: "sm" | "md" | "lg";
+  onFocus?: () => void;
+  onBlur?: () => void;
+}
 
-  variants: {
-    size: {
+export const Input = React.forwardRef<TextInput, InputProps>(
+  ({ size = "md", fullWidth = false, error = false, ...props }, ref) => {
+    const { theme } = useTheme();
+    
+    const sizeStyles = {
       sm: {
-        paddingHorizontal: "$3",
-        paddingVertical: "$2",
-        fontSize: "$3",
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        fontSize: 14,
       },
       md: {
-        paddingHorizontal: "$4",
-        paddingVertical: "$3",
-        fontSize: "$4",
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        fontSize: 16,
       },
       lg: {
-        paddingHorizontal: "$5",
-        paddingVertical: "$4",
-        fontSize: "$5",
+        paddingHorizontal: 20,
+        paddingVertical: 14,
+        fontSize: 18,
       },
-    },
-    fullWidth: {
-      true: {
-        width: "100%",
-      },
-    },
-    error: {
-      true: {
-        borderColor: "$error",
-      },
-    },
-  } as const,
+    };
 
-  defaultVariants: {
-    size: "md",
-  },
-});
+    return (
+      <StyledTextInput
+        ref={ref}
+        style={[
+          {
+            width: fullWidth ? "100%" : undefined,
+            borderColor: error ? theme.colors.error : theme.colors.border,
+            color: theme.colors.textPrimary,
+            backgroundColor: theme.colors.cardBg,
+            ...sizeStyles[size],
+          },
+          Platform.OS === "web" && {
+            outlineStyle: "none",
+          },
+        ]}
+        placeholderTextColor={theme.colors.textSecondary}
+        {...props}
+      />
+    );
+  }
+);
+
+Input.displayName = "Input";

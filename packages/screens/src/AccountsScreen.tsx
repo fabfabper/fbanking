@@ -1,36 +1,39 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, Dimensions, Platform, Pressable } from "react-native";
-import { YStack, XStack, Text, Card, theme } from "@ebanking/ui";
+import { YStack, XStack, Text, Card, useAppTheme } from "@ebanking/ui";
 
 const { width: screenWidth } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
 const CARD_WIDTH = isWeb
-  ? Math.min(320, screenWidth * 0.3)
-  : screenWidth * 0.75;
-const CARD_HEIGHT = 180;
-const CARD_SPACING = 16;
+  ? Math.min(280, screenWidth * 0.25)
+  : screenWidth * 0.7;
+const CARD_HEIGHT = 150;
+const CARD_SPACING = 12;
 
 export const AccountsScreen: React.FC = () => {
+  const { t } = useTranslation();
+  const { theme } = useAppTheme();
   const [selectedAccountIndex, setSelectedAccountIndex] = useState(0);
 
   const accounts = [
     {
       id: 1,
-      name: "Checking Account",
+      name: t('accounts.checking'),
       number: "****1234",
       balance: 5430.0,
       type: "checking",
     },
     {
       id: 2,
-      name: "Savings Account",
+      name: t('accounts.savings'),
       number: "****5678",
       balance: 12850.0,
       type: "savings",
     },
     {
       id: 3,
-      name: "Credit Card",
+      name: t('accounts.credit'),
       number: "****9012",
       balance: -1230.5,
       type: "credit",
@@ -44,35 +47,35 @@ export const AccountsScreen: React.FC = () => {
         description: "Grocery Store",
         amount: -85.5,
         date: "2025-11-03",
-        category: "Food",
+        category: t('categories.food'),
       },
       {
         id: 2,
         description: "Salary Deposit",
         amount: 3500.0,
         date: "2025-11-01",
-        category: "Income",
+        category: t('categories.income'),
       },
       {
         id: 3,
         description: "Electric Bill",
         amount: -120.0,
         date: "2025-10-30",
-        category: "Utilities",
+        category: t('categories.utilities'),
       },
       {
         id: 4,
         description: "Restaurant",
         amount: -45.0,
         date: "2025-10-28",
-        category: "Food",
+        category: t('categories.food'),
       },
       {
         id: 5,
         description: "Gas Station",
         amount: -60.0,
         date: "2025-10-27",
-        category: "Transport",
+        category: t('categories.transport'),
       },
     ],
     2: [
@@ -81,21 +84,21 @@ export const AccountsScreen: React.FC = () => {
         description: "Monthly Transfer",
         amount: 500.0,
         date: "2025-11-01",
-        category: "Transfer",
+        category: t('categories.transfer'),
       },
       {
         id: 7,
         description: "Interest Payment",
         amount: 12.5,
         date: "2025-10-31",
-        category: "Interest",
+        category: t('categories.interest'),
       },
       {
         id: 8,
         description: "Withdrawal",
         amount: -200.0,
         date: "2025-10-25",
-        category: "Transfer",
+        category: t('categories.transfer'),
       },
     ],
     3: [
@@ -104,28 +107,28 @@ export const AccountsScreen: React.FC = () => {
         description: "Online Shopping",
         amount: -230.0,
         date: "2025-11-02",
-        category: "Shopping",
+        category: t('categories.shopping'),
       },
       {
         id: 10,
         description: "Payment Received",
         amount: 500.0,
         date: "2025-11-01",
-        category: "Payment",
+        category: t('categories.payment'),
       },
       {
         id: 11,
         description: "Subscription",
         amount: -15.99,
         date: "2025-10-28",
-        category: "Services",
+        category: t('categories.services'),
       },
       {
         id: 12,
         description: "Hotel Booking",
         amount: -450.0,
         date: "2025-10-20",
-        category: "Travel",
+        category: t('categories.travel'),
       },
     ],
   };
@@ -136,18 +139,6 @@ export const AccountsScreen: React.FC = () => {
   const formatCurrency = (amount: number) => {
     const formatted = Math.abs(amount).toFixed(2);
     return amount >= 0 ? `$${formatted}` : `-$${formatted}`;
-  };
-
-  const handleScroll = (event: any) => {
-    const scrollX = event.nativeEvent.contentOffset.x;
-    const index = Math.round(scrollX / (CARD_WIDTH + CARD_SPACING));
-    if (
-      index !== selectedAccountIndex &&
-      index >= 0 &&
-      index < accounts.length
-    ) {
-      setSelectedAccountIndex(index);
-    }
   };
 
   return (
@@ -166,7 +157,6 @@ export const AccountsScreen: React.FC = () => {
             paddingVertical: 8,
             paddingBottom: 12,
           }}
-          onMomentumScrollEnd={isWeb ? undefined : handleScroll}
         >
           {accounts.map((account, index) => {
             const isSelected = index === selectedAccountIndex;
@@ -202,12 +192,12 @@ export const AccountsScreen: React.FC = () => {
                   }}
                 >
                   <YStack
-                    gap="$3"
-                    padding="$4"
+                    gap="$2"
+                    padding="$3"
                     justifyContent="space-between"
                     flex={1}
                   >
-                    <YStack gap="$2">
+                    <YStack gap="$1">
                       <Text
                         size="xs"
                         weight="medium"
@@ -220,7 +210,7 @@ export const AccountsScreen: React.FC = () => {
                         {account.type.toUpperCase()}
                       </Text>
                       <Text
-                        size="xl"
+                        size="lg"
                         weight="bold"
                         style={{ color: textColor }}
                       >
@@ -230,7 +220,7 @@ export const AccountsScreen: React.FC = () => {
 
                     <YStack gap="$1">
                       <Text
-                        size="sm"
+                        size="xs"
                         style={{
                           color: textSecondaryColor,
                           opacity: isSelected ? 0.9 : 1,
@@ -239,9 +229,9 @@ export const AccountsScreen: React.FC = () => {
                         {account.number}
                       </Text>
                       <Text
-                        size="3xl"
+                        size="2xl"
                         weight="bold"
-                        style={{ color: textColor, marginTop: 4 }}
+                        style={{ color: textColor, marginTop: 2 }}
                       >
                         {formatCurrency(account.balance)}
                       </Text>
@@ -257,7 +247,7 @@ export const AccountsScreen: React.FC = () => {
       {/* Transactions Section */}
       <YStack flex={1} paddingHorizontal="$6" paddingTop="$4" gap="$4">
         <Text size="xl" weight="bold" style={{ marginBottom: 4 }}>
-          Recent Transactions
+          {t('accounts.transactions')}
         </Text>
 
         <ScrollView showsVerticalScrollIndicator={false}>

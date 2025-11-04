@@ -1,0 +1,13 @@
+{
+  "name": "@ebanking/i18n",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "i18next": "^25.6.0",
+    "react-i18next": "^16.2.4"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  }
+}

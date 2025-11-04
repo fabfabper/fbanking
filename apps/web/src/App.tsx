@@ -1,22 +1,28 @@
 import React, { useState } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import { YStack, XStack, Text, Button, theme } from "@ebanking/ui";
+import { useTranslation } from "react-i18next";
+import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { YStack, XStack, Text, Button, useAppTheme } from "@ebanking/ui";
+import { IoSettings } from "react-icons/io5";
 import {
   LoginScreen,
   DashboardScreen,
   AccountsScreen,
   PaymentScreen,
+  SettingsScreen,
 } from "@ebanking/screens";
 
 const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { theme } = useAppTheme();
 
-  const navButtonStyle = {
+  const getNavButtonStyle = (path: string) => ({
     borderColor: theme.colors.textWhite,
-    color: theme.colors.textWhite,
-    backgroundColor: "transparent",
+    color: location.pathname === path ? theme.colors.primary : theme.colors.textWhite,
+    backgroundColor: location.pathname === path ? theme.colors.textWhite : "transparent",
     transition: "all 0.2s ease",
-  };
+  });
 
   return (
     <XStack
@@ -30,45 +36,71 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         size="xl"
         weight="bold"
         style={{ color: theme.colors.textWhite }}
-        flex={1}
       >
-        E-Banking
+        {t('auth.title')}
       </Text>
+      <XStack flex={1} justifyContent="center" gap="$3">
+        <Button
+          variant="outline"
+          size="sm"
+          onPress={() => navigate("/dashboard")}
+          style={getNavButtonStyle("/dashboard")}
+          className="nav-button"
+        >
+          {t('nav.dashboard')}
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onPress={() => navigate("/accounts")}
+          style={getNavButtonStyle("/accounts")}
+          className="nav-button"
+        >
+          {t('nav.accounts')}
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onPress={() => navigate("/payment")}
+          style={getNavButtonStyle("/payment")}
+          className="nav-button"
+        >
+          {t('nav.payment')}
+        </Button>
+      </XStack>
       <Button
         variant="outline"
         size="sm"
-        onPress={() => navigate("/dashboard")}
-        style={navButtonStyle}
+        onPress={() => navigate("/settings")}
+        style={{
+          ...getNavButtonStyle("/settings"),
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 8,
+          minWidth: 40,
+        }}
         className="nav-button"
+        title={t('nav.settings')}
       >
-        Dashboard
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onPress={() => navigate("/accounts")}
-        style={navButtonStyle}
-        className="nav-button"
-      >
-        Accounts
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onPress={() => navigate("/payment")}
-        style={navButtonStyle}
-        className="nav-button"
-      >
-        Payment
+        <IoSettings 
+          size={20} 
+          color={location.pathname === "/settings" ? theme.colors.primary : theme.colors.textWhite} 
+        />
       </Button>
       <Button
         variant="outline"
         size="sm"
         onPress={onLogout}
-        style={navButtonStyle}
+        style={{
+          borderColor: theme.colors.textWhite,
+          color: theme.colors.textWhite,
+          backgroundColor: "transparent",
+          transition: "all 0.2s ease",
+        }}
         className="nav-button"
       >
-        Logout
+        {t('common.logout')}
       </Button>
       <style>{`
         .nav-button:hover {
@@ -80,7 +112,12 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   );
 };
 
-const App: React.FC = () => {
+interface AppProps {
+  darkMode: boolean;
+  setDarkMode: (value: boolean) => void;
+}
+
+const App: React.FC<AppProps> = ({ darkMode, setDarkMode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
@@ -90,7 +127,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <YStack flex={1} height="100vh">
+    <YStack flex={1} height="100vh" backgroundColor="$backgroundGray">
       {isAuthenticated && (
         <Navigation onLogout={() => setIsAuthenticated(false)} />
       )}
@@ -130,6 +167,19 @@ const App: React.FC = () => {
           element={
             isAuthenticated ? (
               <PaymentScreen />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            isAuthenticated ? (
+              <SettingsScreen
+                darkMode={darkMode}
+                onToggleDarkMode={setDarkMode}
+              />
             ) : (
               <Navigate to="/login" replace />
             )

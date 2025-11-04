@@ -8,7 +8,10 @@ export default defineConfig({
     port: 4200,
     host: "localhost",
     fs: {
-      allow: [".."],
+      allow: [
+        path.resolve(__dirname, "../.."), // Allow workspace root
+        path.resolve(__dirname, "../../packages"), // Allow packages directory
+      ],
     },
   },
   define: {
@@ -24,6 +27,10 @@ export default defineConfig({
       "@ebanking/screens": path.resolve(
         __dirname,
         "../../packages/screens/src"
+      ),
+      "@ebanking/i18n": path.resolve(
+        __dirname,
+        "../../packages/i18n/src"
       ),
       "react-native": "react-native-web",
     },

@@ -1,8 +1,26 @@
 import React from "react";
-import { ScrollView } from "react-native";
-import { YStack, XStack, Text, Card, Button, theme } from "@ebanking/ui";
+import { useTranslation } from "react-i18next";
+import { ScrollView, Platform } from "react-native";
+import { YStack, XStack, Text, Card, Button, useAppTheme } from "@ebanking/ui";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { useCamera } from "./hooks/useCamera";
+
+const isWeb = Platform.OS === "web";
 
 export const DashboardScreen: React.FC = () => {
+  const { t } = useTranslation();
+  const { theme } = useAppTheme();
+  const { openCamera } = useCamera();
+  
+  // Expense categories data for pie chart
+  const expenseData = [
+    { name: t('categories.food'), value: 450, color: "#3B82F6" },
+    { name: t('categories.utilities'), value: 280, color: "#10B981" },
+    { name: t('categories.transport'), value: 180, color: "#F59E0B" },
+    { name: t('categories.entertainment'), value: 220, color: "#EF4444" },
+    { name: t('categories.shopping'), value: 340, color: "#8B5CF6" },
+  ];
+  
   const transactions = [
     {
       id: 1,
@@ -37,6 +55,10 @@ export const DashboardScreen: React.FC = () => {
   const formatCurrency = (amount: number) => {
     const formatted = Math.abs(amount).toFixed(2);
     return amount >= 0 ? `+$${formatted}` : `-$${formatted}`;
+  };
+
+  const handleCameraOpen = () => {
+    openCamera();
   };
 
   return (
@@ -82,17 +104,33 @@ export const DashboardScreen: React.FC = () => {
           {/* Quick Actions */}
           <YStack gap="$4">
             <Text size="xl" weight="bold" style={{ marginBottom: 4 }}>
-              Quick Actions
+              {t('dashboard.quickActions')}
             </Text>
             <XStack gap="$3" flexWrap="wrap">
               <Button variant="outline" size="md" style={{ flex: 1, minWidth: 140 }}>
-                Transfer Money
+                {t('dashboard.transferMoney')}
               </Button>
               <Button variant="outline" size="md" style={{ flex: 1, minWidth: 140 }}>
-                Pay Bills
+                {t('dashboard.payBills')}
               </Button>
               <Button variant="outline" size="md" style={{ flex: 1, minWidth: 140 }}>
-                View Accounts
+                {t('dashboard.viewAccounts')}
+              </Button>
+              <Button
+                variant="outline"
+                size="md"
+                onPress={handleCameraOpen}
+                style={{ 
+                  minWidth: isWeb ? 56 : 64,
+                  width: isWeb ? 56 : 64,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 8,
+                }}
+                title="Scan QR Code"
+              >
+                <Text style={{ fontSize: isWeb ? 22 : 24 }}>📷</Text>
               </Button>
             </XStack>
           </YStack>

@@ -11,12 +11,13 @@ export {
 } from "@tamagui/core";
 
 // Export custom components
-export { UIProvider } from "./UIProvider";
+export { UIProvider, useTheme as useAppTheme } from "./UIProvider";
 export { Button } from "./Button";
 export { Input } from "./Input";
+export { DateInput } from "./DateInput";
 export { Text } from "./Text";
 export { Card } from "./Card";
 
 // Export config
 export { config } from "./tamagui.config";
-export { theme } from "./theme";
+export { theme, getTheme } from "./theme";

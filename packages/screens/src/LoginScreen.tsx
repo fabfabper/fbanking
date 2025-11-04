@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { YStack, Text, Button, Input, Card } from "@ebanking/ui";
 
 interface LoginScreenProps {
@@ -6,6 +7,7 @@ interface LoginScreenProps {
 }
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -26,7 +28,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         {/* Header */}
         <YStack alignItems="center">
           <Text size="3xl" weight="bold" color="primary">
-            E-Banking
+            {t('auth.title')}
           </Text>
         </YStack>
 
@@ -35,12 +37,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
           <YStack gap="$4">
             <YStack gap="$2">
               <Text size="sm" weight="medium">
-                Email
+                {t('common.email')}
               </Text>
               <Input
                 value={email}
                 onChangeText={setEmail}
-                placeholder="Enter your email"
+                placeholder={t('auth.emailPlaceholder')}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 fullWidth
@@ -49,19 +51,19 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 
             <YStack gap="$2">
               <Text size="sm" weight="medium">
-                Password
+                {t('common.password')}
               </Text>
               <Input
                 value={password}
                 onChangeText={setPassword}
-                placeholder="Enter your password"
+                placeholder={t('auth.passwordPlaceholder')}
                 secureTextEntry
                 fullWidth
               />
             </YStack>
 
             <Button onPress={handleLogin} fullWidth size="lg">
-              Sign In
+              {t('common.signIn')}
             </Button>
           </YStack>
         </Card>
