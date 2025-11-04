@@ -34,7 +34,7 @@ export const DashboardScreen: React.FC = () => {
       id: 1,
       name: "Grocery Store",
       amount: -45.2,
-      date: "Today",
+      date: t("dashboard.today"),
       category: "Food",
     },
     {
@@ -80,7 +80,7 @@ export const DashboardScreen: React.FC = () => {
           >
             <YStack gap="$3" padding="$4">
               <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                Total Balance
+                {t("dashboard.totalBalance")}
               </Text>
               <Text
                 size="3xl"
@@ -98,7 +98,7 @@ export const DashboardScreen: React.FC = () => {
                   +2.5%
                 </Text>
                 <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                  from last month
+                  {t("dashboard.fromLastMonth")}
                 </Text>
               </XStack>
             </YStack>
@@ -153,7 +153,7 @@ export const DashboardScreen: React.FC = () => {
           {/* Recent Transactions */}
           <YStack gap="$4">
             <Text size="xl" weight="bold" style={{ marginBottom: 4 }}>
-              Recent Transactions
+              {t("dashboard.recentTransactions")}
             </Text>
             <YStack gap="$3">
               {transactions.map((transaction) => (
