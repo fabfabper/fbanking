@@ -11,6 +11,10 @@ export const Button = styled(TamaguiButton, {
   fontSize: "$4",
   fontWeight: "600",
   cursor: "pointer",
+  height: "auto",
+  minHeight: 44,
+  alignItems: "center",
+  justifyContent: "center",
 
   hoverStyle: {
     backgroundColor: "$primaryDark",
@@ -45,6 +49,11 @@ export const Button = styled(TamaguiButton, {
         hoverStyle: {
           backgroundColor: "$backgroundGray",
         },
+        pressStyle: {
+          backgroundColor: "$backgroundGray",
+          borderColor: "$primary",
+          scale: 0.98,
+        },
       },
       ghost: {
         backgroundColor: "transparent",
@@ -57,18 +66,21 @@ export const Button = styled(TamaguiButton, {
     size: {
       sm: {
         paddingHorizontal: "$3",
-        paddingVertical: "$2",
+        paddingVertical: "$2.5",
         fontSize: "$3",
+        minHeight: 40,
       },
       md: {
         paddingHorizontal: "$4",
         paddingVertical: "$3",
         fontSize: "$4",
+        minHeight: 44,
       },
       lg: {
         paddingHorizontal: "$5",
         paddingVertical: "$4",
         fontSize: "$5",
+        minHeight: 52,
       },
     },
     fullWidth: {

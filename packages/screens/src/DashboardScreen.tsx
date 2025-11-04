@@ -85,13 +85,13 @@ export const DashboardScreen: React.FC = () => {
               Quick Actions
             </Text>
             <XStack gap="$3" flexWrap="wrap">
-              <Button variant="outline" style={{ flex: 1, minWidth: 140 }}>
+              <Button variant="outline" size="md" style={{ flex: 1, minWidth: 140 }}>
                 Transfer Money
               </Button>
-              <Button variant="outline" style={{ flex: 1, minWidth: 140 }}>
+              <Button variant="outline" size="md" style={{ flex: 1, minWidth: 140 }}>
                 Pay Bills
               </Button>
-              <Button variant="outline" style={{ flex: 1, minWidth: 140 }}>
+              <Button variant="outline" size="md" style={{ flex: 1, minWidth: 140 }}>
                 View Accounts
               </Button>
             </XStack>
