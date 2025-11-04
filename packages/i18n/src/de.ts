@@ -19,12 +19,15 @@ export const de: Translations = {
   // Auth/Login
   auth: {
     title: "E-Banking",
-    welcomeBack: "E-Banking",
+    welcomeBack: "Willkommen zurück",
     signInDescription: "Melden Sie sich bei Ihrem Konto an",
     emailPlaceholder: "Geben Sie Ihre E-Mail ein",
     passwordPlaceholder: "Geben Sie Ihr Passwort ein",
     forgotPassword: "Passwort vergessen?",
     rememberMe: "Angemeldet bleiben",
+    noAccount: "Noch kein Konto?",
+    signUp: "Registrieren",
+    termsAgreement: "Mit der Anmeldung stimmen Sie unseren AGB & Datenschutzrichtlinien zu",
   },
 
   // Navigation

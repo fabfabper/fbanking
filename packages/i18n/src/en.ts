@@ -17,12 +17,15 @@ export const en = {
   // Auth/Login
   auth: {
     title: "E-Banking",
-    welcomeBack: "E-Banking",
+    welcomeBack: "Welcome back",
     signInDescription: "Sign in to your account",
     emailPlaceholder: "Enter your email",
     passwordPlaceholder: "Enter your password",
     forgotPassword: "Forgot password?",
     rememberMe: "Remember me",
+    noAccount: "Don't have an account?",
+    signUp: "Sign up",
+    termsAgreement: "By signing in, you agree to our Terms & Privacy Policy",
   },
 
   // Navigation

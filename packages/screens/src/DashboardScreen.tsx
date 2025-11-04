@@ -71,7 +71,7 @@ export const DashboardScreen: React.FC = () => {
   return (
     <YStack flex={1} backgroundColor="$backgroundGray" paddingTop="$4">
       <ScrollView showsVerticalScrollIndicator={false}>
-        <YStack padding="$6" gap="$6" paddingBottom="$8">
+        <YStack paddingHorizontal="$6" gap="$6" paddingBottom="$8">
           {/* Account Balance Card */}
           <Card
             style={{
@@ -149,7 +149,7 @@ export const DashboardScreen: React.FC = () => {
                 }}
                 title="Scan QR Code"
               >
-                <Text style={{ fontSize: isWeb ? 22 : 24 }}>📷</Text>
+                QR
               </Button>
             </XStack>
           </YStack>
