@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, Platform } from "react-native";
+import { ScrollView, Platform, Dimensions } from "react-native";
 import { YStack, XStack, Text, Card, Button, useAppTheme } from "@ebanking/ui";
 import {
   PieChart,
@@ -9,11 +9,21 @@ import {
   ResponsiveContainer,
   Legend,
   Tooltip,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
 } from "recharts";
 import { useCamera } from "./hooks/useCamera";
 import { formatCurrency } from "./utils/formatCurrency";
 
+const { width: screenWidth } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
+const CARD_WIDTH = isWeb
+  ? Math.min(400, screenWidth * 0.4)
+  : screenWidth * 0.7;
+const CARD_SPACING = 16;
 
 export const DashboardScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -27,6 +37,20 @@ export const DashboardScreen: React.FC = () => {
     { name: t("categories.transport"), value: 180, color: "#F59E0B" },
     { name: t("categories.entertainment"), value: 220, color: "#EF4444" },
     { name: t("categories.shopping"), value: 340, color: "#8B5CF6" },
+  ];
+
+  // Income vs Expenses comparison data
+  const incomeExpensesData = [
+    {
+      name: t("dashboard.income"),
+      amount: 3200,
+      color: theme.colors.success,
+    },
+    {
+      name: t("dashboard.expenses"),
+      amount: 1470,
+      color: theme.colors.error,
+    },
   ];
 
   const transactions = [
@@ -67,45 +91,239 @@ export const DashboardScreen: React.FC = () => {
   return (
     <YStack flex={1} backgroundColor="$backgroundGray" paddingTop="$4">
       <ScrollView showsVerticalScrollIndicator={false}>
-        <YStack paddingHorizontal="$6" gap="$6" paddingBottom="$8">
-          {/* Account Balance Card */}
-          <Card
-            style={{
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.1,
-              shadowRadius: 8,
-              elevation: 3,
+        {/* Balance & Chart Cards Carousel */}
+        <YStack>
+          <ScrollView
+            horizontal
+            pagingEnabled={false}
+            showsHorizontalScrollIndicator={false}
+            decelerationRate="fast"
+            snapToInterval={isWeb ? undefined : CARD_WIDTH + CARD_SPACING}
+            snapToAlignment={isWeb ? undefined : "center"}
+            contentContainerStyle={{
+              paddingHorizontal: isWeb ? 24 : (screenWidth - CARD_WIDTH) / 2,
+              paddingVertical: 8,
+              paddingBottom: 12,
             }}
           >
-            <YStack gap="$3" padding="$4">
-              <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                {t("dashboard.totalBalance")}
-              </Text>
-              <Text
-                size="3xl"
-                weight="bold"
-                style={{ color: theme.colors.primary }}
+              {/* Account Balance Card */}
+              <Card
+                style={{
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.1,
+                  shadowRadius: 8,
+                  elevation: 3,
+                  width: CARD_WIDTH,
+                  marginRight: CARD_SPACING,
+                }}
               >
-                CHF 9'450.00
-              </Text>
-              <XStack gap="$2" alignItems="center">
-                <Text
-                  size="md"
-                  weight="semibold"
-                  style={{ color: theme.colors.success }}
-                >
-                  +2.5%
-                </Text>
-                <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                  {t("dashboard.fromLastMonth")}
-                </Text>
-              </XStack>
-            </YStack>
-          </Card>
+                <YStack gap="$3" padding="$4">
+                  <Text size="sm" style={{ color: theme.colors.textSecondary }}>
+                    {t("dashboard.totalBalance")}
+                  </Text>
+                  <Text
+                    size="3xl"
+                    weight="bold"
+                    style={{ color: theme.colors.primary }}
+                  >
+                    CHF 9'450.00
+                  </Text>
+                  <XStack gap="$2" alignItems="center">
+                    <Text
+                      size="md"
+                      weight="semibold"
+                      style={{ color: theme.colors.success }}
+                    >
+                      +2.5%
+                    </Text>
+                    <Text
+                      size="sm"
+                      style={{ color: theme.colors.textSecondary }}
+                    >
+                      {t("dashboard.fromLastMonth")}
+                    </Text>
+                  </XStack>
+                </YStack>
+              </Card>
+
+              {/* Expense Categories Pie Chart Card */}
+              <Card
+                style={{
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.1,
+                  shadowRadius: 8,
+                  elevation: 3,
+                  width: CARD_WIDTH,
+                  marginRight: CARD_SPACING,
+                }}
+              >
+                <YStack gap="$3" padding="$4">
+                  <Text size="sm" style={{ color: theme.colors.textSecondary }}>
+                    {t("dashboard.expenseCategories")}
+                  </Text>
+                  {isWeb ? (
+                    <YStack height={180} alignItems="center">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={expenseData}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={40}
+                            outerRadius={65}
+                            paddingAngle={2}
+                            dataKey="value"
+                            label={(entry: any) => entry.name as string}
+                            labelLine={false}
+                            style={{ fontSize: 11 }}
+                          >
+                            {expenseData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                          </Pie>
+                          <Tooltip formatter={(value: any) => `CHF ${value}`} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </YStack>
+                  ) : (
+                    <YStack gap="$3">
+                      {expenseData.map((category, index) => (
+                        <XStack
+                          key={index}
+                          gap="$3"
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          <XStack gap="$2" alignItems="center" flex={1}>
+                            <Text size="sm">{category.name}</Text>
+                          </XStack>
+                          <Text
+                            size="sm"
+                            weight="semibold"
+                            style={{ color: theme.colors.primary }}
+                          >
+                            CHF {category.value}
+                          </Text>
+                        </XStack>
+                      ))}
+                    </YStack>
+                  )}
+                </YStack>
+              </Card>
+
+              {/* Income vs Expenses Card */}
+              <Card
+                style={{
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: 0.1,
+                  shadowRadius: 8,
+                  elevation: 3,
+                  width: CARD_WIDTH,
+                  marginRight: CARD_SPACING,
+                }}
+              >
+                <YStack gap="$3" padding="$4">
+                  <Text size="sm" style={{ color: theme.colors.textSecondary }}>
+                    {t("dashboard.incomeVsExpenses")}
+                  </Text>
+                  {isWeb ? (
+                    <YStack height={180} alignItems="center">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={incomeExpensesData}>
+                          <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                          <XAxis
+                            dataKey="name"
+                            style={{ fontSize: 12 }}
+                            tick={{ fill: theme.colors.textSecondary }}
+                          />
+                          <YAxis
+                            style={{ fontSize: 11 }}
+                            tick={{ fill: theme.colors.textSecondary }}
+                            tickFormatter={(value) => `${value}`}
+                          />
+                          <Tooltip
+                            formatter={(value: any) => `CHF ${value}`}
+                            contentStyle={{
+                              backgroundColor: theme.colors.cardBackground,
+                              borderColor: theme.colors.border,
+                            }}
+                          />
+                          <Bar dataKey="amount" radius={[8, 8, 0, 0]}>
+                            {incomeExpensesData.map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </YStack>
+                  ) : (
+                    <YStack gap="$3">
+                      {incomeExpensesData.map((item, index) => (
+                        <YStack key={index} gap="$2">
+                          <XStack
+                            justifyContent="space-between"
+                            alignItems="center"
+                          >
+                            <Text size="sm">{item.name}</Text>
+                            <Text
+                              size="md"
+                              weight="semibold"
+                              style={{ color: item.color }}
+                            >
+                              {formatCurrency(item.amount)}
+                            </Text>
+                          </XStack>
+                          <YStack
+                            style={{
+                              height: 8,
+                              backgroundColor: theme.colors.border,
+                              borderRadius: 4,
+                              overflow: "hidden",
+                            }}
+                          >
+                            <YStack
+                              style={{
+                                height: "100%",
+                                width: `${(item.amount / 3200) * 100}%`,
+                                backgroundColor: item.color,
+                              }}
+                            />
+                          </YStack>
+                        </YStack>
+                      ))}
+                      <YStack
+                        style={{
+                          marginTop: 8,
+                          paddingTop: 12,
+                          borderTopWidth: 1,
+                          borderTopColor: theme.colors.border,
+                        }}
+                      >
+                        <XStack justifyContent="space-between" alignItems="center">
+                          <Text size="sm" weight="semibold">
+                            {t("dashboard.netBalance")}
+                          </Text>
+                          <Text
+                            size="md"
+                            weight="bold"
+                            style={{ color: theme.colors.success }}
+                          >
+                            {formatCurrency(1730, true)}
+                          </Text>
+                        </XStack>
+                      </YStack>
+                    </YStack>
+                  )}
+                </YStack>
+              </Card>
+            </ScrollView>
+          </YStack>
 
           {/* Quick Actions */}
-          <YStack gap="$4">
+          <YStack gap="$4" paddingHorizontal="$6" paddingTop="$4">
             <Text size="xl" weight="bold" style={{ marginBottom: 4 }}>
               {t("dashboard.quickActions")}
             </Text>
@@ -136,8 +354,8 @@ export const DashboardScreen: React.FC = () => {
                 size="md"
                 onPress={handleCameraOpen}
                 style={{
-                  minWidth: isWeb ? 56 : 64,
-                  width: isWeb ? 56 : 64,
+                  minWidth: isWeb ? 80 : 64,
+                  width: isWeb ? 80 : 64,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -151,7 +369,7 @@ export const DashboardScreen: React.FC = () => {
           </YStack>
 
           {/* Recent Transactions */}
-          <YStack gap="$4">
+          <YStack gap="$4" paddingHorizontal="$6" paddingTop="$4" paddingBottom="$8">
             <Text size="xl" weight="bold" style={{ marginBottom: 4 }}>
               {t("dashboard.recentTransactions")}
             </Text>
@@ -234,7 +452,6 @@ export const DashboardScreen: React.FC = () => {
               ))}
             </YStack>
           </YStack>
-        </YStack>
       </ScrollView>
     </YStack>
   );

@@ -104,6 +104,11 @@ export const en = {
     totalBalance: "Total Balance",
     today: "Today",
     fromLastMonth: "from last month",
+    expenseCategories: "Expense Categories",
+    incomeVsExpenses: "Income vs Expenses",
+    income: "Income",
+    expenses: "Expenses",
+    netBalance: "Net Balance",
     quickActions: "Quick Actions",
     transferMoney: "Transfer Money",
     payBills: "Pay Bills",
@@ -131,6 +136,7 @@ export const en = {
     payment: "Payment",
     services: "Services",
     travel: "Travel",
+    entertainment: "Entertainment",
   },
 
   // Settings
