@@ -416,19 +416,21 @@ export const DashboardScreen: React.FC = () => {
                             transaction.amount >= 0
                               ? theme.colors.categoryIncome
                               : theme.colors.categoryExpense,
-                          paddingHorizontal: 10,
-                          paddingVertical: 4,
-                          borderRadius: 6,
+                          paddingHorizontal: isWeb ? 16 : 10,
+                          paddingVertical: isWeb ? 8 : 4,
+                          borderRadius: isWeb ? 8 : 6,
+                          minWidth: isWeb ? 100 : undefined,
+                          alignItems: "center",
+                          justifyContent: "center",
                         }}
                       >
                         <Text
-                          size="xs"
+                          size={isWeb ? "md" : "xs"}
                           weight="semibold"
                           style={{
-                            color:
-                              transaction.amount >= 0
-                                ? theme.colors.successDark
-                                : theme.colors.errorDark,
+                            color: "#FFFFFF",
+                            whiteSpace: isWeb ? "nowrap" : undefined,
+                            textAlign: "center",
                           }}
                         >
                           {transaction.category}
