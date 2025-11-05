@@ -19,7 +19,7 @@ import {
   useAppTheme,
 } from "@ebanking/ui";
 import { formatCurrency } from "./utils/formatCurrency";
-import type { Account } from "@ebanking/api";
+import type { Account, Transaction, Payment } from "@ebanking/api";
 
 const { width: screenWidth } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
@@ -33,6 +33,15 @@ interface PaymentScreenProps {
   api: {
     accounts: {
       getAccounts: () => Promise<Account[]>;
+    };
+    transactions: {
+      searchTransactions: (
+        query: string,
+        filters?: any
+      ) => Promise<{ data: Transaction[] }>;
+    };
+    payments: {
+      getPayments: () => Promise<Payment[]>;
     };
   };
 }
@@ -51,6 +60,12 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Search results state
+  const [searchResults, setSearchResults] = useState<(Transaction | Payment)[]>(
+    []
+  );
+  const [searchLoading, setSearchLoading] = useState(false);
 
   // Standing payment fields
   const [isStandingPayment, setIsStandingPayment] = useState(false);
@@ -80,49 +95,57 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
     fetchAccounts();
   }, [api]);
 
-  // Previous payments data
-  const previousPayments = [
-    {
-      id: 1,
-      recipient: "John Smith",
-      account: "****3456",
-      amount: "150.00",
-      note: "Rent share",
-      date: "2025-11-01",
-    },
-    {
-      id: 2,
-      recipient: "Sarah Johnson",
-      account: "****7890",
-      amount: "45.50",
-      note: "Dinner split",
-      date: "2025-10-28",
-    },
-    {
-      id: 3,
-      recipient: "Mike Davis",
-      account: "****2345",
-      amount: "200.00",
-      note: "Loan repayment",
-      date: "2025-10-25",
-    },
-    {
-      id: 4,
-      recipient: "Electric Company",
-      account: "****5555",
-      amount: "120.00",
-      note: "Monthly bill",
-      date: "2025-10-20",
-    },
-    {
-      id: 5,
-      recipient: "Internet Provider",
-      account: "****6666",
-      amount: "75.00",
-      note: "Internet service",
-      date: "2025-10-15",
-    },
-  ];
+  // Search transactions and payments when search query changes
+  useEffect(() => {
+    const searchPayments = async () => {
+      if (!searchQuery.trim()) {
+        setSearchResults([]);
+        setShowSearchResults(false);
+        return;
+      }
+
+      try {
+        setSearchLoading(true);
+
+        // Search using the API endpoint
+        const response = await api.transactions.searchTransactions(searchQuery);
+
+        console.log("Search API response:", response);
+
+        // Handle different response formats:
+        // 1. Paginated: { data: [...] }
+        // 2. Direct array: [...]
+        // 3. Single object: {...}
+        let results = [];
+
+        if (response?.data && Array.isArray(response.data)) {
+          // Paginated response
+          results = response.data;
+        } else if (Array.isArray(response)) {
+          // Direct array
+          results = response;
+        } else if (response && typeof response === "object") {
+          // Single object - wrap in array
+          results = [response];
+        }
+
+        console.log("Search results:", results);
+        console.log("Search results length:", results.length);
+
+        setSearchResults(results);
+        setShowSearchResults(true);
+      } catch (err) {
+        console.error("Failed to search payments:", err);
+        setSearchResults([]);
+      } finally {
+        setSearchLoading(false);
+      }
+    };
+
+    // Debounce search
+    const timeoutId = setTimeout(searchPayments, 300);
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, api]);
 
   const selectedAccount = accounts[selectedAccountIndex];
 
@@ -138,25 +161,33 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
     }
   };
 
-  // Filter previous payments based on search query
-  const filteredPayments = searchQuery.trim()
-    ? previousPayments.filter(
-        (payment) =>
-          payment.recipient.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          payment.account.includes(searchQuery) ||
-          payment.note.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : [];
-
   const handleSearchChange = (text: string) => {
     setSearchQuery(text);
-    setShowSearchResults(text.trim().length > 0);
   };
 
-  const selectPreviousPayment = (payment: (typeof previousPayments)[0]) => {
-    setRecipient(payment.recipient);
-    setAmount(payment.amount);
-    setNote(payment.note);
+  const selectPreviousPayment = (item: Transaction | Payment) => {
+    console.log("Selected item:", item);
+
+    // Check if it's a Payment (has recipient object with name/iban)
+    // or a Transaction (has recipient string and description)
+    if (
+      "recipient" in item &&
+      item.recipient &&
+      typeof item.recipient === "object"
+    ) {
+      // It's a Payment with recipient object
+      const payment = item as Payment;
+      setRecipient(payment.recipient.name);
+      setAmount(payment.amount.toString());
+      setNote(payment.description);
+    } else {
+      // It's a Transaction with recipient string
+      const transaction = item as Transaction;
+      // Use recipient field if available, otherwise fall back to description
+      setRecipient(transaction.recipient || transaction.description);
+      setAmount(Math.abs(transaction.amount).toString());
+      setNote(transaction.description || transaction.category || "");
+    }
     setSearchQuery("");
     setShowSearchResults(false);
   };
@@ -208,7 +239,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
               />
 
               {/* Search Results Dropdown */}
-              {showSearchResults && filteredPayments.length > 0 && (
+              {showSearchResults && (
                 <YStack
                   style={{
                     position: "absolute",
@@ -227,61 +258,124 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
                     zIndex: 1000,
                   }}
                 >
-                  <ScrollView style={{ maxHeight: 300 }}>
-                    {filteredPayments.map((payment) => (
-                      <Pressable
-                        key={payment.id}
-                        onPress={() => selectPreviousPayment(payment)}
+                  {(() => {
+                    console.log("Rendering search dropdown");
+                    console.log("searchLoading:", searchLoading);
+                    console.log("searchResults.length:", searchResults.length);
+                    console.log("searchResults:", searchResults);
+                    return null;
+                  })()}
+                  {searchLoading ? (
+                    <YStack padding="$4" alignItems="center">
+                      <ActivityIndicator
+                        size="small"
+                        color={theme.colors.primary}
+                      />
+                      <Text
+                        size="sm"
+                        style={{
+                          color: theme.colors.textSecondary,
+                          marginTop: 8,
+                        }}
                       >
-                        <YStack
-                          padding="$3"
-                          borderBottomWidth={1}
-                          borderBottomColor="$border"
-                          style={{
-                            backgroundColor: theme.colors.cardBg,
-                          }}
-                          hoverStyle={{
-                            backgroundColor: theme.colors.backgroundGray,
-                          }}
-                        >
-                          <XStack
-                            justifyContent="space-between"
-                            alignItems="center"
+                        {t("common.searching")}
+                      </Text>
+                    </YStack>
+                  ) : searchResults.length === 0 ? (
+                    <YStack padding="$4" alignItems="center">
+                      <Text
+                        size="sm"
+                        style={{ color: theme.colors.textSecondary }}
+                      >
+                        {t("payment.noSearchResults")}
+                      </Text>
+                    </YStack>
+                  ) : (
+                    <ScrollView style={{ maxHeight: 300 }}>
+                      {searchResults.map((item) => {
+                        const isPayment = "recipient" in item && item.recipient;
+                        const transaction = item as Transaction;
+                        const payment = item as Payment;
+
+                        // Extract display values
+                        const displayName = isPayment
+                          ? payment.recipient?.name || payment.description
+                          : transaction.description;
+                        const displayAmount = isPayment
+                          ? payment.amount
+                          : Math.abs(transaction.amount);
+                        const displayDate = isPayment
+                          ? new Date(payment.createdAt).toLocaleDateString()
+                          : new Date(transaction.date).toLocaleDateString();
+                        const displayNote = isPayment
+                          ? payment.description
+                          : transaction.category || "";
+                        const displayAccount = isPayment
+                          ? payment.recipient?.iban
+                            ? `${payment.recipient.iban.slice(-4)}`
+                            : ""
+                          : transaction.accountId;
+
+                        return (
+                          <Pressable
+                            key={item.id}
+                            onPress={() => selectPreviousPayment(item)}
                           >
-                            <YStack gap="$1" flex={1}>
-                              <Text size="md" weight="semibold">
-                                {payment.recipient}
-                              </Text>
-                              <Text
-                                size="sm"
-                                style={{ color: theme.colors.textSecondary }}
-                              >
-                                {payment.account} • {payment.date}
-                              </Text>
-                              {payment.note && (
-                                <Text
-                                  size="xs"
-                                  style={{
-                                    color: theme.colors.textSecondary,
-                                    fontStyle: "italic",
-                                  }}
-                                >
-                                  "{payment.note}"
-                                </Text>
-                              )}
-                            </YStack>
-                            <Text
-                              size="lg"
-                              weight="bold"
-                              style={{ color: theme.colors.primary }}
+                            <YStack
+                              padding="$3"
+                              borderBottomWidth={1}
+                              borderBottomColor="$border"
+                              style={{
+                                backgroundColor: theme.colors.cardBg,
+                              }}
+                              hoverStyle={{
+                                backgroundColor: theme.colors.backgroundGray,
+                              }}
                             >
-                              {formatCurrency(parseFloat(payment.amount))}
-                            </Text>
-                          </XStack>
-                        </YStack>
-                      </Pressable>
-                    ))}
-                  </ScrollView>
+                              <XStack
+                                justifyContent="space-between"
+                                alignItems="center"
+                              >
+                                <YStack gap="$1" flex={1}>
+                                  <Text size="md" weight="semibold">
+                                    {displayName}
+                                  </Text>
+                                  <Text
+                                    size="sm"
+                                    style={{
+                                      color: theme.colors.textSecondary,
+                                    }}
+                                  >
+                                    {displayAccount && `****${displayAccount}`}
+                                    {displayAccount && displayDate && " • "}
+                                    {displayDate}
+                                  </Text>
+                                  {displayNote && (
+                                    <Text
+                                      size="xs"
+                                      style={{
+                                        color: theme.colors.textSecondary,
+                                        fontStyle: "italic",
+                                      }}
+                                    >
+                                      "{displayNote}"
+                                    </Text>
+                                  )}
+                                </YStack>
+                                <Text
+                                  size="lg"
+                                  weight="bold"
+                                  style={{ color: theme.colors.primary }}
+                                >
+                                  {formatCurrency(displayAmount)}
+                                </Text>
+                              </XStack>
+                            </YStack>
+                          </Pressable>
+                        );
+                      })}
+                    </ScrollView>
+                  )}
                 </YStack>
               )}
             </YStack>
