@@ -8,6 +8,11 @@
       "executor": "@nx/expo:start",
       "options": {
         "port": 8081
+      },
+      "configurations": {
+        "clear": {
+          "clear": true
+        }
       }
     },
     "serve": {

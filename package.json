@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "web": "nx serve web",
-    "mobile": "nx run mobile:start",
+    "mobile": "cd apps/mobile && npx expo start --clear",
     "build:web": "nx build web",
     "build:mobile": "nx run mobile:build",
     "test": "nx test"
