@@ -568,7 +568,7 @@
       "responses": [
         {
           "uuid": "dffcfff6-9034-45d7-94fd-3dd4eb083bc6",
-          "body": "{\n  \"data\": [\n    {\n      \"id\": \"txn_001\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": -45.20,\n      \"currency\": \"CHF\",\n      \"type\": \"debit\",\n      \"category\": \"Food\",\n      \"description\": \"Grocery Store\",\n      \"recipient\": \"Migros\",\n      \"date\": \"2024-11-05T10:30:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-11-05T10:30:00Z\",\n      \"updatedAt\": \"2024-11-05T10:30:00Z\"\n    }\n  ],\n  \"meta\": {\n    \"page\": {{queryParam 'page' '1'}},\n    \"limit\": {{queryParam 'limit' '10'}},\n    \"total\": 45,\n    \"totalPages\": 5\n  }\n}",
+          "body": "{\n  \"data\": [\n    {\n      \"id\": \"txn_001\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": -45.20,\n      \"currency\": \"CHF\",\n      \"type\": \"debit\",\n      \"category\": \"Food\",\n      \"description\": \"Grocery Store\",\n      \"recipient\": \"Migros\",\n      \"date\": \"2024-11-05T10:30:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-11-05T10:30:00Z\",\n      \"updatedAt\": \"2024-11-05T10:30:00Z\"\n    },\n    {\n      \"id\": \"txn_002\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": -12.90,\n      \"currency\": \"CHF\",\n      \"type\": \"debit\",\n      \"category\": \"Transport\",\n      \"description\": \"Tram Ticket\",\n      \"recipient\": \"ZVV\",\n      \"date\": \"2024-11-04T08:15:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-11-04T08:15:00Z\",\n      \"updatedAt\": \"2024-11-04T08:15:00Z\"\n    },\n    {\n      \"id\": \"txn_003\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": 2150.00,\n      \"currency\": \"CHF\",\n      \"type\": \"credit\",\n      \"category\": \"Salary\",\n      \"description\": \"Monthly Salary\",\n      \"recipient\": \"Employer AG\",\n      \"date\": \"2024-11-01T06:00:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-11-01T06:00:00Z\",\n      \"updatedAt\": \"2024-11-01T06:00:00Z\"\n    },\n    {\n      \"id\": \"txn_004\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": -89.00,\n      \"currency\": \"CHF\",\n      \"type\": \"debit\",\n      \"category\": \"Shopping\",\n      \"description\": \"Clothing Purchase\",\n      \"recipient\": \"H&M\",\n      \"date\": \"2024-10-30T14:45:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-10-30T14:45:00Z\",\n      \"updatedAt\": \"2024-10-30T14:45:00Z\"\n    },\n    {\n      \"id\": \"txn_005\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": -3.50,\n      \"currency\": \"CHF\",\n      \"type\": \"debit\",\n      \"category\": \"Food\",\n      \"description\": \"Coffee\",\n      \"recipient\": \"Starbucks\",\n      \"date\": \"2024-10-29T09:20:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-10-29T09:20:00Z\",\n      \"updatedAt\": \"2024-10-29T09:20:00Z\"\n    }\n  ],\n  \"meta\": {\n    \"page\": {{queryParam 'page' '1'}},\n    \"limit\": {{queryParam 'limit' '10'}},\n    \"total\": 45,\n    \"totalPages\": 5\n  }\n}\n",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -589,9 +589,47 @@
           "default": true,
           "crudKey": "id",
           "callbacks": []
+        },
+        {
+          "uuid": "5fb61675-ac34-4e58-bc20-cc0f3061123b",
+          "body": "{\n  \"data\": [\n    {\n      \"id\": \"txn_004\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": -89.00,\n      \"currency\": \"CHF\",\n      \"type\": \"debit\",\n      \"category\": \"Shopping\",\n      \"description\": \"Clothing Purchase\",\n      \"recipient\": \"H&M\",\n      \"date\": \"2024-10-30T14:45:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-10-30T14:45:00Z\",\n      \"updatedAt\": \"2024-10-30T14:45:00Z\"\n    },\n    {\n      \"id\": \"txn_005\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": -3.50,\n      \"currency\": \"CHF\",\n      \"type\": \"debit\",\n      \"category\": \"Food\",\n      \"description\": \"Coffee\",\n      \"recipient\": \"Starbucks\",\n      \"date\": \"2024-10-29T09:20:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-10-29T09:20:00Z\",\n      \"updatedAt\": \"2024-10-29T09:20:00Z\"\n    }\n  ],\n  \"meta\": {\n    \"page\": {{queryParam 'page' '1'}},\n    \"limit\": {{queryParam 'limit' '10'}},\n    \"total\": 45,\n    \"totalPages\": 5\n  }\n}\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "dff44c8c-8245-47d2-bb9d-d15f0161387c",
+          "body": "{\n  \"data\": [\n    {\n      \"id\": \"txn_002\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": -12.90,\n      \"currency\": \"CHF\",\n      \"type\": \"debit\",\n      \"category\": \"Transport\",\n      \"description\": \"Tram Ticket\",\n      \"recipient\": \"ZVV\",\n      \"date\": \"2024-11-04T08:15:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-11-04T08:15:00Z\",\n      \"updatedAt\": \"2024-11-04T08:15:00Z\"\n    },\n    {\n      \"id\": \"txn_003\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": 2150.00,\n      \"currency\": \"CHF\",\n      \"type\": \"credit\",\n      \"category\": \"Salary\",\n      \"description\": \"Monthly Salary\",\n      \"recipient\": \"Employer AG\",\n      \"date\": \"2024-11-01T06:00:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-11-01T06:00:00Z\",\n      \"updatedAt\": \"2024-11-01T06:00:00Z\"\n    },\n    {\n      \"id\": \"txn_004\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": -89.00,\n      \"currency\": \"CHF\",\n      \"type\": \"debit\",\n      \"category\": \"Shopping\",\n      \"description\": \"Clothing Purchase\",\n      \"recipient\": \"H&M\",\n      \"date\": \"2024-10-30T14:45:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-10-30T14:45:00Z\",\n      \"updatedAt\": \"2024-10-30T14:45:00Z\"\n    },\n    {\n      \"id\": \"txn_005\",\n      \"accountId\": \"{{urlParam 'accountId'}}\",\n      \"amount\": -3.50,\n      \"currency\": \"CHF\",\n      \"type\": \"debit\",\n      \"category\": \"Food\",\n      \"description\": \"Coffee\",\n      \"recipient\": \"Starbucks\",\n      \"date\": \"2024-10-29T09:20:00Z\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2024-10-29T09:20:00Z\",\n      \"updatedAt\": \"2024-10-29T09:20:00Z\"\n    }\n  ],\n  \"meta\": {\n    \"page\": {{queryParam 'page' '1'}},\n    \"limit\": {{queryParam 'limit' '10'}},\n    \"total\": 45,\n    \"totalPages\": 5\n  }\n}\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
         }
       ],
-      "responseMode": null,
+      "responseMode": "SEQUENTIAL",
       "streamingMode": null,
       "streamingInterval": 0
     },
