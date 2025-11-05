@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 // Create API service instance
 export const api = createApiService({
-  baseURL: "https://api.example.com",
+  baseURL: "http://localhost:3000/ebanking",
   timeout: 30000,
 });
 

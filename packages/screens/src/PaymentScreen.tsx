@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ScrollView,
@@ -6,6 +6,7 @@ import {
   Platform,
   Pressable,
   Switch,
+  ActivityIndicator,
 } from "react-native";
 import {
   YStack,
@@ -18,6 +19,7 @@ import {
   useAppTheme,
 } from "@ebanking/ui";
 import { formatCurrency } from "./utils/formatCurrency";
+import type { Account } from "@ebanking/api";
 
 const { width: screenWidth } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
@@ -27,7 +29,15 @@ const CARD_WIDTH = isWeb
 const CARD_HEIGHT = 150;
 const CARD_SPACING = 12;
 
-export const PaymentScreen: React.FC = () => {
+interface PaymentScreenProps {
+  api: {
+    accounts: {
+      getAccounts: () => Promise<Account[]>;
+    };
+  };
+}
+
+export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
   const { t } = useTranslation();
   const { theme } = useAppTheme();
   const [selectedAccountIndex, setSelectedAccountIndex] = useState(0);
@@ -37,6 +47,11 @@ export const PaymentScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchResults, setShowSearchResults] = useState(false);
 
+  // API state
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   // Standing payment fields
   const [isStandingPayment, setIsStandingPayment] = useState(false);
   const [frequency, setFrequency] = useState("monthly");
@@ -44,30 +59,24 @@ export const PaymentScreen: React.FC = () => {
   const [endDate, setEndDate] = useState("");
   const [executionDay, setExecutionDay] = useState("");
 
-  // Account data (from which to send payment)
-  const accounts = [
-    {
-      id: 1,
-      name: t("accounts.checking"),
-      number: "****1234",
-      balance: 5430.0,
-      type: "checking",
-    },
-    {
-      id: 2,
-      name: t("accounts.savings"),
-      number: "****5678",
-      balance: 12850.0,
-      type: "savings",
-    },
-    {
-      id: 3,
-      name: t("accounts.credit"),
-      number: "****9012",
-      balance: -1230.5,
-      type: "credit",
-    },
-  ];
+  // Fetch accounts from API
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await api.accounts.getAccounts();
+        setAccounts(data);
+      } catch (err) {
+        console.error("Failed to fetch accounts:", err);
+        setError(err instanceof Error ? err.message : "Failed to fetch accounts");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAccounts();
+  }, [api]);
 
   // Previous payments data
   const previousPayments = [
@@ -287,104 +296,191 @@ export const PaymentScreen: React.FC = () => {
                 {t("payment.fromAccount")}
               </Text>
             </YStack>
-            <ScrollView
-              horizontal
-              pagingEnabled={false}
-              showsHorizontalScrollIndicator={false}
-              decelerationRate="fast"
-              snapToInterval={isWeb ? undefined : CARD_WIDTH + CARD_SPACING}
-              snapToAlignment={isWeb ? undefined : "center"}
-              contentContainerStyle={{
-                paddingHorizontal: isWeb ? 24 : (screenWidth - CARD_WIDTH) / 2,
-                paddingVertical: 8,
-                paddingBottom: 12,
-              }}
-              onMomentumScrollEnd={isWeb ? undefined : handleScroll}
-            >
-              {accounts.map((account, index) => {
-                const isSelected = index === selectedAccountIndex;
-                const cardBgColor = isSelected
-                  ? theme.colors.primary
-                  : theme.colors.cardUnselected;
-                const textColor = isSelected
-                  ? theme.colors.textWhite
-                  : theme.colors.cardUnselectedText;
-                const textSecondaryColor = isSelected
-                  ? theme.colors.textWhite
-                  : theme.colors.cardUnselectedSecondary;
 
-                return (
-                  <Pressable
-                    key={account.id}
-                    onPress={() => setSelectedAccountIndex(index)}
-                  >
-                    <Card
-                      hoverable
-                      style={{
-                        width: CARD_WIDTH,
-                        height: CARD_HEIGHT,
-                        marginRight: CARD_SPACING,
-                        backgroundColor: cardBgColor,
-                        opacity: isSelected ? 1 : 0.75,
-                        transform: [{ scale: isSelected ? 1 : 0.96 }],
-                        shadowColor: "#000",
-                        shadowOffset: { width: 0, height: 4 },
-                        shadowOpacity: isSelected ? 0.15 : 0.08,
-                        shadowRadius: 8,
-                        elevation: isSelected ? 4 : 2,
+            {/* Loading State */}
+            {loading && (
+              <YStack
+                alignItems="center"
+                justifyContent="center"
+                padding="$8"
+              >
+                <ActivityIndicator size="large" color={theme.colors.primary} />
+                <Text
+                  size="sm"
+                  style={{ color: theme.colors.textSecondary, marginTop: 12 }}
+                >
+                  {t("common.loading")}...
+                </Text>
+              </YStack>
+            )}
+
+            {/* Error State */}
+            {error && !loading && (
+              <YStack padding="$6" alignItems="center">
+                <Card
+                  style={{
+                    backgroundColor: theme.colors.errorLight,
+                    padding: 16,
+                    width: "100%",
+                  }}
+                >
+                  <YStack gap="$3" alignItems="center">
+                    <Text
+                      size="md"
+                      weight="semibold"
+                      style={{ color: theme.colors.error }}
+                    >
+                      {t("common.error")}
+                    </Text>
+                    <Text
+                      size="sm"
+                      style={{ color: theme.colors.textPrimary, textAlign: "center" }}
+                    >
+                      {error}
+                    </Text>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onPress={() => {
+                        setError(null);
+                        setLoading(true);
+                        api.accounts.getAccounts()
+                          .then(setAccounts)
+                          .catch((err) => setError(err.message))
+                          .finally(() => setLoading(false));
                       }}
                     >
-                      <YStack
-                        gap="$2"
-                        padding="$3"
-                        justifyContent="space-between"
-                        flex={1}
-                      >
-                        <YStack gap="$1">
-                          <Text
-                            size="xs"
-                            weight="medium"
-                            style={{
-                              color: textSecondaryColor,
-                              opacity: isSelected ? 0.9 : 1,
-                              letterSpacing: 1.2,
-                            }}
-                          >
-                            {account.type.toUpperCase()}
-                          </Text>
-                          <Text
-                            size="lg"
-                            weight="bold"
-                            style={{ color: textColor }}
-                          >
-                            {account.name}
-                          </Text>
-                        </YStack>
+                      {t("common.retry")}
+                    </Button>
+                  </YStack>
+                </Card>
+              </YStack>
+            )}
 
-                        <YStack gap="$1">
-                          <Text
-                            size="xs"
-                            style={{
-                              color: textSecondaryColor,
-                              opacity: isSelected ? 0.9 : 1,
-                            }}
-                          >
-                            {account.number}
-                          </Text>
-                          <Text
-                            size="2xl"
-                            weight="bold"
-                            style={{ color: textColor, marginTop: 2 }}
-                          >
-                            {formatCurrency(account.balance)}
-                          </Text>
+            {/* Account Cards */}
+            {!loading && !error && accounts.length > 0 && (
+              <ScrollView
+                horizontal
+                pagingEnabled={false}
+                showsHorizontalScrollIndicator={false}
+                decelerationRate="fast"
+                snapToInterval={isWeb ? undefined : CARD_WIDTH + CARD_SPACING}
+                snapToAlignment={isWeb ? undefined : "center"}
+                contentContainerStyle={{
+                  paddingHorizontal: isWeb ? 24 : (screenWidth - CARD_WIDTH) / 2,
+                  paddingVertical: 8,
+                  paddingBottom: 12,
+                }}
+                onMomentumScrollEnd={isWeb ? undefined : handleScroll}
+              >
+                {accounts.map((account, index) => {
+                  const isSelected = index === selectedAccountIndex;
+                  const cardBgColor = isSelected
+                    ? theme.colors.primary
+                    : theme.colors.cardUnselected;
+                  const textColor = isSelected
+                    ? theme.colors.textWhite
+                    : theme.colors.cardUnselectedText;
+                  const textSecondaryColor = isSelected
+                    ? theme.colors.textWhite
+                    : theme.colors.cardUnselectedSecondary;
+
+                  return (
+                    <Pressable
+                      key={account.id}
+                      onPress={() => setSelectedAccountIndex(index)}
+                    >
+                      <Card
+                        hoverable
+                        style={{
+                          width: CARD_WIDTH,
+                          height: CARD_HEIGHT,
+                          marginRight: CARD_SPACING,
+                          backgroundColor: cardBgColor,
+                          opacity: isSelected ? 1 : 0.75,
+                          transform: [{ scale: isSelected ? 1 : 0.96 }],
+                          shadowColor: "#000",
+                          shadowOffset: { width: 0, height: 4 },
+                          shadowOpacity: isSelected ? 0.15 : 0.08,
+                          shadowRadius: 8,
+                          elevation: isSelected ? 4 : 2,
+                        }}
+                      >
+                        <YStack
+                          gap="$2"
+                          padding="$3"
+                          justifyContent="space-between"
+                          flex={1}
+                        >
+                          <YStack gap="$1">
+                            <Text
+                              size="xs"
+                              weight="medium"
+                              style={{
+                                color: textSecondaryColor,
+                                opacity: isSelected ? 0.9 : 1,
+                                letterSpacing: 1.2,
+                              }}
+                            >
+                              {account.accountType.toUpperCase()}
+                            </Text>
+                            <Text
+                              size="lg"
+                              weight="bold"
+                              style={{ color: textColor }}
+                            >
+                              {account.name}
+                            </Text>
+                          </YStack>
+
+                          <YStack gap="$1">
+                            <Text
+                              size="xs"
+                              style={{
+                                color: textSecondaryColor,
+                                opacity: isSelected ? 0.9 : 1,
+                              }}
+                            >
+                              {account.accountNumber.slice(-4).padStart(8, '*')}
+                            </Text>
+                            <Text
+                              size="2xl"
+                              weight="bold"
+                              style={{ color: textColor, marginTop: 2 }}
+                            >
+                              {formatCurrency(account.balance)}
+                            </Text>
+                          </YStack>
                         </YStack>
-                      </YStack>
-                    </Card>
-                  </Pressable>
-                );
-              })}
-            </ScrollView>
+                      </Card>
+                    </Pressable>
+                  );
+                })}
+              </ScrollView>
+            )}
+
+            {/* Empty State */}
+            {!loading && !error && accounts.length === 0 && (
+              <YStack padding="$6" alignItems="center">
+                <Card style={{ padding: 16, width: "100%" }}>
+                  <YStack gap="$2" alignItems="center">
+                    <Text
+                      size="md"
+                      weight="semibold"
+                      style={{ color: theme.colors.textPrimary }}
+                    >
+                      {t("accounts.noAccounts")}
+                    </Text>
+                    <Text
+                      size="sm"
+                      style={{ color: theme.colors.textSecondary, textAlign: "center" }}
+                    >
+                      {t("accounts.noAccountsDescription")}
+                    </Text>
+                  </YStack>
+                </Card>
+              </YStack>
+            )}
           </YStack>
 
           {/* Payment Form Card */}

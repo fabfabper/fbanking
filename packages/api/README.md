@@ -26,7 +26,8 @@ import { createApiService } from "@ebanking/api";
 
 // Create API service instance
 const api = createApiService({
-  baseURL: "https://api.yourbank.com",
+  baseURL: "http://localhost:3000/ebanking", // Development
+  // baseURL: "https://api.yourbank.com", // Production
   timeout: 30000,
 });
 ```

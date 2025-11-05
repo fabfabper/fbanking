@@ -29,6 +29,7 @@ export default defineConfig({
         "../../packages/screens/src"
       ),
       "@ebanking/i18n": path.resolve(__dirname, "../../packages/i18n/src"),
+      "@ebanking/api": path.resolve(__dirname, "../../packages/api/src"),
       "react-native": "react-native-web",
     },
   },

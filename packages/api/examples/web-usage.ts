@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 // Create API service instance
 export const api = createApiService({
-  baseURL: import.meta.env.VITE_API_URL || "https://api.example.com",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/ebanking",
   timeout: 30000,
 });
 

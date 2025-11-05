@@ -5,13 +5,15 @@ export const en = {
     password: "Password",
     signIn: "Sign In",
     logout: "Logout",
-    loading: "Loading...",
+    loading: "Loading",
     save: "Save",
     cancel: "Cancel",
     confirm: "Confirm",
     delete: "Delete",
     edit: "Edit",
     search: "Search",
+    error: "Error",
+    retry: "Retry",
   },
 
   // Auth/Login
@@ -122,6 +124,8 @@ export const en = {
     savings: "Savings Account",
     credit: "Credit Card",
     transactions: "Recent Transactions",
+    noAccounts: "No Accounts Found",
+    noAccountsDescription: "You don't have any accounts set up yet. Please contact your bank to create an account.",
   },
 
   // Categories

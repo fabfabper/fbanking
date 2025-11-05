@@ -16,6 +16,7 @@ import {
   PaymentScreen,
   SettingsScreen,
 } from "@ebanking/screens";
+import api from "./lib/api";
 
 const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const { t } = useTranslation();
@@ -182,7 +183,7 @@ const App: React.FC<AppProps> = ({ darkMode, setDarkMode }) => {
           path="/payment"
           element={
             isAuthenticated ? (
-              <PaymentScreen />
+              <PaymentScreen api={api} />
             ) : (
               <Navigate to="/login" replace />
             )

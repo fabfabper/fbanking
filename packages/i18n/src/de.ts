@@ -7,13 +7,15 @@ export const de: Translations = {
     password: "Passwort",
     signIn: "Anmelden",
     logout: "Abmelden",
-    loading: "Laden...",
+    loading: "Laden",
     save: "Speichern",
     cancel: "Abbrechen",
     confirm: "Bestätigen",
     delete: "Löschen",
     edit: "Bearbeiten",
     search: "Suchen",
+    error: "Fehler",
+    retry: "Wiederholen",
   },
 
   // Auth/Login
@@ -129,6 +131,8 @@ export const de: Translations = {
     savings: "Sparkonto",
     credit: "Kreditkarte",
     transactions: "Letzte Transaktionen",
+    noAccounts: "Keine Konten gefunden",
+    noAccountsDescription: "Sie haben noch keine Konten eingerichtet. Bitte kontaktieren Sie Ihre Bank, um ein Konto zu erstellen.",
   },
 
   // Categories
