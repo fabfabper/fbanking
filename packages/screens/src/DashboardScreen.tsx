@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, Platform, Dimensions } from "react-native";
+import {
+  ScrollView,
+  Platform,
+  Dimensions,
+  ActivityIndicator,
+} from "react-native";
 import { YStack, XStack, Text, Card, Button, useAppTheme } from "@ebanking/ui";
 import {
   PieChart,
@@ -17,74 +22,180 @@ import {
 } from "recharts";
 import { useCamera } from "./hooks/useCamera";
 import { formatCurrency } from "./utils/formatCurrency";
+import type {
+  Account,
+  Transaction,
+  ExpenseByCategory,
+  IncomeExpenseSummary,
+} from "@ebanking/api";
 
 const { width: screenWidth } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
 const CARD_WIDTH = isWeb ? Math.min(400, screenWidth * 0.4) : screenWidth * 0.7;
 const CARD_SPACING = 16;
 
-export const DashboardScreen: React.FC = () => {
+interface DashboardScreenProps {
+  api: {
+    accounts: {
+      getAccounts: () => Promise<Account[]>;
+    };
+    transactions: {
+      getTransactions: (filters?: any) => Promise<{ data: Transaction[] }>;
+    };
+    analytics: {
+      getExpensesByCategory: (params?: any) => Promise<ExpenseByCategory[]>;
+      getIncomeExpensesSummary: (params?: any) => Promise<IncomeExpenseSummary>;
+    };
+  };
+}
+
+export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api }) => {
   const { t } = useTranslation();
   const { theme } = useAppTheme();
   const { openCamera } = useCamera();
 
-  // Expense categories data for pie chart
-  const expenseData = [
-    { name: t("categories.food"), value: 450, color: "#3B82F6" },
-    { name: t("categories.utilities"), value: 280, color: "#10B981" },
-    { name: t("categories.transport"), value: 180, color: "#F59E0B" },
-    { name: t("categories.entertainment"), value: 220, color: "#EF4444" },
-    { name: t("categories.shopping"), value: 340, color: "#8B5CF6" },
+  // State
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [totalBalance, setTotalBalance] = useState(0);
+  const [expenseData, setExpenseData] = useState<
+    Array<{ name: string; value: number; color: string }>
+  >([]);
+  const [incomeExpensesData, setIncomeExpensesData] = useState<
+    Array<{ name: string; amount: number; color: string }>
+  >([]);
+  const [netBalance, setNetBalance] = useState(0);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  // Color palette for charts
+  const chartColors = [
+    "#3B82F6",
+    "#10B981",
+    "#F59E0B",
+    "#EF4444",
+    "#8B5CF6",
+    "#EC4899",
+    "#14B8A6",
   ];
 
-  // Income vs Expenses comparison data
-  const incomeExpensesData = [
-    {
-      name: t("dashboard.income"),
-      amount: 3200,
-      color: theme.colors.success,
-    },
-    {
-      name: t("dashboard.expenses"),
-      amount: 1470,
-      color: theme.colors.error,
-    },
-  ];
+  // Fetch all dashboard data
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  const transactions = [
-    {
-      id: 1,
-      name: "Grocery Store",
-      amount: -45.2,
-      date: t("dashboard.today"),
-      category: "Food",
-    },
-    {
-      id: 2,
-      name: "Salary Deposit",
-      amount: 3200.0,
-      date: "Nov 1",
-      category: "Income",
-    },
-    {
-      id: 3,
-      name: "Electric Bill",
-      amount: -89.5,
-      date: "Oct 31",
-      category: "Utilities",
-    },
-    {
-      id: 4,
-      name: "Restaurant",
-      amount: -67.8,
-      date: "Oct 30",
-      category: "Food",
-    },
-  ];
+        // Fetch all data in parallel
+        const [
+          accountsResponse,
+          expensesResponse,
+          incomeExpensesResponse,
+          transactionsResponse,
+        ] = await Promise.all([
+          api.accounts.getAccounts(),
+          api.analytics.getExpensesByCategory(),
+          api.analytics.getIncomeExpensesSummary(),
+          api.transactions.getTransactions({ limit: 5 }),
+        ]);
+
+        // Calculate total balance from all accounts
+        const balance = accountsResponse.reduce(
+          (sum, account) => sum + account.balance,
+          0
+        );
+        setTotalBalance(balance);
+
+        // Format expense categories for chart
+        const formattedExpenses = expensesResponse
+          .slice(0, 6)
+          .map((expense, index) => ({
+            name: expense.category,
+            value: Math.abs(expense.amount),
+            color: chartColors[index % chartColors.length],
+          }));
+        setExpenseData(formattedExpenses);
+
+        // Format income vs expenses for chart
+        const formattedIncomeExpenses = [
+          {
+            name: t("dashboard.income"),
+            amount: incomeExpensesResponse.income,
+            color: theme.colors.success,
+          },
+          {
+            name: t("dashboard.expenses"),
+            amount: Math.abs(incomeExpensesResponse.expenses),
+            color: theme.colors.error,
+          },
+        ];
+        setIncomeExpensesData(formattedIncomeExpenses);
+        setNetBalance(incomeExpensesResponse.netBalance);
+
+        // Set recent transactions
+        setTransactions(transactionsResponse.data);
+      } catch (err) {
+        console.error("Failed to fetch dashboard data:", err);
+        setError(
+          err instanceof Error ? err.message : "Failed to load dashboard data"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   const handleCameraOpen = () => {
     openCamera();
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <YStack
+        flex={1}
+        backgroundColor="$backgroundGray"
+        justifyContent="center"
+        alignItems="center"
+        gap="$4"
+      >
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text size="md" style={{ color: theme.colors.textSecondary }}>
+          {t("common.loading")}
+        </Text>
+      </YStack>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <YStack
+        flex={1}
+        backgroundColor="$backgroundGray"
+        justifyContent="center"
+        alignItems="center"
+        gap="$4"
+        paddingHorizontal="$6"
+      >
+        <Text size="xl" weight="bold" style={{ color: theme.colors.error }}>
+          {t("common.error")}
+        </Text>
+        <Text
+          size="md"
+          style={{ color: theme.colors.textSecondary, textAlign: "center" }}
+        >
+          {error}
+        </Text>
+        <Button onPress={() => window.location.reload()}>
+          <Text style={{ color: theme.colors.textWhite }}>
+            {t("common.retry")}
+          </Text>
+        </Button>
+      </YStack>
+    );
+  }
 
   return (
     <YStack flex={1} backgroundColor="$backgroundGray" paddingTop="$4">
@@ -125,20 +236,30 @@ export const DashboardScreen: React.FC = () => {
                   weight="bold"
                   style={{ color: theme.colors.primary }}
                 >
-                  CHF 9'450.00
+                  {formatCurrency(totalBalance)}
                 </Text>
-                <XStack gap="$2" alignItems="center">
-                  <Text
-                    size="md"
-                    weight="semibold"
-                    style={{ color: theme.colors.success }}
-                  >
-                    +2.5%
-                  </Text>
-                  <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                    {t("dashboard.fromLastMonth")}
-                  </Text>
-                </XStack>
+                {netBalance !== 0 && (
+                  <XStack gap="$2" alignItems="center">
+                    <Text
+                      size="md"
+                      weight="semibold"
+                      style={{
+                        color:
+                          netBalance > 0
+                            ? theme.colors.success
+                            : theme.colors.error,
+                      }}
+                    >
+                      {formatCurrency(netBalance, true)}
+                    </Text>
+                    <Text
+                      size="sm"
+                      style={{ color: theme.colors.textSecondary }}
+                    >
+                      {t("dashboard.fromLastMonth")}
+                    </Text>
+                  </XStack>
+                )}
               </YStack>
             </Card>
 
@@ -158,7 +279,20 @@ export const DashboardScreen: React.FC = () => {
                 <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                   {t("dashboard.expenseCategories")}
                 </Text>
-                {isWeb ? (
+                {expenseData.length === 0 ? (
+                  <YStack
+                    height={180}
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Text
+                      size="sm"
+                      style={{ color: theme.colors.textSecondary }}
+                    >
+                      No expense data available
+                    </Text>
+                  </YStack>
+                ) : isWeb ? (
                   <YStack height={180} alignItems="center">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
@@ -178,7 +312,11 @@ export const DashboardScreen: React.FC = () => {
                             <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
                         </Pie>
-                        <Tooltip formatter={(value: any) => `CHF ${value}`} />
+                        <Tooltip
+                          formatter={(value: any) =>
+                            formatCurrency(value as number)
+                          }
+                        />
                       </PieChart>
                     </ResponsiveContainer>
                   </YStack>
@@ -192,6 +330,14 @@ export const DashboardScreen: React.FC = () => {
                         justifyContent="space-between"
                       >
                         <XStack gap="$2" alignItems="center" flex={1}>
+                          <YStack
+                            style={{
+                              width: 12,
+                              height: 12,
+                              borderRadius: 6,
+                              backgroundColor: category.color,
+                            }}
+                          />
                           <Text size="sm">{category.name}</Text>
                         </XStack>
                         <Text
@@ -199,7 +345,7 @@ export const DashboardScreen: React.FC = () => {
                           weight="semibold"
                           style={{ color: theme.colors.primary }}
                         >
-                          CHF {category.value}
+                          {formatCurrency(category.value)}
                         </Text>
                       </XStack>
                     ))}
@@ -237,10 +383,12 @@ export const DashboardScreen: React.FC = () => {
                         <YAxis
                           style={{ fontSize: 11 }}
                           tick={{ fill: theme.colors.textSecondary }}
-                          tickFormatter={(value) => `${value}`}
+                          tickFormatter={(value) => formatCurrency(value)}
                         />
                         <Tooltip
-                          formatter={(value: any) => `CHF ${value}`}
+                          formatter={(value: any) =>
+                            formatCurrency(value as number)
+                          }
                           contentStyle={{
                             backgroundColor: theme.colors.cardBackground,
                             borderColor: theme.colors.border,
@@ -376,86 +524,101 @@ export const DashboardScreen: React.FC = () => {
           <Text size="xl" weight="bold" style={{ marginBottom: 4 }}>
             {t("dashboard.recentTransactions")}
           </Text>
-          <YStack gap="$3">
-            {transactions.map((transaction) => (
-              <Card
-                key={transaction.id}
-                hoverable
-                style={{
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.05,
-                  shadowRadius: 3,
-                  elevation: 1,
-                }}
-              >
-                <XStack
-                  justifyContent="space-between"
-                  alignItems="center"
-                  padding="$4"
-                  gap="$4"
-                >
-                  <YStack gap="$2" flex={1}>
-                    <Text
-                      size="md"
-                      weight="semibold"
-                      style={{ lineHeight: 20 }}
-                    >
-                      {transaction.name}
-                    </Text>
-                    <XStack gap="$3" alignItems="center" flexWrap="wrap">
-                      <Text
-                        size="sm"
-                        style={{ color: theme.colors.textSecondary }}
-                      >
-                        {transaction.date}
-                      </Text>
-                      <YStack
-                        style={{
-                          backgroundColor:
-                            transaction.amount >= 0
-                              ? theme.colors.categoryIncome
-                              : theme.colors.categoryExpense,
-                          paddingHorizontal: isWeb ? 16 : 10,
-                          paddingVertical: isWeb ? 8 : 4,
-                          borderRadius: isWeb ? 8 : 6,
-                          minWidth: isWeb ? 100 : undefined,
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Text
-                          size={isWeb ? "md" : "xs"}
-                          weight="semibold"
-                          style={{
-                            color: "#FFFFFF",
-                            whiteSpace: isWeb ? "nowrap" : undefined,
-                            textAlign: "center",
-                          }}
-                        >
-                          {transaction.category}
-                        </Text>
-                      </YStack>
-                    </XStack>
-                  </YStack>
-                  <Text
-                    size="xl"
-                    weight="bold"
+          {transactions.length === 0 ? (
+            <Card>
+              <YStack padding="$6" alignItems="center" gap="$2">
+                <Text size="md" style={{ color: theme.colors.textSecondary }}>
+                  No recent transactions
+                </Text>
+              </YStack>
+            </Card>
+          ) : (
+            <YStack gap="$3">
+              {transactions.map((transaction) => {
+                const isCredit = transaction.type === "credit";
+                const amount = isCredit
+                  ? transaction.amount
+                  : -transaction.amount;
+
+                return (
+                  <Card
+                    key={transaction.id}
+                    hoverable
                     style={{
-                      color:
-                        transaction.amount >= 0
-                          ? theme.colors.success
-                          : theme.colors.error,
-                      minWidth: 90,
-                      textAlign: "right",
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowOpacity: 0.05,
+                      shadowRadius: 3,
+                      elevation: 1,
                     }}
                   >
-                    {formatCurrency(transaction.amount, true)}
-                  </Text>
-                </XStack>
-              </Card>
-            ))}
-          </YStack>
+                    <XStack
+                      justifyContent="space-between"
+                      alignItems="center"
+                      padding="$4"
+                      gap="$4"
+                    >
+                      <YStack gap="$2" flex={1}>
+                        <Text
+                          size="md"
+                          weight="semibold"
+                          style={{ lineHeight: 20 }}
+                        >
+                          {transaction.description}
+                        </Text>
+                        <XStack gap="$3" alignItems="center" flexWrap="wrap">
+                          <Text
+                            size="sm"
+                            style={{ color: theme.colors.textSecondary }}
+                          >
+                            {new Date(transaction.date).toLocaleDateString()}
+                          </Text>
+                          <YStack
+                            style={{
+                              backgroundColor: isCredit
+                                ? theme.colors.categoryIncome
+                                : theme.colors.categoryExpense,
+                              paddingHorizontal: isWeb ? 16 : 10,
+                              paddingVertical: isWeb ? 8 : 4,
+                              borderRadius: isWeb ? 8 : 6,
+                              minWidth: isWeb ? 100 : undefined,
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Text
+                              size={isWeb ? "md" : "xs"}
+                              weight="semibold"
+                              style={{
+                                color: "#FFFFFF",
+                                whiteSpace: isWeb ? "nowrap" : undefined,
+                                textAlign: "center",
+                              }}
+                            >
+                              {transaction.category}
+                            </Text>
+                          </YStack>
+                        </XStack>
+                      </YStack>
+                      <Text
+                        size="xl"
+                        weight="bold"
+                        style={{
+                          color: isCredit
+                            ? theme.colors.success
+                            : theme.colors.error,
+                          minWidth: 90,
+                          textAlign: "right",
+                        }}
+                      >
+                        {formatCurrency(amount, true)} {transaction.currency}
+                      </Text>
+                    </XStack>
+                  </Card>
+                );
+              })}
+            </YStack>
+          )}
         </YStack>
       </ScrollView>
     </YStack>

@@ -1,3 +1,6 @@
-import { DashboardScreen } from '@ebanking/screens';
+import { DashboardScreen } from "@ebanking/screens";
+import api from "../../lib/api";
 
-export default DashboardScreen;
+export default function Dashboard() {
+  return <DashboardScreen api={api} />;
+}
