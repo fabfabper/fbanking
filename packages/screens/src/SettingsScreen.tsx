@@ -104,13 +104,12 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                 </YStack>
                 <Switch
                   value={darkMode}
-                  onValueChange={() => {}} // Disabled - no functionality
+                  onValueChange={(value) => onToggleDarkMode?.(value)}
                   trackColor={{
                     false: "#E5E7EB",
                     true: theme.colors.primary,
                   }}
                   thumbColor="#FFFFFF"
-                  disabled={true}
                 />
               </XStack>
             </YStack>

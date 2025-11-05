@@ -1,7 +1,7 @@
 import React from "react";
 import { TextInput, Platform } from "react-native";
 import { styled } from "@tamagui/core";
-import { useTheme } from "./UIProvider";
+import { useAppTheme } from "./UIProvider";
 
 const StyledTextInput = styled(TextInput, {
   borderWidth: 1,
@@ -31,7 +31,7 @@ export interface InputProps {
 
 export const Input = React.forwardRef<TextInput, InputProps>(
   ({ size = "md", fullWidth = false, error = false, ...props }, ref) => {
-    const { theme } = useTheme();
+    const { theme } = useAppTheme();
 
     const sizeStyles = {
       sm: {

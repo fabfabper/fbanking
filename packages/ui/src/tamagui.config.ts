@@ -1,63 +1,36 @@
 import { createTamagui } from "@tamagui/core";
 import { config as defaultConfig } from "@tamagui/config/v3";
 
-// Modern e-banking color scheme
-const customTokens = {
-  color: {
-    primary: "#2563EB", // Modern blue
-    primaryDark: "#1D4ED8",
-    primaryLight: "#3B82F6",
-    secondary: "#64748B", // Slate gray
-    success: "#10B981", // Green
-    warning: "#F59E0B", // Amber
-    error: "#EF4444", // Red
-    background: "#F9FAFB",
-    backgroundGray: "#F3F4F6",
-    text: "#0F172A",
-    textSecondary: "#475569",
-    textMuted: "#94A3B8",
-    border: "#E2E8F0",
-    cardBg: "#FFFFFF",
-  },
-};
-
 export const config = createTamagui({
   ...defaultConfig,
-  tokens: {
-    ...defaultConfig.tokens,
-    color: {
-      ...defaultConfig.tokens.color,
-      ...customTokens.color,
-    },
-  },
   themes: {
     light: {
-      background: customTokens.color.background,
-      backgroundHover: customTokens.color.backgroundGray,
-      backgroundPress: customTokens.color.backgroundGray,
-      backgroundFocus: customTokens.color.backgroundGray,
+      background: "#F9FAFB",
+      backgroundHover: "#F3F4F6",
+      backgroundPress: "#F3F4F6",
+      backgroundFocus: "#F3F4F6",
       backgroundTransparent: "transparent",
-      backgroundGray: customTokens.color.backgroundGray,
-      cardBg: customTokens.color.cardBg,
-      border: customTokens.color.border,
-      color: customTokens.color.text,
-      colorHover: customTokens.color.text,
-      colorPress: customTokens.color.text,
-      colorFocus: customTokens.color.text,
+      backgroundGray: "#F3F4F6",
+      cardBg: "#FFFFFF",
+      border: "#E2E8F0",
+      color: "#0F172A",
+      colorHover: "#0F172A",
+      colorPress: "#0F172A",
+      colorFocus: "#0F172A",
       colorTransparent: "transparent",
-      text: customTokens.color.text,
-      textSecondary: customTokens.color.textSecondary,
-      textMuted: customTokens.color.textMuted,
-      borderColor: customTokens.color.border,
-      borderColorHover: customTokens.color.border,
-      borderColorFocus: customTokens.color.primary,
-      borderColorPress: customTokens.color.primary,
-      placeholderColor: customTokens.color.textMuted,
-      primary: customTokens.color.primary,
-      secondary: customTokens.color.secondary,
-      success: customTokens.color.success,
-      warning: customTokens.color.warning,
-      error: customTokens.color.error,
+      text: "#0F172A",
+      textSecondary: "#475569",
+      textMuted: "#94A3B8",
+      borderColor: "#E2E8F0",
+      borderColorHover: "#E2E8F0",
+      borderColorFocus: "#2563EB",
+      borderColorPress: "#2563EB",
+      placeholderColor: "#94A3B8",
+      primary: "#2563EB",
+      secondary: "#64748B",
+      success: "#10B981",
+      warning: "#F59E0B",
+      error: "#EF4444",
     },
     dark: {
       background: "#0F172A",

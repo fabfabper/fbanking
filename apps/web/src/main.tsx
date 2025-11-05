@@ -8,11 +8,17 @@ import App from "./App";
 import "./styles.css";
 
 const AppWrapper = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    // Load from localStorage on initial render
+    const saved = localStorage.getItem("darkMode");
+    return saved === "true";
+  });
 
   useEffect(() => {
     // Update body background color when theme changes
     document.body.style.backgroundColor = darkMode ? "#0F172A" : "#F9FAFB";
+    // Persist to localStorage
+    localStorage.setItem("darkMode", String(darkMode));
   }, [darkMode]);
 
   return (

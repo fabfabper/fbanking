@@ -1,6 +1,6 @@
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
-import { useTheme } from "./UIProvider";
+import { useAppTheme } from "./UIProvider";
 
 export interface DateInputProps {
   value: string;
@@ -15,7 +15,7 @@ export const DateInput: React.FC<DateInputProps> = ({
   placeholder = "YYYY-MM-DD",
   style,
 }) => {
-  const { theme } = useTheme();
+  const { theme } = useAppTheme();
 
   if (Platform.OS === "web") {
     // Use native HTML5 date input for web
