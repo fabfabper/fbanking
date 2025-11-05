@@ -69,7 +69,9 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
         setAccounts(data);
       } catch (err) {
         console.error("Failed to fetch accounts:", err);
-        setError(err instanceof Error ? err.message : "Failed to fetch accounts");
+        setError(
+          err instanceof Error ? err.message : "Failed to fetch accounts"
+        );
       } finally {
         setLoading(false);
       }
@@ -299,11 +301,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
 
             {/* Loading State */}
             {loading && (
-              <YStack
-                alignItems="center"
-                justifyContent="center"
-                padding="$8"
-              >
+              <YStack alignItems="center" justifyContent="center" padding="$8">
                 <ActivityIndicator size="large" color={theme.colors.primary} />
                 <Text
                   size="sm"
@@ -334,7 +332,10 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
                     </Text>
                     <Text
                       size="sm"
-                      style={{ color: theme.colors.textPrimary, textAlign: "center" }}
+                      style={{
+                        color: theme.colors.textPrimary,
+                        textAlign: "center",
+                      }}
                     >
                       {error}
                     </Text>
@@ -344,7 +345,8 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
                       onPress={() => {
                         setError(null);
                         setLoading(true);
-                        api.accounts.getAccounts()
+                        api.accounts
+                          .getAccounts()
                           .then(setAccounts)
                           .catch((err) => setError(err.message))
                           .finally(() => setLoading(false));
@@ -367,7 +369,9 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
                 snapToInterval={isWeb ? undefined : CARD_WIDTH + CARD_SPACING}
                 snapToAlignment={isWeb ? undefined : "center"}
                 contentContainerStyle={{
-                  paddingHorizontal: isWeb ? 24 : (screenWidth - CARD_WIDTH) / 2,
+                  paddingHorizontal: isWeb
+                    ? 24
+                    : (screenWidth - CARD_WIDTH) / 2,
                   paddingVertical: 8,
                   paddingBottom: 12,
                 }}
@@ -441,7 +445,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
                                 opacity: isSelected ? 0.9 : 1,
                               }}
                             >
-                              {account.accountNumber.slice(-4).padStart(8, '*')}
+                              {account.accountNumber.slice(-4).padStart(8, "*")}
                             </Text>
                             <Text
                               size="2xl"
@@ -473,7 +477,10 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
                     </Text>
                     <Text
                       size="sm"
-                      style={{ color: theme.colors.textSecondary, textAlign: "center" }}
+                      style={{
+                        color: theme.colors.textSecondary,
+                        textAlign: "center",
+                      }}
                     >
                       {t("accounts.noAccountsDescription")}
                     </Text>

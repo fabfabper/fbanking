@@ -132,7 +132,10 @@ export const de: Translations = {
     credit: "Kreditkarte",
     transactions: "Letzte Transaktionen",
     noAccounts: "Keine Konten gefunden",
-    noAccountsDescription: "Sie haben noch keine Konten eingerichtet. Bitte kontaktieren Sie Ihre Bank, um ein Konto zu erstellen.",
+    noAccountsDescription:
+      "Sie haben noch keine Konten eingerichtet. Bitte kontaktieren Sie Ihre Bank, um ein Konto zu erstellen.",
+    noTransactions: "Keine Transaktionen",
+    noTransactionsDescription: "Keine Transaktionen für dieses Konto gefunden.",
   },
 
   // Categories

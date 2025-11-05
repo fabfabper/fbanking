@@ -173,7 +173,7 @@ const App: React.FC<AppProps> = ({ darkMode, setDarkMode }) => {
           path="/accounts"
           element={
             isAuthenticated ? (
-              <AccountsScreen />
+              <AccountsScreen api={api} />
             ) : (
               <Navigate to="/login" replace />
             )

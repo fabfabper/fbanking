@@ -125,7 +125,10 @@ export const en = {
     credit: "Credit Card",
     transactions: "Recent Transactions",
     noAccounts: "No Accounts Found",
-    noAccountsDescription: "You don't have any accounts set up yet. Please contact your bank to create an account.",
+    noAccountsDescription:
+      "You don't have any accounts set up yet. Please contact your bank to create an account.",
+    noTransactions: "No Transactions",
+    noTransactionsDescription: "No transactions found for this account.",
   },
 
   // Categories

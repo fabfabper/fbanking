@@ -1,3 +1,6 @@
-import { AccountsScreen } from '@ebanking/screens';
+import { AccountsScreen } from "@ebanking/screens";
+import api from "../../lib/api";
 
-export default AccountsScreen;
+export default function Accounts() {
+  return <AccountsScreen api={api} />;
+}
