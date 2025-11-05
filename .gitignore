@@ -12,6 +12,11 @@ lerna-debug.log*
 .nx/cache
 .nx/workspace-data
 
+# Old/deprecated folders (not in use - packages/ is the current structure)
+i18n/
+theme/
+ui/
+
 # Build outputs
 dist
 build
@@ -182,7 +187,13 @@ temp/
 
 *.log
 
-*.lock# Optional stylelint cache
+*.lock
+
+# Auto-generated mobile config files
+apps/mobile/.babelrc.js
+apps/mobile/tsconfig.app.json
+
+# Optional stylelint cache
 
 .stylelintcache
 
