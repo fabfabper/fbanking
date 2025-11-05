@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Pressable, ScrollView, Animated } from "react-native";
-import { YStack, XStack, Text, Button, theme } from "@ebanking/ui";
+import { YStack, XStack, Text, Button, useAppTheme } from "@ebanking/ui";
 import { Ionicons } from "@expo/vector-icons";
 
 interface DrawerProps {
@@ -20,6 +20,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   currentScreen = "dashboard",
 }) => {
   const { t } = useTranslation();
+  const { theme } = useAppTheme();
   const slideAnim = React.useRef(new Animated.Value(280)).current;
 
   React.useEffect(() => {
@@ -68,7 +69,7 @@ export const Drawer: React.FC<DrawerProps> = ({
             top: 0,
             bottom: 0,
             width: 280,
-            backgroundColor: "white",
+            backgroundColor: theme.colors.cardBg,
             shadowColor: "#000",
             shadowOffset: { width: -2, height: 0 },
             shadowOpacity: 0.25,
@@ -160,7 +161,7 @@ export const Drawer: React.FC<DrawerProps> = ({
                 padding="$4"
                 borderTopWidth={1}
                 borderTopColor="$border"
-                style={{ backgroundColor: "white" }}
+                style={{ backgroundColor: theme.colors.cardBg }}
               >
                 <Button
                   variant="outline"

@@ -3,15 +3,18 @@ import { useTranslation } from "react-i18next";
 import { Tabs, useRouter, usePathname } from "expo-router";
 import { Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { YStack, Button, theme } from "@ebanking/ui";
+import { YStack, Button, useAppTheme } from "@ebanking/ui";
 import { Ionicons } from "@expo/vector-icons";
 import { Drawer } from "../components/Drawer";
+import { useDarkMode } from "../_layout";
 
 export default function TabsLayout() {
   const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const { theme } = useAppTheme();
+  const { darkMode } = useDarkMode();
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("isAuthenticated");
@@ -47,6 +50,11 @@ export default function TabsLayout() {
           },
           headerTintColor: "#fff",
           tabBarActiveTintColor: theme.colors.primary,
+          tabBarInactiveTintColor: darkMode ? "#94A3B8" : "#64748B",
+          tabBarStyle: {
+            backgroundColor: darkMode ? "#1E293B" : "#FFFFFF",
+            borderTopColor: darkMode ? "#334155" : "#E2E8F0",
+          },
           headerRight: () => (
             <Pressable
               onPress={() => setDrawerVisible(true)}
