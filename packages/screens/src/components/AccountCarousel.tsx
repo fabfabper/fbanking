@@ -113,7 +113,7 @@ export const AccountCarousel: React.FC<AccountCarouselProps> = ({
                     weight="bold"
                     style={{ color: textColor, letterSpacing: -0.5 }}
                   >
-                    {formatCurrency(account.balance)} {account.currency}
+                    {formatCurrency(account.balance)}
                   </Text>
                 </YStack>
 
