@@ -353,7 +353,6 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
 
               <TransactionList
                 transactions={filteredTransactions}
-                showStatus={true}
                 emptyMessage={
                   transactionFilter !== "all"
                     ? "No transactions found"

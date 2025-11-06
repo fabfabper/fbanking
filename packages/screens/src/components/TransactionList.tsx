@@ -1,20 +1,15 @@
 import React from "react";
-import { Platform } from "react-native";
 import { YStack, XStack, Text, Card, useAppTheme } from "@ebanking/ui";
 import { formatCurrency } from "../utils/formatCurrency";
 import type { Transaction } from "@ebanking/api";
 
-const isWeb = Platform.OS === "web";
-
 interface TransactionListProps {
   transactions: Transaction[];
-  showStatus?: boolean; // Whether to show status badges for non-completed transactions
   emptyMessage?: string; // Custom empty state message
 }
 
 export const TransactionList: React.FC<TransactionListProps> = ({
   transactions,
-  showStatus = false,
   emptyMessage = "No recent transactions",
 }) => {
   const { theme } = useAppTheme();
@@ -56,29 +51,9 @@ export const TransactionList: React.FC<TransactionListProps> = ({
                 <Text size="md" weight="semibold" style={{ lineHeight: 20 }}>
                   {transaction.description}
                 </Text>
-                <XStack gap="$3" alignItems="center" flexWrap="wrap">
-                  <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                    {new Date(transaction.date).toLocaleDateString()}
-                  </Text>
-                  {showStatus && transaction.status !== "completed" && (
-                    <YStack
-                      style={{
-                        backgroundColor: theme.colors.warning || "#FFA500",
-                        paddingHorizontal: isWeb ? 12 : 8,
-                        paddingVertical: isWeb ? 6 : 3,
-                        borderRadius: isWeb ? 6 : 4,
-                      }}
-                    >
-                      <Text
-                        size="xs"
-                        weight="semibold"
-                        style={{ color: "#FFFFFF" }}
-                      >
-                        {transaction.status.toUpperCase()}
-                      </Text>
-                    </YStack>
-                  )}
-                </XStack>
+                <Text size="sm" style={{ color: theme.colors.textSecondary }}>
+                  {new Date(transaction.date).toLocaleDateString()}
+                </Text>
               </YStack>
               <Text
                 size="xl"
