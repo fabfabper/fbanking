@@ -135,6 +135,7 @@ export const de: Translations = {
 
   // Accounts
   accounts: {
+    currentBalance: "Aktueller Kontostand",
     checking: "Girokonto",
     savings: "Sparkonto",
     credit: "Kreditkarte",

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ScrollView,
-  Dimensions,
   Platform,
   Pressable,
   Switch,
@@ -19,15 +18,14 @@ import {
   useAppTheme,
 } from "@ebanking/ui";
 import { formatCurrency } from "./utils/formatCurrency";
+import {
+  AccountCarousel,
+  CARD_WIDTH,
+  CARD_SPACING,
+} from "./components/AccountCarousel";
 import type { Account, Transaction, Payment } from "@ebanking/api";
 
-const { width: screenWidth } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
-const CARD_WIDTH = isWeb
-  ? Math.min(280, screenWidth * 0.25)
-  : screenWidth * 0.7;
-const CARD_HEIGHT = 150;
-const CARD_SPACING = 12;
 
 interface PaymentScreenProps {
   api: {
@@ -451,106 +449,12 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
 
             {/* Account Cards */}
             {!loading && !error && accounts.length > 0 && (
-              <ScrollView
-                horizontal
-                pagingEnabled={false}
-                showsHorizontalScrollIndicator={false}
-                decelerationRate="fast"
-                snapToInterval={isWeb ? undefined : CARD_WIDTH + CARD_SPACING}
-                snapToAlignment={isWeb ? undefined : "center"}
-                contentContainerStyle={{
-                  paddingHorizontal: isWeb
-                    ? 24
-                    : (screenWidth - CARD_WIDTH) / 2,
-                  paddingVertical: 8,
-                  paddingBottom: 12,
-                }}
-                onMomentumScrollEnd={isWeb ? undefined : handleScroll}
-              >
-                {accounts.map((account, index) => {
-                  const isSelected = index === selectedAccountIndex;
-                  const cardBgColor = isSelected
-                    ? theme.colors.primary
-                    : theme.colors.cardUnselected;
-                  const textColor = isSelected
-                    ? theme.colors.textWhite
-                    : theme.colors.cardUnselectedText;
-                  const textSecondaryColor = isSelected
-                    ? theme.colors.textWhite
-                    : theme.colors.cardUnselectedSecondary;
-
-                  return (
-                    <Pressable
-                      key={account.id}
-                      onPress={() => setSelectedAccountIndex(index)}
-                    >
-                      <Card
-                        hoverable
-                        style={{
-                          width: CARD_WIDTH,
-                          height: CARD_HEIGHT,
-                          marginRight: CARD_SPACING,
-                          backgroundColor: cardBgColor,
-                          opacity: isSelected ? 1 : 0.75,
-                          transform: [{ scale: isSelected ? 1 : 0.96 }],
-                          shadowColor: "#000",
-                          shadowOffset: { width: 0, height: 4 },
-                          shadowOpacity: isSelected ? 0.15 : 0.08,
-                          shadowRadius: 8,
-                          elevation: isSelected ? 4 : 2,
-                        }}
-                      >
-                        <YStack
-                          gap="$2"
-                          padding="$3"
-                          justifyContent="space-between"
-                          flex={1}
-                        >
-                          <YStack gap="$1">
-                            <Text
-                              size="xs"
-                              weight="medium"
-                              style={{
-                                color: textSecondaryColor,
-                                opacity: isSelected ? 0.9 : 1,
-                                letterSpacing: 1.2,
-                              }}
-                            >
-                              {account.accountType.toUpperCase()}
-                            </Text>
-                            <Text
-                              size="lg"
-                              weight="bold"
-                              style={{ color: textColor }}
-                            >
-                              {account.name}
-                            </Text>
-                          </YStack>
-
-                          <YStack gap="$1">
-                            <Text
-                              size="xs"
-                              style={{
-                                color: textSecondaryColor,
-                                opacity: isSelected ? 0.9 : 1,
-                              }}
-                            >
-                              {account.accountNumber.slice(-4).padStart(8, "*")}
-                            </Text>
-                            <Text
-                              size="2xl"
-                              weight="bold"
-                              style={{ color: textColor, marginTop: 2 }}
-                            >
-                              {formatCurrency(account.balance)}
-                            </Text>
-                          </YStack>
-                        </YStack>
-                      </Card>
-                    </Pressable>
-                  );
-                })}
-              </ScrollView>
+              <AccountCarousel
+                accounts={accounts}
+                selectedAccountIndex={selectedAccountIndex}
+                onAccountSelect={setSelectedAccountIndex}
+                onMomentumScrollEnd={handleScroll}
+              />
             )}
 
             {/* Empty State */}

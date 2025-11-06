@@ -128,6 +128,7 @@ export const en = {
 
   // Accounts
   accounts: {
+    currentBalance: "Current Balance",
     checking: "Checking Account",
     savings: "Savings Account",
     credit: "Credit Card",

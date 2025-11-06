@@ -383,7 +383,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api }) => {
                         <YAxis
                           style={{ fontSize: 11 }}
                           tick={{ fill: theme.colors.textSecondary }}
-                          tickFormatter={(value) => formatCurrency(value)}
+                          tickFormatter={(value) => value}
                         />
                         <Tooltip
                           formatter={(value: any) =>
