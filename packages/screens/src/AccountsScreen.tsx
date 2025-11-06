@@ -325,109 +325,119 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
           </YStack>
         ) : (
           <ScrollView showsVerticalScrollIndicator={false}>
-            <YStack gap="$3" paddingBottom="$6">
-              {transactions.map((transaction) => {
-                const isCredit = transaction.type === "credit";
-                const amount = isCredit
-                  ? transaction.amount
-                  : -transaction.amount;
+            <YStack paddingBottom="$6">
+              <Card
+                style={{
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.05,
+                  shadowRadius: 3,
+                  elevation: 1,
+                }}
+              >
+                {transactions.map((transaction, index) => {
+                  const isCredit = transaction.type === "credit";
+                  const amount = isCredit
+                    ? transaction.amount
+                    : -transaction.amount;
+                  const isLast = index === transactions.length - 1;
 
-                return (
-                  <Card
-                    key={transaction.id}
-                    hoverable
-                    style={{
-                      shadowColor: "#000",
-                      shadowOffset: { width: 0, height: 1 },
-                      shadowOpacity: 0.05,
-                      shadowRadius: 3,
-                      elevation: 1,
-                    }}
-                  >
-                    <XStack
-                      justifyContent="space-between"
-                      alignItems="center"
-                      padding="$4"
-                      gap="$4"
-                    >
-                      <YStack gap="$2" flex={1}>
-                        <Text
-                          size="md"
-                          weight="semibold"
-                          style={{ lineHeight: 20 }}
-                        >
-                          {transaction.description}
-                        </Text>
-                        <XStack gap="$3" alignItems="center" flexWrap="wrap">
+                  return (
+                    <YStack key={transaction.id}>
+                      <XStack
+                        justifyContent="space-between"
+                        alignItems="center"
+                        padding="$4"
+                        gap="$4"
+                      >
+                        <YStack gap="$2" flex={1}>
                           <Text
-                            size="sm"
-                            style={{ color: theme.colors.textSecondary }}
+                            size="md"
+                            weight="semibold"
+                            style={{ lineHeight: 20 }}
                           >
-                            {new Date(transaction.date).toLocaleDateString()}
+                            {transaction.description}
                           </Text>
-                          <YStack
-                            style={{
-                              backgroundColor: isCredit
-                                ? theme.colors.categoryIncome
-                                : theme.colors.categoryExpense,
-                              paddingHorizontal: isWeb ? 16 : 10,
-                              paddingVertical: isWeb ? 8 : 4,
-                              borderRadius: isWeb ? 8 : 6,
-                              minWidth: isWeb ? 100 : undefined,
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
+                          <XStack gap="$3" alignItems="center" flexWrap="wrap">
                             <Text
-                              size={isWeb ? "md" : "xs"}
-                              weight="semibold"
-                              style={{
-                                color: "#FFFFFF",
-                                whiteSpace: isWeb ? "nowrap" : undefined,
-                                textAlign: "center",
-                              }}
+                              size="sm"
+                              style={{ color: theme.colors.textSecondary }}
                             >
-                              {transaction.category}
+                              {new Date(transaction.date).toLocaleDateString()}
                             </Text>
-                          </YStack>
-                          {transaction.status !== "completed" && (
                             <YStack
                               style={{
-                                backgroundColor:
-                                  theme.colors.warning || "#FFA500",
-                                paddingHorizontal: isWeb ? 12 : 8,
-                                paddingVertical: isWeb ? 6 : 3,
-                                borderRadius: isWeb ? 6 : 4,
+                                backgroundColor: isCredit
+                                  ? theme.colors.categoryIncome
+                                  : theme.colors.categoryExpense,
+                                paddingHorizontal: isWeb ? 16 : 10,
+                                paddingVertical: isWeb ? 8 : 4,
+                                borderRadius: isWeb ? 8 : 6,
+                                minWidth: isWeb ? 100 : undefined,
+                                alignItems: "center",
+                                justifyContent: "center",
                               }}
                             >
                               <Text
-                                size="xs"
+                                size={isWeb ? "md" : "xs"}
                                 weight="semibold"
-                                style={{ color: "#FFFFFF" }}
+                                style={{
+                                  color: "#FFFFFF",
+                                  whiteSpace: isWeb ? "nowrap" : undefined,
+                                  textAlign: "center",
+                                }}
                               >
-                                {transaction.status.toUpperCase()}
+                                {transaction.category}
                               </Text>
                             </YStack>
-                          )}
-                        </XStack>
-                      </YStack>
-                      <Text
-                        size="xl"
-                        weight="bold"
-                        style={{
-                          color: isCredit
-                            ? theme.colors.success
-                            : theme.colors.error,
-                          minWidth: 90,
-                          textAlign: "right",
-                        }}
-                      >
-                        {formatCurrency(amount, true)} {transaction.currency}
-                      </Text>
-                    </XStack>
-                  </Card>
-                );
-              })}
+                            {transaction.status !== "completed" && (
+                              <YStack
+                                style={{
+                                  backgroundColor:
+                                    theme.colors.warning || "#FFA500",
+                                  paddingHorizontal: isWeb ? 12 : 8,
+                                  paddingVertical: isWeb ? 6 : 3,
+                                  borderRadius: isWeb ? 6 : 4,
+                                }}
+                              >
+                                <Text
+                                  size="xs"
+                                  weight="semibold"
+                                  style={{ color: "#FFFFFF" }}
+                                >
+                                  {transaction.status.toUpperCase()}
+                                </Text>
+                              </YStack>
+                            )}
+                          </XStack>
+                        </YStack>
+                        <Text
+                          size="xl"
+                          weight="bold"
+                          style={{
+                            color: isCredit
+                              ? theme.colors.success
+                              : theme.colors.error,
+                            minWidth: 90,
+                            textAlign: "right",
+                          }}
+                        >
+                          {formatCurrency(amount, true)} {transaction.currency}
+                        </Text>
+                      </XStack>
+                      {!isLast && (
+                        <YStack
+                          style={{
+                            height: 1,
+                            backgroundColor: theme.colors.border,
+                            marginHorizontal: 16,
+                          }}
+                        />
+                      )}
+                    </YStack>
+                  );
+                })}
+              </Card>
             </YStack>
           </ScrollView>
         )}

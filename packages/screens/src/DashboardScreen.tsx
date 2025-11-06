@@ -533,25 +533,24 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api }) => {
               </YStack>
             </Card>
           ) : (
-            <YStack gap="$3">
-              {transactions.map((transaction) => {
+            <Card
+              style={{
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.05,
+                shadowRadius: 3,
+                elevation: 1,
+              }}
+            >
+              {transactions.map((transaction, index) => {
                 const isCredit = transaction.type === "credit";
                 const amount = isCredit
                   ? transaction.amount
                   : -transaction.amount;
+                const isLast = index === transactions.length - 1;
 
                 return (
-                  <Card
-                    key={transaction.id}
-                    hoverable
-                    style={{
-                      shadowColor: "#000",
-                      shadowOffset: { width: 0, height: 1 },
-                      shadowOpacity: 0.05,
-                      shadowRadius: 3,
-                      elevation: 1,
-                    }}
-                  >
+                  <YStack key={transaction.id}>
                     <XStack
                       justifyContent="space-between"
                       alignItems="center"
@@ -614,10 +613,19 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api }) => {
                         {formatCurrency(amount, true)} {transaction.currency}
                       </Text>
                     </XStack>
-                  </Card>
+                    {!isLast && (
+                      <YStack
+                        style={{
+                          height: 1,
+                          backgroundColor: theme.colors.border,
+                          marginHorizontal: 16,
+                        }}
+                      />
+                    )}
+                  </YStack>
                 );
               })}
-            </YStack>
+            </Card>
           )}
         </YStack>
       </ScrollView>
