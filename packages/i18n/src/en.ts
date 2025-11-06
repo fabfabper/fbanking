@@ -60,6 +60,12 @@ export const en = {
     notePlaceholder: "Add a note",
     sendPayment: "Send Payment",
 
+    // Address fields
+    streetPlaceholder: "Street and number",
+    cityPlaceholder: "City",
+    postalCodePlaceholder: "Postal code",
+    countryPlaceholder: "Country",
+
     // Standing Payment
     standingPayment: "Standing Payment",
     recurringPayment: "Set up recurring payment",
@@ -131,6 +137,9 @@ export const en = {
       "You don't have any accounts set up yet. Please contact your bank to create an account.",
     noTransactions: "No Transactions",
     noTransactionsDescription: "No transactions found for this account.",
+    filterAll: "All",
+    filterIncomes: "Incomes",
+    filterExpenses: "Expenses",
   },
 
   // Categories

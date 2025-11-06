@@ -56,6 +56,12 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchResults, setShowSearchResults] = useState(false);
 
+  // Address fields
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [country, setCountry] = useState("");
+
   // API state
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
@@ -383,16 +389,6 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
 
           {/* Account Cards Carousel */}
           <YStack marginBottom="$4">
-            <YStack paddingHorizontal="$6" marginBottom="$2">
-              <Text
-                size="md"
-                weight="semibold"
-                style={{ color: theme.colors.textPrimary }}
-              >
-                {t("payment.fromAccount")}
-              </Text>
-            </YStack>
-
             {/* Loading State */}
             {loading && (
               <YStack alignItems="center" justifyContent="center" padding="$8">
@@ -601,13 +597,6 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
                 </Text>
 
                 <YStack gap="$2">
-                  <Text
-                    size="md"
-                    weight="semibold"
-                    style={{ color: theme.colors.textPrimary }}
-                  >
-                    {t("payment.recipient")}
-                  </Text>
                   <Input
                     value={recipient}
                     onChangeText={setRecipient}
@@ -617,13 +606,6 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
                 </YStack>
 
                 <YStack gap="$2">
-                  <Text
-                    size="md"
-                    weight="semibold"
-                    style={{ color: theme.colors.textPrimary }}
-                  >
-                    {t("payment.amount")}
-                  </Text>
                   <Input
                     value={amount}
                     onChangeText={setAmount}
@@ -634,17 +616,69 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
                 </YStack>
 
                 <YStack gap="$2">
-                  <Text
-                    size="md"
-                    weight="semibold"
-                    style={{ color: theme.colors.textPrimary }}
-                  >
-                    {t("payment.note")}
-                  </Text>
                   <Input
                     value={note}
                     onChangeText={setNote}
                     placeholder={t("payment.notePlaceholder")}
+                    fullWidth
+                  />
+                </YStack>
+
+                {/* Address Fields */}
+                <YStack gap="$2">
+                  <Input
+                    value={street}
+                    onChangeText={setStreet}
+                    placeholder={t("payment.streetPlaceholder")}
+                    fullWidth
+                  />
+                </YStack>
+
+                {isWeb ? (
+                  <XStack gap="$3">
+                    <YStack gap="$2" flex={1}>
+                      <Input
+                        value={postalCode}
+                        onChangeText={setPostalCode}
+                        placeholder={t("payment.postalCodePlaceholder")}
+                        fullWidth
+                      />
+                    </YStack>
+                    <YStack gap="$2" flex={1}>
+                      <Input
+                        value={city}
+                        onChangeText={setCity}
+                        placeholder={t("payment.cityPlaceholder")}
+                        fullWidth
+                      />
+                    </YStack>
+                  </XStack>
+                ) : (
+                  <>
+                    <YStack gap="$2">
+                      <Input
+                        value={postalCode}
+                        onChangeText={setPostalCode}
+                        placeholder={t("payment.postalCodePlaceholder")}
+                        fullWidth
+                      />
+                    </YStack>
+                    <YStack gap="$2">
+                      <Input
+                        value={city}
+                        onChangeText={setCity}
+                        placeholder={t("payment.cityPlaceholder")}
+                        fullWidth
+                      />
+                    </YStack>
+                  </>
+                )}
+
+                <YStack gap="$2">
+                  <Input
+                    value={country}
+                    onChangeText={setCountry}
+                    placeholder={t("payment.countryPlaceholder")}
                     fullWidth
                   />
                 </YStack>

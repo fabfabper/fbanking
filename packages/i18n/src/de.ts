@@ -55,13 +55,19 @@ export const de: Translations = {
     noSearchResults: "Keine Ergebnisse gefunden",
     fromAccount: "Von Konto",
     recipient: "Empfänger",
-    recipientPlaceholder: "Empfängername oder Konto eingeben",
+    recipientPlaceholder: "Empfängername oder Konto",
     amount: "Betrag",
-    amountPlaceholder: "0,00 €",
+    amountPlaceholder: "CHF 0.00",
     note: "Notiz",
     noteOptional: "Notiz (Optional)",
-    notePlaceholder: "Notiz hinzufügen",
+    notePlaceholder: "Notiz",
     sendPayment: "Zahlung senden",
+
+    // Address fields
+    streetPlaceholder: "Strasse und Hausnummer",
+    cityPlaceholder: "Stadt",
+    postalCodePlaceholder: "Postleitzahl",
+    countryPlaceholder: "Land",
 
     // Standing Payment
     standingPayment: "Dauerauftrag",
@@ -138,6 +144,9 @@ export const de: Translations = {
       "Sie haben noch keine Konten eingerichtet. Bitte kontaktieren Sie Ihre Bank, um ein Konto zu erstellen.",
     noTransactions: "Keine Transaktionen",
     noTransactionsDescription: "Keine Transaktionen für dieses Konto gefunden.",
+    filterAll: "Alle",
+    filterIncomes: "Einnahmen",
+    filterExpenses: "Ausgaben",
   },
 
   // Categories

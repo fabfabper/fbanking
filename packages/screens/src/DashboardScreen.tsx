@@ -543,10 +543,6 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api }) => {
               }}
             >
               {transactions.map((transaction, index) => {
-                const isCredit = transaction.type === "credit";
-                const amount = isCredit
-                  ? transaction.amount
-                  : -transaction.amount;
                 const isLast = index === transactions.length - 1;
 
                 return (
@@ -565,52 +561,26 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api }) => {
                         >
                           {transaction.description}
                         </Text>
-                        <XStack gap="$3" alignItems="center" flexWrap="wrap">
-                          <Text
-                            size="sm"
-                            style={{ color: theme.colors.textSecondary }}
-                          >
-                            {new Date(transaction.date).toLocaleDateString()}
-                          </Text>
-                          <YStack
-                            style={{
-                              backgroundColor: isCredit
-                                ? theme.colors.categoryIncome
-                                : theme.colors.categoryExpense,
-                              paddingHorizontal: isWeb ? 16 : 10,
-                              paddingVertical: isWeb ? 8 : 4,
-                              borderRadius: isWeb ? 8 : 6,
-                              minWidth: isWeb ? 100 : undefined,
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <Text
-                              size={isWeb ? "md" : "xs"}
-                              weight="semibold"
-                              style={{
-                                color: "#FFFFFF",
-                                whiteSpace: isWeb ? "nowrap" : undefined,
-                                textAlign: "center",
-                              }}
-                            >
-                              {transaction.category}
-                            </Text>
-                          </YStack>
-                        </XStack>
+                        <Text
+                          size="sm"
+                          style={{ color: theme.colors.textSecondary }}
+                        >
+                          {new Date(transaction.date).toLocaleDateString()}
+                        </Text>
                       </YStack>
                       <Text
                         size="xl"
                         weight="bold"
                         style={{
-                          color: isCredit
-                            ? theme.colors.success
-                            : theme.colors.error,
+                          color:
+                            transaction.amount > 0
+                              ? theme.colors.success
+                              : theme.colors.error,
                           minWidth: 90,
                           textAlign: "right",
                         }}
                       >
-                        {formatCurrency(amount, true)} {transaction.currency}
+                        {formatCurrency(Number(transaction.amount), true)}
                       </Text>
                     </XStack>
                     {!isLast && (

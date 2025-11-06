@@ -22,9 +22,9 @@ export const formatCurrency = (
 
   // Add currency symbol and sign
   if (amount < 0) {
-    return `-CHF ${formattedAmount}`;
+    return `CHF -${formattedAmount}`;
   } else if (showSign && amount > 0) {
-    return `+CHF ${formattedAmount}`;
+    return `CHF +${formattedAmount}`;
   } else {
     return `CHF ${formattedAmount}`;
   }

@@ -50,6 +50,11 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
     null
   );
 
+  // Filter state
+  const [transactionFilter, setTransactionFilter] = useState<
+    "all" | "incomes" | "expenses"
+  >("all");
+
   // Fetch accounts from API
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -106,6 +111,14 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
       fetchTransactions(accounts[index].id);
     }
   };
+
+  // Filter transactions based on selected filter
+  const filteredTransactions = transactions.filter((transaction) => {
+    if (transactionFilter === "all") return true;
+    if (transactionFilter === "incomes") return transaction.type === "credit";
+    if (transactionFilter === "expenses") return transaction.type === "debit";
+    return true;
+  });
 
   // Loading state
   if (accountsLoading) {
@@ -272,7 +285,7 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                         weight="bold"
                         style={{ color: textColor, marginTop: 2 }}
                       >
-                        {formatCurrency(account.balance)} {account.currency}
+                        {formatCurrency(account.balance)}
                       </Text>
                     </YStack>
                   </YStack>
@@ -325,7 +338,98 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
           </YStack>
         ) : (
           <ScrollView showsVerticalScrollIndicator={false}>
-            <YStack paddingBottom="$6">
+            <YStack paddingBottom="$6" gap="$4">
+              {/* Filter Tags */}
+              <XStack gap="$2" paddingHorizontal="$1" flexWrap="wrap">
+                <Pressable
+                  onPress={() => setTransactionFilter("all")}
+                  style={{
+                    backgroundColor:
+                      transactionFilter === "all"
+                        ? theme.colors.primary
+                        : theme.colors.background,
+                    paddingHorizontal: isWeb ? 20 : 16,
+                    paddingVertical: isWeb ? 10 : 8,
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    borderColor:
+                      transactionFilter === "all"
+                        ? theme.colors.primary
+                        : theme.colors.border,
+                  }}
+                >
+                  <Text
+                    size="sm"
+                    weight="semibold"
+                    color={
+                      transactionFilter === "all"
+                        ? "#FFFFFF"
+                        : theme.colors.text
+                    }
+                  >
+                    {t("accounts.filterAll") || "All"}
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => setTransactionFilter("incomes")}
+                  style={{
+                    backgroundColor:
+                      transactionFilter === "incomes"
+                        ? theme.colors.success
+                        : theme.colors.background,
+                    paddingHorizontal: isWeb ? 20 : 16,
+                    paddingVertical: isWeb ? 10 : 8,
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    borderColor:
+                      transactionFilter === "incomes"
+                        ? theme.colors.success
+                        : theme.colors.border,
+                  }}
+                >
+                  <Text
+                    size="sm"
+                    weight="semibold"
+                    color={
+                      transactionFilter === "incomes"
+                        ? "#FFFFFF"
+                        : theme.colors.text
+                    }
+                  >
+                    {t("accounts.filterIncomes") || "Incomes"}
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => setTransactionFilter("expenses")}
+                  style={{
+                    backgroundColor:
+                      transactionFilter === "expenses"
+                        ? theme.colors.error
+                        : theme.colors.background,
+                    paddingHorizontal: isWeb ? 20 : 16,
+                    paddingVertical: isWeb ? 10 : 8,
+                    borderRadius: 20,
+                    borderWidth: 1,
+                    borderColor:
+                      transactionFilter === "expenses"
+                        ? theme.colors.error
+                        : theme.colors.border,
+                  }}
+                >
+                  <Text
+                    size="sm"
+                    weight="semibold"
+                    color={
+                      transactionFilter === "expenses"
+                        ? "#FFFFFF"
+                        : theme.colors.text
+                    }
+                  >
+                    {t("accounts.filterExpenses") || "Expenses"}
+                  </Text>
+                </Pressable>
+              </XStack>
+
               <Card
                 style={{
                   shadowColor: "#000",
@@ -335,12 +439,8 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                   elevation: 1,
                 }}
               >
-                {transactions.map((transaction, index) => {
-                  const isCredit = transaction.type === "credit";
-                  const amount = isCredit
-                    ? transaction.amount
-                    : -transaction.amount;
-                  const isLast = index === transactions.length - 1;
+                {filteredTransactions.map((transaction, index) => {
+                  const isLast = index === filteredTransactions.length - 1;
 
                   return (
                     <YStack key={transaction.id}>
@@ -365,31 +465,6 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                             >
                               {new Date(transaction.date).toLocaleDateString()}
                             </Text>
-                            <YStack
-                              style={{
-                                backgroundColor: isCredit
-                                  ? theme.colors.categoryIncome
-                                  : theme.colors.categoryExpense,
-                                paddingHorizontal: isWeb ? 16 : 10,
-                                paddingVertical: isWeb ? 8 : 4,
-                                borderRadius: isWeb ? 8 : 6,
-                                minWidth: isWeb ? 100 : undefined,
-                                alignItems: "center",
-                                justifyContent: "center",
-                              }}
-                            >
-                              <Text
-                                size={isWeb ? "md" : "xs"}
-                                weight="semibold"
-                                style={{
-                                  color: "#FFFFFF",
-                                  whiteSpace: isWeb ? "nowrap" : undefined,
-                                  textAlign: "center",
-                                }}
-                              >
-                                {transaction.category}
-                              </Text>
-                            </YStack>
                             {transaction.status !== "completed" && (
                               <YStack
                                 style={{
@@ -415,14 +490,15 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                           size="xl"
                           weight="bold"
                           style={{
-                            color: isCredit
-                              ? theme.colors.success
-                              : theme.colors.error,
+                            color:
+                              transaction.amount > 0
+                                ? theme.colors.success
+                                : theme.colors.error,
                             minWidth: 90,
                             textAlign: "right",
                           }}
                         >
-                          {formatCurrency(amount, true)} {transaction.currency}
+                          {formatCurrency(Number(transaction.amount), true)}
                         </Text>
                       </XStack>
                       {!isLast && (
