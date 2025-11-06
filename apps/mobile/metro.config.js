@@ -23,7 +23,7 @@ config.resolver.extraNodeModules = {
   "@ebanking/api": path.resolve(workspaceRoot, "packages/api/src"),
   // Provide empty modules for web-only dependencies
   "react-dom": path.resolve(__dirname, "node_modules/react-native/index.js"),
-  "recharts": path.resolve(__dirname, "node_modules/react-native/index.js"),
+  recharts: path.resolve(__dirname, "node_modules/react-native/index.js"),
 };
 
 // Reset cache on file changes
