@@ -285,7 +285,7 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                     color={
                       transactionFilter === "all"
                         ? "#FFFFFF"
-                        : theme.colors.text
+                        : theme.colors.textPrimary
                     }
                   >
                     {t("accounts.filterAll") || "All"}
@@ -314,7 +314,7 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                     color={
                       transactionFilter === "incomes"
                         ? "#FFFFFF"
-                        : theme.colors.text
+                        : theme.colors.textPrimary
                     }
                   >
                     {t("accounts.filterIncomes") || "Incomes"}
@@ -343,7 +343,7 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                     color={
                       transactionFilter === "expenses"
                         ? "#FFFFFF"
-                        : theme.colors.text
+                        : theme.colors.textPrimary
                     }
                   >
                     {t("accounts.filterExpenses") || "Expenses"}
@@ -355,8 +355,8 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                 transactions={filteredTransactions}
                 emptyMessage={
                   transactionFilter !== "all"
-                    ? "No transactions found"
-                    : t("accounts.noTransactions")
+                    ? t("accounts.noTransactions")
+                    : "No transactions found"
                 }
               />
             </YStack>
