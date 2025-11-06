@@ -13,6 +13,7 @@ import {
   CARD_WIDTH,
   CARD_SPACING,
 } from "./components/AccountCarousel";
+import { TransactionList } from "./components/TransactionList";
 import type { Account, Transaction, PaginatedResponse } from "@ebanking/api";
 
 const isWeb = Platform.OS === "web";
@@ -350,90 +351,15 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                 </Pressable>
               </XStack>
 
-              <Card
-                style={{
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.05,
-                  shadowRadius: 3,
-                  elevation: 1,
-                }}
-              >
-                {filteredTransactions.map((transaction, index) => {
-                  const isLast = index === filteredTransactions.length - 1;
-
-                  return (
-                    <YStack key={transaction.id}>
-                      <XStack
-                        justifyContent="space-between"
-                        alignItems="center"
-                        padding="$4"
-                        gap="$4"
-                      >
-                        <YStack gap="$2" flex={1}>
-                          <Text
-                            size="md"
-                            weight="semibold"
-                            style={{ lineHeight: 20 }}
-                          >
-                            {transaction.description}
-                          </Text>
-                          <XStack gap="$3" alignItems="center" flexWrap="wrap">
-                            <Text
-                              size="sm"
-                              style={{ color: theme.colors.textSecondary }}
-                            >
-                              {new Date(transaction.date).toLocaleDateString()}
-                            </Text>
-                            {transaction.status !== "completed" && (
-                              <YStack
-                                style={{
-                                  backgroundColor:
-                                    theme.colors.warning || "#FFA500",
-                                  paddingHorizontal: isWeb ? 12 : 8,
-                                  paddingVertical: isWeb ? 6 : 3,
-                                  borderRadius: isWeb ? 6 : 4,
-                                }}
-                              >
-                                <Text
-                                  size="xs"
-                                  weight="semibold"
-                                  style={{ color: "#FFFFFF" }}
-                                >
-                                  {transaction.status.toUpperCase()}
-                                </Text>
-                              </YStack>
-                            )}
-                          </XStack>
-                        </YStack>
-                        <Text
-                          size="xl"
-                          weight="bold"
-                          style={{
-                            color:
-                              transaction.amount > 0
-                                ? theme.colors.success
-                                : theme.colors.error,
-                            minWidth: 90,
-                            textAlign: "right",
-                          }}
-                        >
-                          {formatCurrency(Number(transaction.amount), true)}
-                        </Text>
-                      </XStack>
-                      {!isLast && (
-                        <YStack
-                          style={{
-                            height: 1,
-                            backgroundColor: theme.colors.border,
-                            marginHorizontal: 16,
-                          }}
-                        />
-                      )}
-                    </YStack>
-                  );
-                })}
-              </Card>
+              <TransactionList
+                transactions={filteredTransactions}
+                showStatus={true}
+                emptyMessage={
+                  transactionFilter !== "all"
+                    ? "No transactions found"
+                    : t("accounts.noTransactions")
+                }
+              />
             </YStack>
           </ScrollView>
         )}
