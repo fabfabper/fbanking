@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
+    "icon": "./assets/icon.png",
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
@@ -15,7 +16,15 @@
       }
     },
     "android": {
-      "package": "com.ebanking.app"
+      "package": "com.ebanking.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "notification": {
+        "icon": "./assets/notification-icon.png",
+        "color": "#1E40AF"
+      }
     },
     "scheme": "ebanking",
     "plugins": ["expo-router"],

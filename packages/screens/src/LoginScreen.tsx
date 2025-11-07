@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, ActivityIndicator } from "react-native";
 import { YStack, XStack, Text, Button, Input, Card, useAppTheme } from "@ebanking/ui";
+import { ScanFace, Fingerprint, Eye, Lock } from "lucide-react-native";
 import { useBiometricAuth } from "./hooks/useBiometricAuth";
 
 interface LoginScreenProps {
@@ -50,10 +51,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   };
 
   const getBiometricIcon = () => {
-    if (biometricType === "facial") return "👤";
-    if (biometricType === "fingerprint") return "👆";
-    if (biometricType === "iris") return "👁️";
-    return "🔐";
+    const iconProps = { size: 20, color: theme.colors.primary };
+    if (biometricType === "facial") return <ScanFace {...iconProps} />;
+    if (biometricType === "fingerprint") return <Fingerprint {...iconProps} />;
+    if (biometricType === "iris") return <Eye {...iconProps} />;
+    return <Lock {...iconProps} />;
   };
 
   const getBiometricLabel = () => {
@@ -159,7 +161,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
             {/* Biometric Login Button */}
             {isAvailable && Platform.OS !== "web" && (
               <>
-                <YStack alignItems="center" paddingVertical="$3">
+                <YStack alignItems="center" paddingVertical="$2">
                   <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                     {t("common.or")}
                   </Text>
@@ -178,7 +180,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                     </XStack>
                   ) : (
                     <XStack gap="$2" alignItems="center">
-                      <Text size="2xl">{getBiometricIcon()}</Text>
+                      {getBiometricIcon()}
                       <Text size="md">{getBiometricLabel()}</Text>
                     </XStack>
                   )}
