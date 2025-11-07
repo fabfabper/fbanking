@@ -12,6 +12,7 @@
     "recharts": "^3.3.0"
   },
   "peerDependencies": {
+    "expo-camera": "~16.0.0",
     "expo-image-picker": "~17.0.8"
   }
 }

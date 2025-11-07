@@ -134,6 +134,34 @@ interface AppProps {
   setDarkMode: (value: boolean) => void;
 }
 
+const PaymentRouteWrapper: React.FC<{ api: typeof api }> = ({ api }) => {
+  const location = useLocation();
+
+  console.log("[Web Payment] Full location object:", location);
+  console.log("[Web Payment] location.state type:", typeof location.state);
+  console.log(
+    "[Web Payment] location.state keys:",
+    location.state ? Object.keys(location.state) : "null/undefined"
+  );
+  console.log("[Web Payment] Received location state:", location.state);
+
+  const initialData = location.state || undefined;
+  console.log("[Web Payment] Initial data:", initialData);
+
+  try {
+    return <PaymentScreen api={api} initialData={initialData} />;
+  } catch (error) {
+    console.error("[Web Payment] Error rendering PaymentScreen:", error);
+    return (
+      <div style={{ padding: 20, color: "red" }}>
+        <h2>Error loading payment screen</h2>
+        <p>{error instanceof Error ? error.message : String(error)}</p>
+        <pre>{error instanceof Error ? error.stack : ""}</pre>
+      </div>
+    );
+  }
+};
+
 const App: React.FC<AppProps> = ({ darkMode, setDarkMode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
@@ -141,6 +169,11 @@ const App: React.FC<AppProps> = ({ darkMode, setDarkMode }) => {
   const handleLogin = () => {
     setIsAuthenticated(true);
     navigate("/dashboard");
+  };
+
+  const handleNavigateToPayment = (paymentData: any) => {
+    console.log("[Web App] Navigating to payment with data:", paymentData);
+    navigate("/payment", { state: paymentData });
   };
 
   return (
@@ -163,7 +196,10 @@ const App: React.FC<AppProps> = ({ darkMode, setDarkMode }) => {
           path="/dashboard"
           element={
             isAuthenticated ? (
-              <DashboardScreen api={api} />
+              <DashboardScreen
+                api={api}
+                onNavigateToPayment={handleNavigateToPayment}
+              />
             ) : (
               <Navigate to="/login" replace />
             )
@@ -183,7 +219,7 @@ const App: React.FC<AppProps> = ({ darkMode, setDarkMode }) => {
           path="/payment"
           element={
             isAuthenticated ? (
-              <PaymentScreen api={api} />
+              <PaymentRouteWrapper api={api} />
             ) : (
               <Navigate to="/login" replace />
             )

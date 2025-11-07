@@ -24,8 +24,12 @@ config.resolver.extraNodeModules = {
   // Provide empty modules for web-only dependencies
   "react-dom": path.resolve(__dirname, "node_modules/react-native/index.js"),
   recharts: path.resolve(__dirname, "node_modules/react-native/index.js"),
-  // Force expo-image-picker to resolve from mobile app's node_modules
-  "expo-image-picker": path.resolve(projectRoot, "node_modules/expo-image-picker"),
+  // Force expo packages to resolve from mobile app's node_modules
+  "expo-camera": path.resolve(projectRoot, "node_modules/expo-camera"),
+  "expo-image-picker": path.resolve(
+    projectRoot,
+    "node_modules/expo-image-picker"
+  ),
   // Force single instance of React to avoid hook errors
   react: path.resolve(projectRoot, "node_modules/react"),
   "react-native": path.resolve(projectRoot, "node_modules/react-native"),

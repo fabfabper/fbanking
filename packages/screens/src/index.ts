@@ -6,3 +6,6 @@ export { SettingsScreen } from "./SettingsScreen";
 export { formatCurrency } from "./utils/formatCurrency";
 export { AccountCarousel } from "./components/AccountCarousel";
 export { TransactionList } from "./components/TransactionList";
+export { QRCodeScannerModal } from "./components/QRCodeScannerModal";
+export { QRCodeService } from "./services/QRCodeService";
+export type { QRCodeData } from "./services/QRCodeService";

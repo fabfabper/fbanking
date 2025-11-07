@@ -33,10 +33,18 @@ export default defineConfig({
       "@ebanking/i18n": path.resolve(__dirname, "../../packages/i18n/src"),
       "@ebanking/api": path.resolve(__dirname, "../../packages/api/src"),
       "react-native": "react-native-web",
+      "expo-camera": path.resolve(__dirname, "node_modules/expo-camera"),
+      recharts: path.resolve(__dirname, "node_modules/recharts"),
+      "html5-qrcode": path.resolve(__dirname, "node_modules/html5-qrcode"),
     },
   },
   optimizeDeps: {
     exclude: ["react-native"],
+    esbuildOptions: {
+      loader: {
+        ".js": "jsx",
+      },
+    },
   },
   build: {
     outDir: "dist",

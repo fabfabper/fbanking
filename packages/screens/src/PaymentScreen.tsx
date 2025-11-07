@@ -42,23 +42,41 @@ interface PaymentScreenProps {
       getPayments: () => Promise<Payment[]>;
     };
   };
+  initialData?: {
+    recipient?: string;
+    amount?: string;
+    note?: string;
+    iban?: string;
+    street?: string;
+    houseNumber?: string;
+    city?: string;
+    postalCode?: string;
+    country?: string;
+  };
 }
 
-export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
+export const PaymentScreen: React.FC<PaymentScreenProps> = ({
+  api,
+  initialData,
+}) => {
   const { t } = useTranslation();
   const { theme } = useAppTheme();
   const [selectedAccountIndex, setSelectedAccountIndex] = useState(0);
-  const [recipient, setRecipient] = useState("");
-  const [amount, setAmount] = useState("");
-  const [note, setNote] = useState("");
+  const [recipient, setRecipient] = useState(initialData?.recipient || "");
+  const [iban, setIban] = useState(initialData?.iban || "");
+  const [amount, setAmount] = useState(initialData?.amount || "");
+  const [note, setNote] = useState(initialData?.note || "");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchResults, setShowSearchResults] = useState(false);
 
   // Address fields
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
+  const [street, setStreet] = useState(initialData?.street || "");
+  const [houseNumber, setHouseNumber] = useState(
+    initialData?.houseNumber || ""
+  );
+  const [city, setCity] = useState(initialData?.city || "");
+  const [postalCode, setPostalCode] = useState(initialData?.postalCode || "");
+  const [country, setCountry] = useState(initialData?.country || "");
 
   // API state
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -184,6 +202,11 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
       setRecipient(payment.recipient.name);
       setAmount(payment.amount.toString());
       setNote(payment.description);
+      setStreet(payment.recipient.street);
+      setHouseNumber(payment.recipient.houseNumber);
+      setCity(payment.recipient.city);
+      setPostalCode(payment.recipient.postalCode);
+      setCountry(payment.recipient.country);
     } else {
       // It's a Transaction with recipient string
       const transaction = item as Transaction;
@@ -505,6 +528,15 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api }) => {
                     value={recipient}
                     onChangeText={setRecipient}
                     placeholder={t("payment.recipientPlaceholder")}
+                    fullWidth
+                  />
+                </YStack>
+
+                <YStack gap="$2">
+                  <Input
+                    value={iban}
+                    onChangeText={setIban}
+                    placeholder="IBAN"
                     fullWidth
                   />
                 </YStack>
