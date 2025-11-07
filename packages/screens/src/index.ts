@@ -9,4 +9,5 @@ export { TransactionList } from "./components/TransactionList";
 export { QRCodeScannerModal } from "./components/QRCodeScannerModal";
 export { QRCodeService } from "./services/QRCodeService";
 export { useQRCodeScanner } from "./hooks/useQRCodeScanner";
+export { useBiometricAuth } from "./hooks/useBiometricAuth";
 export type { QRCodeData } from "./services/QRCodeService";

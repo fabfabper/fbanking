@@ -17,6 +17,7 @@ export const de: Translations = {
     searching: "Suchen...",
     error: "Fehler",
     retry: "Wiederholen",
+    or: "oder",
   },
 
   // Auth/Login
@@ -34,6 +35,11 @@ export const de: Translations = {
     signUp: "Registrieren",
     termsAgreement:
       "Mit der Anmeldung stimmen Sie unseren AGB & Datenschutzrichtlinien zu",
+    useFaceID: "Face ID verwenden",
+    useTouchID: "Touch ID verwenden",
+    useIrisScanner: "Iris-Scanner verwenden",
+    useBiometric: "Biometrisch anmelden",
+    authenticating: "Authentifizierung...",
   },
 
   // Navigation

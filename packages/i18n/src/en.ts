@@ -15,6 +15,7 @@ export const en = {
     searching: "Searching...",
     error: "Error",
     retry: "Retry",
+    or: "or",
   },
 
   // Auth/Login
@@ -31,6 +32,11 @@ export const en = {
     noAccount: "Don't have an account?",
     signUp: "Sign up",
     termsAgreement: "By signing in, you agree to our Terms & Privacy Policy",
+    useFaceID: "Use Face ID",
+    useTouchID: "Use Touch ID",
+    useIrisScanner: "Use Iris Scanner",
+    useBiometric: "Use Biometric",
+    authenticating: "Authenticating...",
   },
 
   // Navigation

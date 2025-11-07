@@ -35,12 +35,16 @@ export default defineConfig({
       "react-native": "react-native-web",
       "lucide-react-native": "lucide-react",
       "expo-camera": path.resolve(__dirname, "node_modules/expo-camera"),
+      "expo-local-authentication": path.resolve(
+        __dirname,
+        "src/lib/expo-local-authentication-stub.ts"
+      ),
       recharts: path.resolve(__dirname, "node_modules/recharts"),
       "html5-qrcode": path.resolve(__dirname, "node_modules/html5-qrcode"),
     },
   },
   optimizeDeps: {
-    exclude: ["react-native"],
+    exclude: ["react-native", "expo-local-authentication"],
     esbuildOptions: {
       loader: {
         ".js": "jsx",

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Platform, ActivityIndicator } from "react-native";
 import {
   YStack,
   XStack,
@@ -9,6 +10,7 @@ import {
   Card,
   useAppTheme,
 } from "@ebanking/ui";
+import { useBiometricAuth } from "./hooks/useBiometricAuth";
 
 interface LoginScreenProps {
   onLogin: () => void;
@@ -19,10 +21,43 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const { theme } = useAppTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const { isAvailable, biometricType, authenticate, isChecking } =
+    useBiometricAuth();
 
   const handleLogin = () => {
     console.log("Login:", { email, password });
     onLogin();
+  };
+
+  const handleBiometricLogin = async () => {
+    setIsAuthenticating(true);
+    try {
+      const result = await authenticate();
+      if (result.success) {
+        onLogin();
+      } else {
+        console.log("Biometric authentication failed:", result.error);
+      }
+    } catch (error) {
+      console.error("Biometric authentication error:", error);
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
+
+  const getBiometricIcon = () => {
+    if (biometricType === "facial") return "👤";
+    if (biometricType === "fingerprint") return "👆";
+    if (biometricType === "iris") return "👁️";
+    return "🔐";
+  };
+
+  const getBiometricLabel = () => {
+    if (biometricType === "facial") return t("auth.useFaceID");
+    if (biometricType === "fingerprint") return t("auth.useTouchID");
+    if (biometricType === "iris") return t("auth.useIrisScanner");
+    return t("auth.useBiometric");
   };
 
   return (
@@ -139,6 +174,39 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
             >
               {t("common.signIn")}
             </Button>
+
+            {/* Biometric Login Button */}
+            {isAvailable && Platform.OS !== "web" && (
+              <>
+                <YStack alignItems="center" paddingVertical="$3">
+                  <Text size="sm" style={{ color: theme.colors.textSecondary }}>
+                    {t("common.or")}
+                  </Text>
+                </YStack>
+                <Button
+                  variant="outline"
+                  onPress={handleBiometricLogin}
+                  fullWidth
+                  size="lg"
+                  disabled={isAuthenticating}
+                >
+                  {isAuthenticating ? (
+                    <XStack gap="$2" alignItems="center">
+                      <ActivityIndicator
+                        size="small"
+                        color={theme.colors.primary}
+                      />
+                      <Text size="md">{t("auth.authenticating")}</Text>
+                    </XStack>
+                  ) : (
+                    <XStack gap="$2" alignItems="center">
+                      <Text size="2xl">{getBiometricIcon()}</Text>
+                      <Text size="md">{getBiometricLabel()}</Text>
+                    </XStack>
+                  )}
+                </Button>
+              </>
+            )}
           </YStack>
         </Card>
 
