@@ -192,18 +192,6 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
 
   const selectedAccount = accounts[selectedAccountIndex];
 
-  const handleScroll = (event: any) => {
-    const scrollX = event.nativeEvent.contentOffset.x;
-    const index = Math.round(scrollX / (CARD_WIDTH + CARD_SPACING));
-    if (
-      index !== selectedAccountIndex &&
-      index >= 0 &&
-      index < accounts.length
-    ) {
-      setSelectedAccountIndex(index);
-    }
-  };
-
   const handleSearchChange = (text: string) => {
     setSearchQuery(text);
   };
@@ -510,7 +498,6 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                 accounts={accounts}
                 selectedAccountIndex={selectedAccountIndex}
                 onAccountSelect={setSelectedAccountIndex}
-                onMomentumScrollEnd={handleScroll}
               />
             )}
 

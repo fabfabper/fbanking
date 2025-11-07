@@ -111,19 +111,6 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
     }
   };
 
-  // Handle scroll to update selected account on mobile
-  const handleScroll = (event: any) => {
-    const scrollX = event.nativeEvent.contentOffset.x;
-    const index = Math.round(scrollX / (CARD_WIDTH + CARD_SPACING));
-    if (
-      index !== selectedAccountIndex &&
-      index >= 0 &&
-      index < accounts.length
-    ) {
-      handleAccountSelect(index);
-    }
-  };
-
   // Filter transactions based on selected filter
   const filteredTransactions = transactions.filter((transaction) => {
     if (transactionFilter === "all") return true;
@@ -213,7 +200,6 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
           accounts={accounts}
           selectedAccountIndex={selectedAccountIndex}
           onAccountSelect={handleAccountSelect}
-          onMomentumScrollEnd={handleScroll}
         />
       </YStack>
 
