@@ -96,10 +96,7 @@ export const Drawer: React.FC<DrawerProps> = ({
                   {t("auth.title")}
                 </Text>
                 <Pressable onPress={onClose}>
-                  <X
-                    size={28}
-                    color={theme.colors.textWhite}
-                  />
+                  <X size={28} color={theme.colors.textWhite} />
                 </Pressable>
               </XStack>
 
@@ -161,31 +158,30 @@ export const Drawer: React.FC<DrawerProps> = ({
                 borderTopColor="$border"
                 style={{ backgroundColor: theme.colors.cardBg }}
               >
-                <Button
-                  variant="outline"
-                  size="lg"
+                <Pressable
                   onPress={() => {
                     onLogout();
                     onClose();
                   }}
-                  style={{
-                    borderColor: theme.colors.error,
-                  }}
                 >
-                  <XStack gap="$2" alignItems="center">
-                    <LogOut
-                      size={20}
-                      color={theme.colors.error}
-                    />
+                  <XStack
+                    padding="$4"
+                    gap="$3"
+                    alignItems="center"
+                    style={{
+                      borderRadius: 8,
+                    }}
+                  >
+                    <LogOut size={24} color={theme.colors.error} />
                     <Text
                       size="md"
-                      weight="semibold"
+                      weight="medium"
                       style={{ color: theme.colors.error }}
                     >
                       {t("common.logout")}
                     </Text>
                   </XStack>
-                </Button>
+                </Pressable>
               </YStack>
             </YStack>
           </Pressable>

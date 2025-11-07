@@ -8,4 +8,5 @@ export { AccountCarousel } from "./components/AccountCarousel";
 export { TransactionList } from "./components/TransactionList";
 export { QRCodeScannerModal } from "./components/QRCodeScannerModal";
 export { QRCodeService } from "./services/QRCodeService";
+export { useQRCodeScanner } from "./hooks/useQRCodeScanner";
 export type { QRCodeData } from "./services/QRCodeService";

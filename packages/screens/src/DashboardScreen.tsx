@@ -23,10 +23,10 @@ import {
   CartesianGrid,
 } from "recharts";
 import { useCamera } from "./hooks/useCamera";
+import { useQRCodeScanner } from "./hooks/useQRCodeScanner";
 import { formatCurrency } from "./utils/formatCurrency";
 import { TransactionList } from "./components/TransactionList";
 import { QRCodeScannerModal } from "./components/QRCodeScannerModal";
-import { QRCodeService } from "./services/QRCodeService";
 import type {
   Account,
   Transaction,
@@ -72,6 +72,21 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
   const { theme } = useAppTheme();
   const { openCamera } = useCamera();
 
+  // QR Code Scanner hook
+  const { qrScannerVisible, openScanner, closeScanner, handleQRCodeScanned } =
+    useQRCodeScanner({
+      onDataScanned: (paymentData) => {
+        console.log(
+          "[DashboardScreen] Navigating to payment with data:",
+          paymentData
+        );
+        if (onNavigateToPayment) {
+          onNavigateToPayment(paymentData);
+        }
+      },
+      showAlert: !onNavigateToPayment,
+    });
+
   // State
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -84,7 +99,6 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
   >([]);
   const [netBalance, setNetBalance] = useState(0);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [qrScannerVisible, setQrScannerVisible] = useState(false);
 
   // Color palette for charts
   const chartColors = [
@@ -166,110 +180,11 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
   }, []);
 
   const handleCameraOpen = () => {
-    setQrScannerVisible(true);
-  };
-
-  const handleQRCodeScanned = (data: string) => {
-    console.log("[DashboardScreen] QR Code scanned, processing...");
-
-    // Process the QR code with the service
-    const qrCodeData = QRCodeService.processQRCode(data);
-
-    // Close the scanner
-    setQrScannerVisible(false);
-
-    console.log("[DashboardScreen] Processed QR Code Data:", qrCodeData);
-
-    // Extract payment data and navigate to payment screen
-    if (onNavigateToPayment) {
-      const paymentData: any = {};
-
-      switch (qrCodeData.type) {
-        case "payment":
-          // Swiss QR-bill or EPC/SEPA payment
-          if (qrCodeData.data.format === "Swiss QR-bill") {
-            paymentData.iban = qrCodeData.data.iban || "";
-            paymentData.recipient = qrCodeData.data.creditorName || "";
-            paymentData.street = qrCodeData.data.creditorStreet || "";
-            paymentData.houseNumber = qrCodeData.data.creditorHouseNumber || "";
-            paymentData.postalCode = qrCodeData.data.creditorPostalCode || "";
-            paymentData.city = qrCodeData.data.creditorCity || "";
-            paymentData.country = qrCodeData.data.creditorCountry || "";
-            paymentData.amount = qrCodeData.data.amount || "";
-            paymentData.note =
-              qrCodeData.data.additionalInfo || qrCodeData.data.reference || "";
-          } else if (qrCodeData.data.format === "EPC/SEPA") {
-            paymentData.iban = qrCodeData.data.beneficiaryAccount || "";
-            paymentData.recipient = qrCodeData.data.beneficiaryName || "";
-            paymentData.amount = qrCodeData.data.amount || "";
-            paymentData.note =
-              qrCodeData.data.remittance || qrCodeData.data.reference || "";
-          } else if (qrCodeData.data.recipient) {
-            // JSON payment format
-            paymentData.recipient = qrCodeData.data.recipient || "";
-            paymentData.iban = qrCodeData.data.iban || "";
-            paymentData.amount = qrCodeData.data.amount?.toString() || "";
-            paymentData.note =
-              qrCodeData.data.reference || qrCodeData.data.message || "";
-          }
-          break;
-
-        case "account":
-          // IBAN only
-          paymentData.iban = qrCodeData.data.iban || "";
-          break;
-
-        case "url":
-          // Check if URL has payment parameters
-          if (qrCodeData.data.searchParams) {
-            paymentData.recipient =
-              qrCodeData.data.searchParams.recipient || "";
-            paymentData.amount = qrCodeData.data.searchParams.amount || "";
-            paymentData.iban =
-              qrCodeData.data.searchParams.iban ||
-              qrCodeData.data.searchParams.account ||
-              "";
-            paymentData.note =
-              qrCodeData.data.searchParams.note ||
-              qrCodeData.data.searchParams.reference ||
-              "";
-          }
-          break;
-
-        case "text":
-        case "unknown":
-          // Try to parse as IBAN if it looks like one
-          if (
-            qrCodeData.raw &&
-            /^[A-Z]{2}[0-9]{2}/.test(qrCodeData.raw.replace(/\s/g, ""))
-          ) {
-            paymentData.iban = qrCodeData.raw.replace(/\s/g, "");
-          }
-          break;
-      }
-
-      console.log(
-        "[DashboardScreen] Navigating to payment with data:",
-        paymentData
-      );
-
-      // Navigate to payment screen with pre-filled data
-      onNavigateToPayment(paymentData);
-    } else {
-      console.warn("[DashboardScreen] No navigation callback provided");
-      Alert.alert(
-        "QR Code Scanned",
-        `Type: ${qrCodeData.type}\n\n${JSON.stringify(
-          qrCodeData.data,
-          null,
-          2
-        )}`
-      );
-    }
+    openScanner();
   };
 
   const handleScannerClose = () => {
-    setQrScannerVisible(false);
+    closeScanner();
   };
 
   // Loading state
@@ -599,6 +514,22 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
             <Button
               variant="outline"
               size="md"
+              onPress={handleCameraOpen}
+              style={{
+                minWidth: isWeb ? 80 : 64,
+                width: isWeb ? 80 : 64,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 8,
+              }}
+              title="Scan QR Code"
+            >
+              <QrCode size={24} color={theme.colors.primary} />
+            </Button>
+            <Button
+              variant="outline"
+              size="md"
               style={{ flex: 1, minWidth: 140 }}
             >
               {t("dashboard.transferMoney")}
@@ -616,22 +547,6 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
               style={{ flex: 1, minWidth: 140 }}
             >
               {t("dashboard.viewAccounts")}
-            </Button>
-            <Button
-              variant="outline"
-              size="md"
-              onPress={handleCameraOpen}
-              style={{
-                minWidth: isWeb ? 80 : 64,
-                width: isWeb ? 80 : 64,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: 8,
-              }}
-              title="Scan QR Code"
-            >
-              <QrCode size={24} color={theme.colors.primary} />
             </Button>
           </XStack>
         </YStack>

@@ -70,9 +70,7 @@ export default function TabsLayout() {
           options={{
             title: t("nav.dashboard"),
             tabBarLabel: t("nav.dashboard"),
-            tabBarIcon: ({ color, size }) => (
-              <Home size={size} color={color} />
-            ),
+            tabBarIcon: ({ color, size }) => <Home size={size} color={color} />,
           }}
         />
         <Tabs.Screen
@@ -90,9 +88,7 @@ export default function TabsLayout() {
           options={{
             title: t("nav.payment"),
             tabBarLabel: t("nav.payment"),
-            tabBarIcon: ({ color, size }) => (
-              <Send size={size} color={color} />
-            ),
+            tabBarIcon: ({ color, size }) => <Send size={size} color={color} />,
           }}
         />
         <Tabs.Screen

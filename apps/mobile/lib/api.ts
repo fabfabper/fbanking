@@ -25,7 +25,7 @@ const getBaseURL = () => {
       return url;
     } else {
       // Web or other platforms
-      const url = "http://localhost:3000/ebanking";
+      const url = "http://localhostr:3000/ebanking";
       console.log("[API] Using default URL:", url);
       return url;
     }

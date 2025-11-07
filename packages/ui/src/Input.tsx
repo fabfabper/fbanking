@@ -5,13 +5,10 @@ import { useAppTheme } from "./UIProvider";
 
 const StyledTextInput = styled(TextInput, {
   borderWidth: 1,
-  borderColor: "$border",
-  borderRadius: "$3",
-  paddingHorizontal: "$4",
-  paddingVertical: "$3",
-  fontSize: "$4",
-  color: "$text",
-  backgroundColor: "$background",
+  borderRadius: 8,
+  paddingHorizontal: 16,
+  paddingVertical: 12,
+  fontSize: 16,
   outlineStyle: "none",
 } as any);
 

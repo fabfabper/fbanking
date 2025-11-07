@@ -17,12 +17,15 @@ import {
   Button,
   useAppTheme,
 } from "@ebanking/ui";
+import { QrCode } from "lucide-react-native";
 import { formatCurrency } from "./utils/formatCurrency";
 import {
   AccountCarousel,
   CARD_WIDTH,
   CARD_SPACING,
 } from "./components/AccountCarousel";
+import { QRCodeScannerModal } from "./components/QRCodeScannerModal";
+import { useQRCodeScanner } from "./hooks/useQRCodeScanner";
 import type { Account, Transaction, Payment } from "@ebanking/api";
 
 const isWeb = Platform.OS === "web";
@@ -77,6 +80,24 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
   const [city, setCity] = useState(initialData?.city || "");
   const [postalCode, setPostalCode] = useState(initialData?.postalCode || "");
   const [country, setCountry] = useState(initialData?.country || "");
+
+  // QR Code Scanner hook
+  const { qrScannerVisible, openScanner, closeScanner, handleQRCodeScanned } =
+    useQRCodeScanner({
+      onDataScanned: (paymentData) => {
+        console.log("[PaymentScreen] QR data received:", paymentData);
+        // Update form fields with scanned data
+        if (paymentData.recipient) setRecipient(paymentData.recipient);
+        if (paymentData.iban) setIban(paymentData.iban);
+        if (paymentData.amount) setAmount(paymentData.amount);
+        if (paymentData.note) setNote(paymentData.note);
+        if (paymentData.street) setStreet(paymentData.street);
+        if (paymentData.houseNumber) setHouseNumber(paymentData.houseNumber);
+        if (paymentData.city) setCity(paymentData.city);
+        if (paymentData.postalCode) setPostalCode(paymentData.postalCode);
+        if (paymentData.country) setCountry(paymentData.country);
+      },
+    });
 
   // API state
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -248,22 +269,35 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
           {/* Search Field */}
           <YStack paddingHorizontal="$6" paddingBottom="$4" zIndex={1000}>
             <YStack gap="$2" position="relative">
-              <Text
-                size="md"
-                weight="semibold"
-                style={{ color: theme.colors.textPrimary }}
-              >
-                {t("payment.searchPrevious")}
-              </Text>
-              <Input
-                value={searchQuery}
-                onChangeText={handleSearchChange}
-                placeholder={t("payment.searchPlaceholder")}
-                fullWidth
-                onFocus={() =>
-                  setShowSearchResults(searchQuery.trim().length > 0)
-                }
-              />
+              <XStack gap="$2" alignItems="center">
+                <Button
+                  variant="outline"
+                  size="md"
+                  onPress={openScanner}
+                  style={{
+                    minWidth: isWeb ? 80 : 64,
+                    width: isWeb ? 80 : 64,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 8,
+                  }}
+                  title="Scan QR Code"
+                >
+                  <QrCode size={24} color={theme.colors.primary} />
+                </Button>
+                <YStack flex={1}>
+                  <Input
+                    value={searchQuery}
+                    onChangeText={handleSearchChange}
+                    placeholder={t("payment.searchPlaceholder")}
+                    fullWidth
+                    onFocus={() =>
+                      setShowSearchResults(searchQuery.trim().length > 0)
+                    }
+                  />
+                </YStack>
+              </XStack>
 
               {/* Search Results Dropdown */}
               {showSearchResults && (
@@ -551,15 +585,6 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                   />
                 </YStack>
 
-                <YStack gap="$2">
-                  <Input
-                    value={note}
-                    onChangeText={setNote}
-                    placeholder={t("payment.notePlaceholder")}
-                    fullWidth
-                  />
-                </YStack>
-
                 {/* Address Fields */}
                 <YStack gap="$2">
                   <Input
@@ -615,6 +640,15 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                     value={country}
                     onChangeText={setCountry}
                     placeholder={t("payment.countryPlaceholder")}
+                    fullWidth
+                  />
+                </YStack>
+
+                <YStack gap="$2">
+                  <Input
+                    value={note}
+                    onChangeText={setNote}
+                    placeholder={t("payment.notePlaceholder")}
                     fullWidth
                   />
                 </YStack>
@@ -787,6 +821,13 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
           </YStack>
         </YStack>
       </ScrollView>
+
+      {/* QR Code Scanner Modal */}
+      <QRCodeScannerModal
+        visible={qrScannerVisible}
+        onClose={closeScanner}
+        onQRCodeScanned={handleQRCodeScanned}
+      />
     </YStack>
   );
 };

@@ -31,8 +31,14 @@ config.resolver.extraNodeModules = {
     "node_modules/expo-image-picker"
   ),
   // Force lucide-react-native to resolve from mobile app's node_modules
-  "lucide-react-native": path.resolve(projectRoot, "node_modules/lucide-react-native"),
-  "react-native-svg": path.resolve(projectRoot, "node_modules/react-native-svg"),
+  "lucide-react-native": path.resolve(
+    projectRoot,
+    "node_modules/lucide-react-native"
+  ),
+  "react-native-svg": path.resolve(
+    projectRoot,
+    "node_modules/react-native-svg"
+  ),
   // Force single instance of React to avoid hook errors
   react: path.resolve(projectRoot, "node_modules/react"),
   "react-native": path.resolve(projectRoot, "node_modules/react-native"),
