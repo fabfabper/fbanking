@@ -4,7 +4,7 @@ import { Tabs, useRouter, usePathname } from "expo-router";
 import { Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { YStack, Button, useAppTheme } from "@ebanking/ui";
-import { Ionicons } from "@expo/vector-icons";
+import { Home, Wallet, Send, Settings, Menu } from "lucide-react-native";
 import { Drawer } from "../components/Drawer";
 import { useDarkMode } from "../_layout";
 
@@ -60,7 +60,7 @@ export default function TabsLayout() {
               onPress={() => setDrawerVisible(true)}
               style={{ marginRight: 16 }}
             >
-              <Ionicons name="menu" size={28} color="#fff" />
+              <Menu size={28} color="#fff" />
             </Pressable>
           ),
         }}
@@ -71,7 +71,7 @@ export default function TabsLayout() {
             title: t("nav.dashboard"),
             tabBarLabel: t("nav.dashboard"),
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home" size={size} color={color} />
+              <Home size={size} color={color} />
             ),
           }}
         />
@@ -81,7 +81,7 @@ export default function TabsLayout() {
             title: t("nav.accounts"),
             tabBarLabel: t("nav.accounts"),
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="wallet" size={size} color={color} />
+              <Wallet size={size} color={color} />
             ),
           }}
         />
@@ -91,7 +91,7 @@ export default function TabsLayout() {
             title: t("nav.payment"),
             tabBarLabel: t("nav.payment"),
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="send" size={size} color={color} />
+              <Send size={size} color={color} />
             ),
           }}
         />
@@ -101,7 +101,7 @@ export default function TabsLayout() {
             title: t("nav.settings"),
             tabBarLabel: t("nav.settings"),
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="settings" size={size} color={color} />
+              <Settings size={size} color={color} />
             ),
           }}
         />

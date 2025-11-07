@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { YStack, XStack, Text, Card, Button, useAppTheme } from "@ebanking/ui";
+import { QrCode } from "lucide-react-native";
 import {
   PieChart,
   Pie,
@@ -630,7 +631,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
               }}
               title="Scan QR Code"
             >
-              QR
+              <QrCode size={24} color={theme.colors.primary} />
             </Button>
           </XStack>
         </YStack>

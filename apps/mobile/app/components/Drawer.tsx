@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Pressable, ScrollView, Animated } from "react-native";
 import { YStack, XStack, Text, Button, useAppTheme } from "@ebanking/ui";
-import { Ionicons } from "@expo/vector-icons";
+import { Home, Wallet, Send, Settings, X, LogOut } from "lucide-react-native";
 
 interface DrawerProps {
   visible: boolean;
@@ -40,10 +40,10 @@ export const Drawer: React.FC<DrawerProps> = ({
   }, [visible, slideAnim]);
 
   const menuItems = [
-    { key: "dashboard", label: t("nav.dashboard"), icon: "home" as const },
-    { key: "accounts", label: t("nav.accounts"), icon: "wallet" as const },
-    { key: "payment", label: t("nav.payment"), icon: "send" as const },
-    { key: "settings", label: t("nav.settings"), icon: "settings" as const },
+    { key: "dashboard", label: t("nav.dashboard"), icon: Home },
+    { key: "accounts", label: t("nav.accounts"), icon: Wallet },
+    { key: "payment", label: t("nav.payment"), icon: Send },
+    { key: "settings", label: t("nav.settings"), icon: Settings },
   ];
 
   return (
@@ -96,8 +96,7 @@ export const Drawer: React.FC<DrawerProps> = ({
                   {t("auth.title")}
                 </Text>
                 <Pressable onPress={onClose}>
-                  <Ionicons
-                    name="close"
+                  <X
                     size={28}
                     color={theme.colors.textWhite}
                   />
@@ -127,8 +126,7 @@ export const Drawer: React.FC<DrawerProps> = ({
                           borderRadius: 8,
                         }}
                       >
-                        <Ionicons
-                          name={item.icon}
+                        <item.icon
                           size={24}
                           color={
                             currentScreen === item.key
@@ -175,8 +173,7 @@ export const Drawer: React.FC<DrawerProps> = ({
                   }}
                 >
                   <XStack gap="$2" alignItems="center">
-                    <Ionicons
-                      name="log-out"
+                    <LogOut
                       size={20}
                       color={theme.colors.error}
                     />

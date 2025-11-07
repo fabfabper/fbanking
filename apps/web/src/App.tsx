@@ -8,7 +8,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { YStack, XStack, Text, Button, useAppTheme } from "@ebanking/ui";
-import { IoSettings } from "react-icons/io5";
+import { Settings } from "lucide-react-native";
 import {
   LoginScreen,
   DashboardScreen,
@@ -95,7 +95,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         className="nav-button"
         title={t("nav.settings")}
       >
-        <IoSettings
+        <Settings
           size={20}
           color={
             location.pathname === "/settings"

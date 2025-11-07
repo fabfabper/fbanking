@@ -11,6 +11,7 @@
   "dependencies": {
     "expo-camera": "~17.0.9",
     "html5-qrcode": "^2.3.8",
+    "lucide-react": "^0.553.0",
     "react-native-web": "^0.21.2",
     "recharts": "^3.3.0"
   }
