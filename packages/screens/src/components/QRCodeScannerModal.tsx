@@ -5,23 +5,35 @@ import { YStack, XStack, Text, Button } from "@ebanking/ui";
 const { width, height } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
 
+// Custom hook to handle camera permissions on mobile
+const useMobileCameraPermissions = () => {
+  if (isWeb) {
+    return [null, null];
+  }
+
+  try {
+    const { useCameraPermissions } = require("expo-camera");
+    return useCameraPermissions();
+  } catch (err) {
+    console.error("[QRScanner] Failed to load camera permissions:", err);
+    return [null, null];
+  }
+};
+
 interface QRCodeScannerModalProps {
   visible: boolean;
   onClose: () => void;
   onQRCodeScanned: (data: string) => void;
 }
 
-export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({
-  visible,
-  onClose,
-  onQRCodeScanned,
-}) => {
+export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({ visible, onClose, onQRCodeScanned }) => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [CameraView, setCameraView] = useState<any>(null);
   const [isScanning, setIsScanning] = useState(false);
   const scannerRef = useRef<any>(null);
   const qrScannerDivRef = useRef<HTMLDivElement | null>(null);
+  const [permissionResponse, requestPermission] = useMobileCameraPermissions();
 
   // Web: Initialize html5-qrcode scanner
   useEffect(() => {
@@ -97,22 +109,20 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({
       // Load expo-camera dynamically for mobile (SDK 51+)
       import("expo-camera").then((module) => {
         setCameraView(() => module.CameraView);
-
-        // Request permissions
-        module.CameraView.requestCameraPermissionsAsync().then(({ status }) => {
-          setHasPermission(status === "granted");
-        });
       });
-    }
-  }, [visible]);
 
-  const handleBarCodeScanned = ({
-    type,
-    data,
-  }: {
-    type: string;
-    data: string;
-  }) => {
+      // Request permissions using the hook
+      if (requestPermission && (!permissionResponse || !permissionResponse.granted)) {
+        requestPermission().then((result: any) => {
+          setHasPermission(result?.granted === true);
+        });
+      } else if (permissionResponse?.granted) {
+        setHasPermission(true);
+      }
+    }
+  }, [visible, requestPermission, permissionResponse]);
+
+  const handleBarCodeScanned = ({ type, data }: { type: string; data: string }) => {
     setScanned(true);
     console.log(`[QRScanner] Scanned ${type}: ${data}`);
     onQRCodeScanned(data);
@@ -149,18 +159,8 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({
   if (isWeb) {
     return (
       <View style={styles.webContainer}>
-        <YStack
-          backgroundColor="$backgroundGray"
-          padding="$6"
-          gap="$4"
-          style={styles.webModal}
-          alignItems="center"
-        >
-          <XStack
-            justifyContent="space-between"
-            width="100%"
-            alignItems="center"
-          >
+        <YStack backgroundColor="$backgroundGray" padding="$6" gap="$4" style={styles.webModal} alignItems="center">
+          <XStack justifyContent="space-between" width="100%" alignItems="center">
             <Text size="xl" weight="bold">
               Scan QR Code
             </Text>
@@ -186,7 +186,7 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({
               <Text size="lg" weight="bold" style={{ color: "#10B981" }}>
                 QR Code Scanned Successfully! ✓
               </Text>
-              <Button onPress={handleScanAgain} variant="outline">
+              <Button onPress={handleScanAgain}>
                 <Text>Scan Another</Text>
               </Button>
             </YStack>
@@ -214,13 +214,7 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({
   if (!CameraView) {
     return (
       <View style={styles.container}>
-        <YStack
-          flex={1}
-          backgroundColor="$backgroundGray"
-          justifyContent="center"
-          alignItems="center"
-          padding="$6"
-        >
+        <YStack flex={1} backgroundColor="$backgroundGray" justifyContent="center" alignItems="center" padding="$6">
           <Text size="lg">Loading scanner...</Text>
         </YStack>
       </View>
@@ -230,13 +224,7 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({
   if (hasPermission === null) {
     return (
       <View style={styles.container}>
-        <YStack
-          flex={1}
-          backgroundColor="$backgroundGray"
-          justifyContent="center"
-          alignItems="center"
-          padding="$6"
-        >
+        <YStack flex={1} backgroundColor="$backgroundGray" justifyContent="center" alignItems="center" padding="$6">
           <Text size="lg">Requesting camera permission...</Text>
         </YStack>
       </View>
@@ -303,7 +291,7 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({
               <Text size="lg" weight="bold" style={styles.successText}>
                 QR Code Scanned! ✓
               </Text>
-              <Button onPress={handleScanAgain} variant="outline">
+              <Button onPress={handleScanAgain}>
                 <Text>Scan Again</Text>
               </Button>
             </>
@@ -313,7 +301,7 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({
               Position the QR code within the frame
             </Text>
           )}
-          <Button onPress={handleClose} variant="outline">
+          <Button onPress={handleClose}>
             <Text>Cancel</Text>
           </Button>
         </YStack>

@@ -1,21 +1,9 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { YStack, XStack, Text, Button, useAppTheme } from "@ebanking/ui";
 import { Settings } from "lucide-react-native";
-import {
-  LoginScreen,
-  DashboardScreen,
-  AccountsScreen,
-  PaymentScreen,
-  SettingsScreen,
-} from "@ebanking/screens";
+import { LoginScreen, DashboardScreen, AccountsScreen, PaymentScreen, SettingsScreen } from "@ebanking/screens";
 import api from "./lib/api";
 
 const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
@@ -26,8 +14,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
 
   const getNavButtonStyle = (path: string) => ({
     borderColor: theme.colors.textWhite,
-    backgroundColor:
-      location.pathname === path ? theme.colors.textWhite : "transparent",
+    backgroundColor: location.pathname === path ? theme.colors.textWhite : "transparent",
     transition: "all 0.2s ease",
   });
 
@@ -35,13 +22,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     location.pathname === path ? theme.colors.primary : theme.colors.textWhite;
 
   return (
-    <XStack
-      backgroundColor={theme.colors.primary}
-      padding="$4"
-      paddingVertical="$3"
-      gap="$3"
-      alignItems="center"
-    >
+    <XStack backgroundColor={theme.colors.primary} padding="$4" paddingVertical="$3" gap="$3" alignItems="center">
       <Text size="xl" weight="bold" style={{ color: theme.colors.textWhite }}>
         {t("auth.title")}
       </Text>
@@ -53,9 +34,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           style={getNavButtonStyle("/dashboard")}
           className="nav-button"
         >
-          <Text style={{ color: getNavButtonTextColor("/dashboard") }}>
-            {t("nav.dashboard")}
-          </Text>
+          <Text style={{ color: getNavButtonTextColor("/dashboard") }}>{t("nav.dashboard")}</Text>
         </Button>
         <Button
           variant="outline"
@@ -64,9 +43,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           style={getNavButtonStyle("/accounts")}
           className="nav-button"
         >
-          <Text style={{ color: getNavButtonTextColor("/accounts") }}>
-            {t("nav.accounts")}
-          </Text>
+          <Text style={{ color: getNavButtonTextColor("/accounts") }}>{t("nav.accounts")}</Text>
         </Button>
         <Button
           variant="outline"
@@ -75,9 +52,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           style={getNavButtonStyle("/payment")}
           className="nav-button"
         >
-          <Text style={{ color: getNavButtonTextColor("/payment") }}>
-            {t("nav.payment")}
-          </Text>
+          <Text style={{ color: getNavButtonTextColor("/payment") }}>{t("nav.payment")}</Text>
         </Button>
       </XStack>
       <Button
@@ -95,14 +70,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         className="nav-button"
         title={t("nav.settings")}
       >
-        <Settings
-          size={20}
-          color={
-            location.pathname === "/settings"
-              ? theme.colors.primary
-              : theme.colors.textWhite
-          }
-        />
+        <Settings size={20} color={location.pathname === "/settings" ? theme.colors.primary : theme.colors.textWhite} />
       </Button>
       <Button
         variant="outline"
@@ -115,9 +83,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         }}
         className="nav-button"
       >
-        <Text style={{ color: theme.colors.textWhite }}>
-          {t("common.logout")}
-        </Text>
+        <Text style={{ color: theme.colors.textWhite }}>{t("common.logout")}</Text>
       </Button>
       <style>{`
         .nav-button:hover {
@@ -139,10 +105,7 @@ const PaymentRouteWrapper: React.FC<{ api: typeof api }> = ({ api }) => {
 
   console.log("[Web Payment] Full location object:", location);
   console.log("[Web Payment] location.state type:", typeof location.state);
-  console.log(
-    "[Web Payment] location.state keys:",
-    location.state ? Object.keys(location.state) : "null/undefined"
-  );
+  console.log("[Web Payment] location.state keys:", location.state ? Object.keys(location.state) : "null/undefined");
   console.log("[Web Payment] Received location state:", location.state);
 
   const initialData = location.state || undefined;
@@ -183,19 +146,11 @@ const App: React.FC<AppProps> = ({ darkMode, setDarkMode }) => {
 
   return (
     <YStack flex={1} height="100vh" backgroundColor="$backgroundGray">
-      {isAuthenticated && (
-        <Navigation onLogout={() => setIsAuthenticated(false)} />
-      )}
+      {isAuthenticated && <Navigation onLogout={() => setIsAuthenticated(false)} />}
       <Routes>
         <Route
           path="/login"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/dashboard" replace />
-            ) : (
-              <LoginScreen onLogin={handleLogin} />
-            )
-          }
+          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginScreen onLogin={handleLogin} />}
         />
         <Route
           path="/dashboard"
@@ -213,43 +168,23 @@ const App: React.FC<AppProps> = ({ darkMode, setDarkMode }) => {
         />
         <Route
           path="/accounts"
-          element={
-            isAuthenticated ? (
-              <AccountsScreen api={api} />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
+          element={isAuthenticated ? <AccountsScreen api={api} /> : <Navigate to="/login" replace />}
         />
         <Route
           path="/payment"
-          element={
-            isAuthenticated ? (
-              <PaymentRouteWrapper api={api} />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
+          element={isAuthenticated ? <PaymentRouteWrapper api={api} /> : <Navigate to="/login" replace />}
         />
         <Route
           path="/settings"
           element={
             isAuthenticated ? (
-              <SettingsScreen
-                darkMode={darkMode}
-                onToggleDarkMode={setDarkMode}
-              />
+              <SettingsScreen darkMode={darkMode} onToggleDarkMode={setDarkMode} />
             ) : (
               <Navigate to="/login" replace />
             )
           }
         />
-        <Route
-          path="/"
-          element={
-            <Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />
-          }
-        />
+        <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
       </Routes>
     </YStack>
   );

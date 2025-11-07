@@ -15,17 +15,17 @@ const getBaseURL = () => {
   if (__DEV__) {
     if (Platform.OS === "android") {
       // Android emulator uses 10.0.2.2 to access host machine's localhost
-      const url = "http://localhost:3000/ebanking";
+      const url = "http://192.168.10.67:3000/ebanking";
       console.log("[API] Using Android emulator URL:", url);
       return url;
     } else if (Platform.OS === "ios") {
       // iOS simulator can use localhost
-      const url = "http://localhost:3000/ebanking";
+      const url = "http://192.168.10.67:3000/ebanking";
       console.log("[API] Using iOS simulator URL:", url);
       return url;
     } else {
       // Web or other platforms
-      const url = "http://localhostr:3000/ebanking";
+      const url = "http://192.168.10.67:3000/ebanking";
       console.log("[API] Using default URL:", url);
       return url;
     }
@@ -47,8 +47,7 @@ const mobileTokenStorage: TokenStorage = {
   setToken: async (token: string) => await AsyncStorage.setItem("token", token),
   removeToken: async () => await AsyncStorage.removeItem("token"),
   getRefreshToken: async () => await AsyncStorage.getItem("refreshToken"),
-  setRefreshToken: async (token: string) =>
-    await AsyncStorage.setItem("refreshToken", token),
+  setRefreshToken: async (token: string) => await AsyncStorage.setItem("refreshToken", token),
   removeRefreshToken: async () => await AsyncStorage.removeItem("refreshToken"),
 };
 

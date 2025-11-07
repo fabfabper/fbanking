@@ -17,9 +17,7 @@ export interface UseBiometricAuthReturn {
 
 export const useBiometricAuth = (): UseBiometricAuthReturn => {
   const [isAvailable, setIsAvailable] = useState(false);
-  const [biometricType, setBiometricType] = useState<
-    "fingerprint" | "facial" | "iris" | null
-  >(null);
+  const [biometricType, setBiometricType] = useState<"fingerprint" | "facial" | "iris" | null>(null);
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
@@ -35,9 +33,7 @@ export const useBiometricAuth = (): UseBiometricAuthReturn => {
 
     try {
       // Dynamic import for React Native only - will fail gracefully on web
-      const LocalAuthentication = await import(
-        "expo-local-authentication"
-      ).catch(() => null);
+      const LocalAuthentication = await import("expo-local-authentication").catch(() => null);
 
       if (!LocalAuthentication) {
         setIsAvailable(false);
@@ -49,24 +45,15 @@ export const useBiometricAuth = (): UseBiometricAuthReturn => {
       const enrolled = await LocalAuthentication.isEnrolledAsync();
 
       if (compatible && enrolled) {
-        const types =
-          await LocalAuthentication.supportedAuthenticationTypesAsync();
+        const types = await LocalAuthentication.supportedAuthenticationTypesAsync();
 
         // Determine biometric type
         let type: "fingerprint" | "facial" | "iris" | null = null;
-        if (
-          types.includes(
-            LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION
-          )
-        ) {
+        if (types.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) {
           type = "facial";
-        } else if (
-          types.includes(LocalAuthentication.AuthenticationType.FINGERPRINT)
-        ) {
+        } else if (types.includes(LocalAuthentication.AuthenticationType.FINGERPRINT)) {
           type = "fingerprint";
-        } else if (
-          types.includes(LocalAuthentication.AuthenticationType.IRIS)
-        ) {
+        } else if (types.includes(LocalAuthentication.AuthenticationType.IRIS)) {
           type = "iris";
         }
 
@@ -96,9 +83,7 @@ export const useBiometricAuth = (): UseBiometricAuthReturn => {
     }
 
     try {
-      const LocalAuthentication = await import(
-        "expo-local-authentication"
-      ).catch(() => null);
+      const LocalAuthentication = await import("expo-local-authentication").catch(() => null);
 
       if (!LocalAuthentication) {
         return {
@@ -110,13 +95,19 @@ export const useBiometricAuth = (): UseBiometricAuthReturn => {
       const result = await LocalAuthentication.authenticateAsync({
         promptMessage: "Authenticate to access your account",
         cancelLabel: "Cancel",
-        disableDeviceFallback: false,
-        fallbackLabel: "Use passcode",
+        disableDeviceFallback: true, // Disable passcode fallback - Face ID/Touch ID only
+        fallbackLabel: "", // Remove fallback option
       });
+
+      console.log("[Biometric Auth] Result:", result);
+
+      if (!result.success) {
+        console.log("[Biometric Auth] Failed - Error:", result.error);
+      }
 
       return {
         success: result.success,
-        error: result.success ? undefined : "Authentication failed",
+        error: result.success ? undefined : result.error || "Authentication failed",
         biometricType,
       };
     } catch (error) {

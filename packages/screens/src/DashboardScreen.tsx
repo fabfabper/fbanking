@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  ScrollView,
-  Platform,
-  Dimensions,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { ScrollView, Platform, Dimensions, ActivityIndicator, Alert } from "react-native";
 import { YStack, XStack, Text, Card, Button, useAppTheme } from "@ebanking/ui";
 import { QrCode } from "lucide-react-native";
 import {
@@ -27,12 +21,7 @@ import { useQRCodeScanner } from "./hooks/useQRCodeScanner";
 import { formatCurrency } from "./utils/formatCurrency";
 import { TransactionList } from "./components/TransactionList";
 import { QRCodeScannerModal } from "./components/QRCodeScannerModal";
-import type {
-  Account,
-  Transaction,
-  ExpenseByCategory,
-  IncomeExpenseSummary,
-} from "@ebanking/api";
+import type { Account, Transaction, ExpenseByCategory, IncomeExpenseSummary } from "@ebanking/api";
 
 const { width: screenWidth } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
@@ -65,53 +54,35 @@ interface DashboardScreenProps {
   onNavigateToAccounts?: () => void;
 }
 
-export const DashboardScreen: React.FC<DashboardScreenProps> = ({
-  api,
-  onNavigateToPayment,
-  onNavigateToAccounts,
-}) => {
+export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api, onNavigateToPayment, onNavigateToAccounts }) => {
   const { t } = useTranslation();
   const { theme } = useAppTheme();
   const { openCamera } = useCamera();
 
   // QR Code Scanner hook
-  const { qrScannerVisible, openScanner, closeScanner, handleQRCodeScanned } =
-    useQRCodeScanner({
-      onDataScanned: (paymentData) => {
-        console.log(
-          "[DashboardScreen] Navigating to payment with data:",
-          paymentData
-        );
-        if (onNavigateToPayment) {
-          onNavigateToPayment(paymentData);
-        }
-      },
-      showAlert: !onNavigateToPayment,
-    });
+  const { qrScannerVisible, openScanner, closeScanner, handleQRCodeScanned } = useQRCodeScanner({
+    onDataScanned: (paymentData) => {
+      console.log("[DashboardScreen] Navigating to payment with data:", paymentData);
+      if (onNavigateToPayment) {
+        onNavigateToPayment(paymentData);
+      }
+    },
+    showAlert: !onNavigateToPayment,
+  });
 
   // State
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [totalBalance, setTotalBalance] = useState(0);
-  const [expenseData, setExpenseData] = useState<
-    Array<{ name: string; value: number; color: string }>
-  >([]);
-  const [incomeExpensesData, setIncomeExpensesData] = useState<
-    Array<{ name: string; amount: number; color: string }>
-  >([]);
+  const [expenseData, setExpenseData] = useState<Array<{ name: string; value: number; color: string }>>([]);
+  const [incomeExpensesData, setIncomeExpensesData] = useState<Array<{ name: string; amount: number; color: string }>>(
+    []
+  );
   const [netBalance, setNetBalance] = useState(0);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   // Color palette for charts
-  const chartColors = [
-    "#3B82F6",
-    "#10B981",
-    "#F59E0B",
-    "#EF4444",
-    "#8B5CF6",
-    "#EC4899",
-    "#14B8A6",
-  ];
+  const chartColors = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#EC4899", "#14B8A6"];
 
   // Fetch all dashboard data
   useEffect(() => {
@@ -121,12 +92,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
         setError(null);
 
         // Fetch all data in parallel
-        const [
-          accountsResponse,
-          expensesResponse,
-          incomeExpensesResponse,
-          transactionsResponse,
-        ] = await Promise.all([
+        const [accountsResponse, expensesResponse, incomeExpensesResponse, transactionsResponse] = await Promise.all([
           api.accounts.getAccounts(),
           api.analytics.getExpensesByCategory(),
           api.analytics.getIncomeExpensesSummary(),
@@ -134,20 +100,15 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
         ]);
 
         // Calculate total balance from all accounts
-        const balance = accountsResponse.reduce(
-          (sum, account) => sum + account.balance,
-          0
-        );
+        const balance = accountsResponse.reduce((sum, account) => sum + account.balance, 0);
         setTotalBalance(balance);
 
         // Format expense categories for chart
-        const formattedExpenses = expensesResponse
-          .slice(0, 6)
-          .map((expense, index) => ({
-            name: expense.category,
-            value: Math.abs(expense.amount),
-            color: chartColors[index % chartColors.length],
-          }));
+        const formattedExpenses = expensesResponse.slice(0, 6).map((expense, index) => ({
+          name: expense.category,
+          value: Math.abs(expense.amount),
+          color: chartColors[index % chartColors.length],
+        }));
         setExpenseData(formattedExpenses);
 
         // Format income vs expenses for chart
@@ -170,9 +131,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
         setTransactions(transactionsResponse.data);
       } catch (err) {
         console.error("Failed to fetch dashboard data:", err);
-        setError(
-          err instanceof Error ? err.message : "Failed to load dashboard data"
-        );
+        setError(err instanceof Error ? err.message : "Failed to load dashboard data");
       } finally {
         setLoading(false);
       }
@@ -192,13 +151,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
   // Loading state
   if (loading) {
     return (
-      <YStack
-        flex={1}
-        backgroundColor="$backgroundGray"
-        justifyContent="center"
-        alignItems="center"
-        gap="$4"
-      >
+      <YStack flex={1} backgroundColor="$backgroundGray" justifyContent="center" alignItems="center" gap="$4">
         <ActivityIndicator size="large" color={theme.colors.primary} />
         <Text size="md" style={{ color: theme.colors.textSecondary }}>
           {t("common.loading")}
@@ -221,16 +174,11 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
         <Text size="xl" weight="bold" style={{ color: theme.colors.error }}>
           {t("common.error")}
         </Text>
-        <Text
-          size="md"
-          style={{ color: theme.colors.textSecondary, textAlign: "center" }}
-        >
+        <Text size="md" style={{ color: theme.colors.textSecondary, textAlign: "center" }}>
           {error}
         </Text>
         <Button onPress={() => window.location.reload()}>
-          <Text style={{ color: theme.colors.textWhite }}>
-            {t("common.retry")}
-          </Text>
+          <Text style={{ color: theme.colors.textWhite }}>{t("common.retry")}</Text>
         </Button>
       </YStack>
     );
@@ -270,11 +218,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
                 <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                   {t("dashboard.totalBalance")}
                 </Text>
-                <Text
-                  size="3xl"
-                  weight="bold"
-                  style={{ color: theme.colors.primary }}
-                >
+                <Text size="3xl" weight="bold" style={{ color: theme.colors.primary }}>
                   {formatCurrency(totalBalance)}
                 </Text>
                 {netBalance !== 0 && (
@@ -283,18 +227,12 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
                       size="md"
                       weight="semibold"
                       style={{
-                        color:
-                          netBalance > 0
-                            ? theme.colors.success
-                            : theme.colors.error,
+                        color: netBalance > 0 ? theme.colors.success : theme.colors.error,
                       }}
                     >
                       {formatCurrency(netBalance, true)}
                     </Text>
-                    <Text
-                      size="sm"
-                      style={{ color: theme.colors.textSecondary }}
-                    >
+                    <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                       {t("dashboard.fromLastMonth")}
                     </Text>
                   </XStack>
@@ -319,15 +257,8 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
                   {t("dashboard.expenseCategories")}
                 </Text>
                 {expenseData.length === 0 ? (
-                  <YStack
-                    height={180}
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Text
-                      size="sm"
-                      style={{ color: theme.colors.textSecondary }}
-                    >
+                  <YStack height={180} justifyContent="center" alignItems="center">
+                    <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                       No expense data available
                     </Text>
                   </YStack>
@@ -351,23 +282,14 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
                             <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
                         </Pie>
-                        <Tooltip
-                          formatter={(value: any) =>
-                            formatCurrency(value as number)
-                          }
-                        />
+                        <Tooltip formatter={(value: any) => formatCurrency(value as number)} />
                       </PieChart>
                     </ResponsiveContainer>
                   </YStack>
                 ) : (
                   <YStack gap="$3">
                     {expenseData.map((category, index) => (
-                      <XStack
-                        key={index}
-                        gap="$3"
-                        alignItems="center"
-                        justifyContent="space-between"
-                      >
+                      <XStack key={index} gap="$3" alignItems="center" justifyContent="space-between">
                         <XStack gap="$2" alignItems="center" flex={1}>
                           <YStack
                             style={{
@@ -379,11 +301,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
                           />
                           <Text size="sm">{category.name}</Text>
                         </XStack>
-                        <Text
-                          size="sm"
-                          weight="semibold"
-                          style={{ color: theme.colors.primary }}
-                        >
+                        <Text size="sm" weight="semibold" style={{ color: theme.colors.primary }}>
                           {formatCurrency(category.value)}
                         </Text>
                       </XStack>
@@ -414,20 +332,14 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={incomeExpensesData}>
                         <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                        <XAxis
-                          dataKey="name"
-                          style={{ fontSize: 12 }}
-                          tick={{ fill: theme.colors.textSecondary }}
-                        />
+                        <XAxis dataKey="name" style={{ fontSize: 12 }} tick={{ fill: theme.colors.textSecondary }} />
                         <YAxis
                           style={{ fontSize: 11 }}
                           tick={{ fill: theme.colors.textSecondary }}
                           tickFormatter={(value) => value}
                         />
                         <Tooltip
-                          formatter={(value: any) =>
-                            formatCurrency(value as number)
-                          }
+                          formatter={(value: any) => formatCurrency(value as number)}
                           contentStyle={{
                             backgroundColor: theme.colors.cardBackground,
                             borderColor: theme.colors.border,
@@ -445,16 +357,9 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
                   <YStack gap="$3">
                     {incomeExpensesData.map((item, index) => (
                       <YStack key={index} gap="$2">
-                        <XStack
-                          justifyContent="space-between"
-                          alignItems="center"
-                        >
+                        <XStack justifyContent="space-between" alignItems="center">
                           <Text size="sm">{item.name}</Text>
-                          <Text
-                            size="md"
-                            weight="semibold"
-                            style={{ color: item.color }}
-                          >
+                          <Text size="md" weight="semibold" style={{ color: item.color }}>
                             {formatCurrency(item.amount)}
                           </Text>
                         </XStack>
@@ -484,18 +389,11 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
                         borderTopColor: theme.colors.border,
                       }}
                     >
-                      <XStack
-                        justifyContent="space-between"
-                        alignItems="center"
-                      >
+                      <XStack justifyContent="space-between" alignItems="center">
                         <Text size="sm" weight="semibold">
                           {t("dashboard.netBalance")}
                         </Text>
-                        <Text
-                          size="md"
-                          weight="bold"
-                          style={{ color: theme.colors.success }}
-                        >
+                        <Text size="md" weight="bold" style={{ color: theme.colors.success }}>
                           {formatCurrency(1730, true)}
                         </Text>
                       </XStack>
@@ -557,19 +455,11 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
         </YStack>
 
         {/* Recent Transactions */}
-        <YStack
-          gap="$4"
-          paddingHorizontal="$6"
-          paddingTop="$4"
-          paddingBottom="$8"
-        >
+        <YStack gap="$4" paddingHorizontal="$6" paddingTop="$4" paddingBottom="$8">
           <Text size="xl" weight="bold" style={{ marginBottom: 4 }}>
             {t("dashboard.recentTransactions")}
           </Text>
-          <TransactionList
-            transactions={transactions}
-            emptyMessage="No recent transactions"
-          />
+          <TransactionList transactions={transactions} emptyMessage="No recent transactions" />
         </YStack>
       </ScrollView>
 

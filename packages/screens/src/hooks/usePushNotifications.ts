@@ -55,8 +55,7 @@ export const usePushNotifications = (): UsePushNotificationsReturn => {
       }
 
       // Get existing permissions
-      const { status: existingStatus } =
-        await Notifications.getPermissionsAsync();
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
 
       // Request permissions if not granted
@@ -76,8 +75,40 @@ export const usePushNotifications = (): UsePushNotificationsReturn => {
 
       // Get the Expo push token
       console.log("[Push Notifications] Getting Expo push token...");
+
+      // Try to get projectId from app config
+      let projectId: string | undefined;
+      try {
+        const Constants = await import("expo-constants").catch(() => null);
+        projectId = Constants?.default?.expoConfig?.extra?.eas?.projectId;
+      } catch {
+        projectId = undefined;
+      }
+
+      if (!projectId) {
+        const msg =
+          "Push notifications require an Expo project ID.\n\n" +
+          "To enable push notifications:\n" +
+          "1. Create an Expo account at expo.dev\n" +
+          "2. Run 'npx expo login'\n" +
+          "3. Run 'eas init' to create a project\n" +
+          "4. The project ID will be added to app.json automatically\n\n" +
+          "For now, push notifications will be disabled.";
+        setError(msg);
+        console.warn("[Push Notifications]", msg);
+
+        Alert.alert(
+          "Push Notifications Setup Required",
+          "Push notifications require an Expo project ID. Check the console for setup instructions.",
+          [{ text: "OK" }]
+        );
+
+        setIsRegistering(false);
+        return;
+      }
+
       const tokenData = await Notifications.getExpoPushTokenAsync({
-        projectId: "your-project-id", // Replace with your Expo project ID
+        projectId,
       });
 
       const token = tokenData.data;
@@ -86,13 +117,6 @@ export const usePushNotifications = (): UsePushNotificationsReturn => {
       console.log("=".repeat(80));
       console.log("EXPO PUSH TOKEN:", token);
       console.log("=".repeat(80));
-
-      // Show alert with token (temporary for debugging)
-      Alert.alert(
-        "Push Token Registered",
-        `Token: ${token.substring(0, 30)}...`,
-        [{ text: "OK" }]
-      );
 
       // Configure notification behavior
       Notifications.setNotificationHandler({
@@ -105,10 +129,7 @@ export const usePushNotifications = (): UsePushNotificationsReturn => {
 
       console.log("[Push Notifications] ✅ Setup complete");
     } catch (err) {
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "Failed to register for push notifications";
+      const errorMessage = err instanceof Error ? err.message : "Failed to register for push notifications";
       setError(errorMessage);
       console.error("[Push Notifications] Error:", err);
     } finally {

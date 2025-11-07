@@ -198,32 +198,23 @@ apps/mobile/tsconfig.app.json
 .stylelintcache
 
 # iOS
+ios/
+!apps/mobile/ios/.gitkeep
+ios/Pods/
+ios/.xcode.env.local
 
-ios/Pods/# Microbundle cache
-
-ios/.xcode.env.local.rpt2_cache/
-
-.rts2_cache_cjs/
-
-# Android.rts2_cache_es/
-
-android/.gradle.rts2_cache_umd/
-
+# Android
+android/
+!apps/mobile/android/.gitkeep
+android/.gradle
 android/build/
-
-android/app/build/# Optional REPL history
-
-android/.idea.node_repl_history
-
+android/app/build/
+android/.idea
 android/local.properties
-
-android/app/debug# Yarn
-
-android/app/release.yarn/cache
-
-*.keystore.yarn/unplugged
-
-!debug.keystore.yarn/build-state.yml
+android/app/debug
+android/app/release
+*.keystore
+!debug.keystore
 
 .yarn/install-state.gz
 

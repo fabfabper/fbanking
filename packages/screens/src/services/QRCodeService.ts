@@ -63,10 +63,7 @@ export class QRCodeService {
 
     // Check for payment QR codes (common formats)
     // Swiss QR-bill format
-    if (
-      content.startsWith("SPC\n") ||
-      (content.includes("CH") && content.includes("QRR"))
-    ) {
+    if (content.startsWith("SPC\n") || (content.includes("CH") && content.includes("QRR"))) {
       return "payment";
     }
 
@@ -81,10 +78,7 @@ export class QRCodeService {
     }
 
     // Check for structured payment data (JSON)
-    if (
-      (content.startsWith("{") && content.includes("amount")) ||
-      content.includes("recipient")
-    ) {
+    if ((content.startsWith("{") && content.includes("amount")) || content.includes("recipient")) {
       try {
         JSON.parse(content);
         return "payment";
@@ -111,12 +105,12 @@ export class QRCodeService {
     }
 
     // Swiss QR-bill format
-    if (content.startsWith("SPC\n")) {
+    if (content.startsWith("SPC")) {
       return this.parseSwissQR(content);
     }
 
     // EPC QR code format
-    if (content.startsWith("BCD\n")) {
+    if (content.startsWith("BCD ")) {
       return this.parseEPCQR(content);
     }
 

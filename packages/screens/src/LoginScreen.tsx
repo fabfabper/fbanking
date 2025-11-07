@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Platform, ActivityIndicator } from "react-native";
-import {
-  YStack,
-  XStack,
-  Text,
-  Button,
-  Input,
-  Card,
-  useAppTheme,
-} from "@ebanking/ui";
+import { YStack, XStack, Text, Button, Input, Card, useAppTheme } from "@ebanking/ui";
 import { useBiometricAuth } from "./hooks/useBiometricAuth";
 
 interface LoginScreenProps {
@@ -22,8 +14,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const { isAvailable, biometricType, authenticate, isChecking } =
-    useBiometricAuth();
+  const { isAvailable, biometricType, authenticate, isChecking } = useBiometricAuth();
 
   const handleLogin = () => {
     console.log("Login:", { email, password });
@@ -38,6 +29,18 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         onLogin();
       } else {
         console.log("Biometric authentication failed:", result.error);
+
+        // Show helpful message for Expo Go users
+        if (result.error === "missing_usage_description") {
+          console.warn(
+            "Face ID requires a custom development build. " +
+              "To test Face ID:\n" +
+              "1. Create an Apple Developer account ($99/year)\n" +
+              "2. Run: eas build --profile development --platform ios\n" +
+              "3. Install the development build on your device\n\n" +
+              "For now, use username/password login in Expo Go."
+          );
+        }
       }
     } catch (error) {
       console.error("Biometric authentication error:", error);
@@ -61,13 +64,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   };
 
   return (
-    <YStack
-      flex={1}
-      backgroundColor="$backgroundGray"
-      alignItems="center"
-      justifyContent="center"
-      padding="$6"
-    >
+    <YStack flex={1} backgroundColor="$backgroundGray" alignItems="center" justifyContent="center" padding="$6">
       <YStack width="100%" maxWidth={440} gap="$8">
         {/* Header */}
         <YStack alignItems="center" gap="$3">
@@ -91,11 +88,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
             </Text>
           </YStack>
           <YStack alignItems="center" gap="$1">
-            <Text
-              size="3xl"
-              weight="bold"
-              style={{ color: theme.colors.primary }}
-            >
+            <Text size="3xl" weight="bold" style={{ color: theme.colors.primary }}>
               {t("auth.title")}
             </Text>
             <Text size="md" style={{ color: theme.colors.textSecondary }}>
@@ -116,11 +109,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         >
           <YStack gap="$5" padding="$5">
             <YStack gap="$2">
-              <Text
-                size="sm"
-                weight="semibold"
-                style={{ color: theme.colors.textPrimary }}
-              >
+              <Text size="sm" weight="semibold" style={{ color: theme.colors.textPrimary }}>
                 {t("common.email")}
               </Text>
               <Input
@@ -135,18 +124,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 
             <YStack gap="$2">
               <XStack justifyContent="space-between" alignItems="center">
-                <Text
-                  size="sm"
-                  weight="semibold"
-                  style={{ color: theme.colors.textPrimary }}
-                >
+                <Text size="sm" weight="semibold" style={{ color: theme.colors.textPrimary }}>
                   {t("common.password")}
                 </Text>
-                <Text
-                  size="sm"
-                  style={{ color: theme.colors.primary }}
-                  onPress={() => console.log("Forgot password")}
-                >
+                <Text size="sm" style={{ color: theme.colors.primary }} onPress={() => console.log("Forgot password")}>
                   {t("auth.forgotPassword")}
                 </Text>
               </XStack>
@@ -192,10 +173,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                 >
                   {isAuthenticating ? (
                     <XStack gap="$2" alignItems="center">
-                      <ActivityIndicator
-                        size="small"
-                        color={theme.colors.primary}
-                      />
+                      <ActivityIndicator size="small" color={theme.colors.primary} />
                       <Text size="md">{t("auth.authenticating")}</Text>
                     </XStack>
                   ) : (
@@ -212,10 +190,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 
         {/* Footer */}
         <YStack alignItems="center" gap="$2">
-          <Text
-            size="xs"
-            style={{ color: theme.colors.textSecondary, opacity: 0.7 }}
-          >
+          <Text size="xs" style={{ color: theme.colors.textSecondary, opacity: 0.7 }}>
             {t("auth.termsAgreement")}
           </Text>
         </YStack>
