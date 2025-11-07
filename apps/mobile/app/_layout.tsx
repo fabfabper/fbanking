@@ -3,6 +3,7 @@ import { Stack, useRouter } from "expo-router";
 import { I18nextProvider } from "react-i18next";
 import { i18n } from "@ebanking/i18n";
 import { UIProvider } from "@ebanking/ui";
+import { usePushNotifications } from "@ebanking/screens";
 
 interface DarkModeContextType {
   darkMode: boolean;
@@ -18,6 +19,17 @@ export const useDarkMode = () => useContext(DarkModeContext);
 
 export default function RootLayout() {
   const [darkMode, setDarkMode] = useState(false);
+
+  console.log("[RootLayout] Initializing...");
+
+  // Register for push notifications on app start
+  const pushNotifications = usePushNotifications();
+
+  console.log("[RootLayout] Push notifications state:", {
+    token: pushNotifications.expoPushToken,
+    isRegistering: pushNotifications.isRegistering,
+    error: pushNotifications.error,
+  });
 
   return (
     <I18nextProvider i18n={i18n}>

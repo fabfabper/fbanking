@@ -39,12 +39,22 @@ export default defineConfig({
         __dirname,
         "src/lib/expo-local-authentication-stub.ts"
       ),
+      "expo-notifications": path.resolve(
+        __dirname,
+        "src/lib/expo-notifications-stub.ts"
+      ),
+      "expo-device": path.resolve(__dirname, "src/lib/expo-device-stub.ts"),
       recharts: path.resolve(__dirname, "node_modules/recharts"),
       "html5-qrcode": path.resolve(__dirname, "node_modules/html5-qrcode"),
     },
   },
   optimizeDeps: {
-    exclude: ["react-native", "expo-local-authentication"],
+    exclude: [
+      "react-native",
+      "expo-local-authentication",
+      "expo-notifications",
+      "expo-device",
+    ],
     esbuildOptions: {
       loader: {
         ".js": "jsx",

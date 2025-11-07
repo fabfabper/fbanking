@@ -10,4 +10,5 @@ export { QRCodeScannerModal } from "./components/QRCodeScannerModal";
 export { QRCodeService } from "./services/QRCodeService";
 export { useQRCodeScanner } from "./hooks/useQRCodeScanner";
 export { useBiometricAuth } from "./hooks/useBiometricAuth";
+export { usePushNotifications } from "./hooks/usePushNotifications";
 export type { QRCodeData } from "./services/QRCodeService";
