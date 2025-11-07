@@ -171,9 +171,14 @@ const App: React.FC<AppProps> = ({ darkMode, setDarkMode }) => {
     navigate("/dashboard");
   };
 
-  const handleNavigateToPayment = (paymentData: any) => {
+  const handleNavigateToPayment = (paymentData?: any) => {
     console.log("[Web App] Navigating to payment with data:", paymentData);
     navigate("/payment", { state: paymentData });
+  };
+
+  const handleNavigateToAccounts = () => {
+    console.log("[Web App] Navigating to accounts");
+    navigate("/accounts");
   };
 
   return (
@@ -199,6 +204,7 @@ const App: React.FC<AppProps> = ({ darkMode, setDarkMode }) => {
               <DashboardScreen
                 api={api}
                 onNavigateToPayment={handleNavigateToPayment}
+                onNavigateToAccounts={handleNavigateToAccounts}
               />
             ) : (
               <Navigate to="/login" replace />

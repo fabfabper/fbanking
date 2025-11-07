@@ -5,7 +5,7 @@ import api from "../../lib/api";
 export default function Dashboard() {
   const router = useRouter();
 
-  const handleNavigateToPayment = (paymentData: any) => {
+  const handleNavigateToPayment = (paymentData?: any) => {
     console.log(
       "[Dashboard] Navigating to payment with data:",
       JSON.stringify(paymentData, null, 2)
@@ -15,16 +15,16 @@ export default function Dashboard() {
       // Ensure all values are strings or undefined (expo-router requirement)
       const sanitizedData: Record<string, string> = {};
 
-      if (paymentData.recipient)
+      if (paymentData?.recipient)
         sanitizedData.recipient = String(paymentData.recipient);
-      if (paymentData.amount) sanitizedData.amount = String(paymentData.amount);
-      if (paymentData.note) sanitizedData.note = String(paymentData.note);
-      if (paymentData.iban) sanitizedData.iban = String(paymentData.iban);
-      if (paymentData.street) sanitizedData.street = String(paymentData.street);
-      if (paymentData.city) sanitizedData.city = String(paymentData.city);
-      if (paymentData.postalCode)
+      if (paymentData?.amount) sanitizedData.amount = String(paymentData.amount);
+      if (paymentData?.note) sanitizedData.note = String(paymentData.note);
+      if (paymentData?.iban) sanitizedData.iban = String(paymentData.iban);
+      if (paymentData?.street) sanitizedData.street = String(paymentData.street);
+      if (paymentData?.city) sanitizedData.city = String(paymentData.city);
+      if (paymentData?.postalCode)
         sanitizedData.postalCode = String(paymentData.postalCode);
-      if (paymentData.country)
+      if (paymentData?.country)
         sanitizedData.country = String(paymentData.country);
 
       console.log(
@@ -41,7 +41,16 @@ export default function Dashboard() {
     }
   };
 
+  const handleNavigateToAccounts = () => {
+    console.log("[Dashboard] Navigating to accounts");
+    router.push("/(tabs)/accounts");
+  };
+
   return (
-    <DashboardScreen api={api} onNavigateToPayment={handleNavigateToPayment} />
+    <DashboardScreen
+      api={api}
+      onNavigateToPayment={handleNavigateToPayment}
+      onNavigateToAccounts={handleNavigateToAccounts}
+    />
   );
 }

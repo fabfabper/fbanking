@@ -52,7 +52,7 @@ interface DashboardScreenProps {
       getIncomeExpensesSummary: (params?: any) => Promise<IncomeExpenseSummary>;
     };
   };
-  onNavigateToPayment?: (paymentData: {
+  onNavigateToPayment?: (paymentData?: {
     recipient?: string;
     amount?: string;
     note?: string;
@@ -62,11 +62,13 @@ interface DashboardScreenProps {
     postalCode?: string;
     country?: string;
   }) => void;
+  onNavigateToAccounts?: () => void;
 }
 
 export const DashboardScreen: React.FC<DashboardScreenProps> = ({
   api,
   onNavigateToPayment,
+  onNavigateToAccounts,
 }) => {
   const { t } = useTranslation();
   const { theme } = useAppTheme();
@@ -530,6 +532,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
             <Button
               variant="outline"
               size="md"
+              onPress={() => onNavigateToPayment?.()}
               style={{ flex: 1, minWidth: 140 }}
             >
               {t("dashboard.transferMoney")}
@@ -537,6 +540,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
             <Button
               variant="outline"
               size="md"
+              onPress={() => onNavigateToPayment?.()}
               style={{ flex: 1, minWidth: 140 }}
             >
               {t("dashboard.payBills")}
@@ -544,6 +548,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({
             <Button
               variant="outline"
               size="md"
+              onPress={() => onNavigateToAccounts?.()}
               style={{ flex: 1, minWidth: 140 }}
             >
               {t("dashboard.viewAccounts")}
