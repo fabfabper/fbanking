@@ -50,6 +50,19 @@ export const en = {
 
   // Payment
   payment: {
+    errors: {
+      recipientRequired: "Recipient name is required",
+      ibanRequired: "IBAN is required",
+      ibanInvalid: "Invalid IBAN",
+      ibanTooShort: "IBAN is too short",
+      ibanTooLong: "IBAN is too long",
+      ibanInvalidCharacters: "IBAN contains invalid characters",
+      ibanInvalidCountry: "Invalid or unsupported country code",
+      ibanInvalidLength: "Invalid IBAN length for this country",
+      ibanInvalidChecksum: "Invalid IBAN checksum",
+      amountRequired: "Amount is required",
+      amountInvalid: "Please enter a valid amount",
+    },
     newPayment: "New Payment",
     paymentDetails: "Payment Details",
     searchPrevious: "Search Previous Payments",
@@ -140,8 +153,7 @@ export const en = {
     credit: "Credit Card",
     transactions: "Recent Transactions",
     noAccounts: "No Accounts Found",
-    noAccountsDescription:
-      "You don't have any accounts set up yet. Please contact your bank to create an account.",
+    noAccountsDescription: "You don't have any accounts set up yet. Please contact your bank to create an account.",
     noTransactions: "No Transactions",
     noTransactionsDescription: "No transactions found for this account.",
     filterAll: "All",

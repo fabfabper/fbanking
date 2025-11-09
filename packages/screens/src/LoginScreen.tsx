@@ -85,8 +85,17 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
               elevation: 8,
             }}
           >
-            <Text size="3xl" style={{ color: theme.colors.textWhite }}>
-              💳
+            <Text
+              size="3xl"
+              style={{
+                color: theme.colors.textWhite,
+                fontFamily: "Inter",
+                fontWeight: "bold",
+                letterSpacing: 2,
+                fontSize: 32,
+              }}
+            >
+              fp.
             </Text>
           </YStack>
           <YStack alignItems="center" gap="$1">

@@ -1,29 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  ScrollView,
-  Platform,
-  Pressable,
-  Switch,
-  ActivityIndicator,
-} from "react-native";
-import {
-  YStack,
-  XStack,
-  Text,
-  Card,
-  Input,
-  DateInput,
-  Button,
-  useAppTheme,
-} from "@ebanking/ui";
+import { ScrollView, Platform, Pressable, Switch, ActivityIndicator } from "react-native";
+import { YStack, XStack, Text, Card, Input, DateInput, Button, useAppTheme } from "@ebanking/ui";
 import { QrCode } from "lucide-react-native";
 import { formatCurrency } from "./utils/formatCurrency";
-import {
-  AccountCarousel,
-  CARD_WIDTH,
-  CARD_SPACING,
-} from "./components/AccountCarousel";
+import { validateIban } from "./utils/validateIban";
+import { AccountCarousel, CARD_WIDTH, CARD_SPACING } from "./components/AccountCarousel";
 import { QRCodeScannerModal } from "./components/QRCodeScannerModal";
 import { useQRCodeScanner } from "./hooks/useQRCodeScanner";
 import type { Account, Transaction, Payment } from "@ebanking/api";
@@ -36,10 +18,7 @@ interface PaymentScreenProps {
       getAccounts: () => Promise<Account[]>;
     };
     transactions: {
-      searchTransactions: (
-        query: string,
-        filters?: any
-      ) => Promise<{ data: Transaction[] }>;
+      searchTransactions: (query: string, filters?: any) => Promise<{ data: Transaction[] }>;
     };
     payments: {
       getPayments: () => Promise<Payment[]>;
@@ -58,10 +37,7 @@ interface PaymentScreenProps {
   };
 }
 
-export const PaymentScreen: React.FC<PaymentScreenProps> = ({
-  api,
-  initialData,
-}) => {
+export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }) => {
   const { t } = useTranslation();
   const { theme } = useAppTheme();
   const [selectedAccountIndex, setSelectedAccountIndex] = useState(0);
@@ -72,32 +48,36 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchResults, setShowSearchResults] = useState(false);
 
+  // Validation errors
+  const [errors, setErrors] = useState<{
+    recipient?: string;
+    iban?: string;
+    amount?: string;
+  }>({});
+
   // Address fields
   const [street, setStreet] = useState(initialData?.street || "");
-  const [houseNumber, setHouseNumber] = useState(
-    initialData?.houseNumber || ""
-  );
+  const [houseNumber, setHouseNumber] = useState(initialData?.houseNumber || "");
   const [city, setCity] = useState(initialData?.city || "");
   const [postalCode, setPostalCode] = useState(initialData?.postalCode || "");
   const [country, setCountry] = useState(initialData?.country || "");
 
   // QR Code Scanner hook
-  const { qrScannerVisible, openScanner, closeScanner, handleQRCodeScanned } =
-    useQRCodeScanner({
-      onDataScanned: (paymentData) => {
-        console.log("[PaymentScreen] QR data received:", paymentData);
-        // Update form fields with scanned data
-        if (paymentData.recipient) setRecipient(paymentData.recipient);
-        if (paymentData.iban) setIban(paymentData.iban);
-        if (paymentData.amount) setAmount(paymentData.amount);
-        if (paymentData.note) setNote(paymentData.note);
-        if (paymentData.street) setStreet(paymentData.street);
-        if (paymentData.houseNumber) setHouseNumber(paymentData.houseNumber);
-        if (paymentData.city) setCity(paymentData.city);
-        if (paymentData.postalCode) setPostalCode(paymentData.postalCode);
-        if (paymentData.country) setCountry(paymentData.country);
-      },
-    });
+  const { qrScannerVisible, openScanner, closeScanner, handleQRCodeScanned } = useQRCodeScanner({
+    onDataScanned: (paymentData) => {
+      console.log("[PaymentScreen] QR data received:", paymentData);
+      // Update form fields with scanned data
+      if (paymentData.recipient) setRecipient(paymentData.recipient);
+      if (paymentData.iban) setIban(paymentData.iban);
+      if (paymentData.amount) setAmount(paymentData.amount);
+      if (paymentData.note) setNote(paymentData.note);
+      if (paymentData.street) setStreet(paymentData.street);
+      if (paymentData.houseNumber) setHouseNumber(paymentData.houseNumber);
+      if (paymentData.city) setCity(paymentData.city);
+      if (paymentData.postalCode) setPostalCode(paymentData.postalCode);
+      if (paymentData.country) setCountry(paymentData.country);
+    },
+  });
 
   // API state
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -105,9 +85,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   // Search results state
-  const [searchResults, setSearchResults] = useState<(Transaction | Payment)[]>(
-    []
-  );
+  const [searchResults, setSearchResults] = useState<(Transaction | Payment)[]>([]);
   const [searchLoading, setSearchLoading] = useState(false);
 
   // Standing payment fields
@@ -127,9 +105,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
         setAccounts(data);
       } catch (err) {
         console.error("Failed to fetch accounts:", err);
-        setError(
-          err instanceof Error ? err.message : "Failed to fetch accounts"
-        );
+        setError(err instanceof Error ? err.message : "Failed to fetch accounts");
       } finally {
         setLoading(false);
       }
@@ -201,11 +177,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
 
     // Check if it's a Payment (has recipient object with name/iban)
     // or a Transaction (has recipient string and description)
-    if (
-      "recipient" in item &&
-      item.recipient &&
-      typeof item.recipient === "object"
-    ) {
+    if ("recipient" in item && item.recipient && typeof item.recipient === "object") {
       // It's a Payment with recipient object
       const payment = item as Payment;
       setRecipient(payment.recipient.name);
@@ -229,10 +201,45 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
   };
 
   const handleSend = () => {
+    // Validate required fields
+    const newErrors: { recipient?: string; iban?: string; amount?: string } = {};
+
+    if (!recipient.trim()) {
+      newErrors.recipient = t("payment.errors.recipientRequired");
+    }
+
+    if (!iban.trim()) {
+      newErrors.iban = t("payment.errors.ibanRequired");
+    } else {
+      // Use comprehensive IBAN validation
+      const ibanValidation = validateIban(iban);
+      if (!ibanValidation.valid) {
+        newErrors.iban = ibanValidation.errorCode
+          ? t("payment.errors." + ibanValidation.errorCode)
+          : t("payment.errors.ibanInvalid");
+      }
+    }
+
+    if (!amount.trim()) {
+      newErrors.amount = t("payment.errors.amountRequired");
+    } else if (isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
+      newErrors.amount = t("payment.errors.amountInvalid");
+    }
+
+    // If there are errors, set them and return
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Clear errors if validation passes
+    setErrors({});
+
     if (isStandingPayment) {
       console.log("Set up standing payment:", {
         fromAccount: selectedAccount,
         recipient,
+        iban,
         amount,
         note,
         frequency,
@@ -244,6 +251,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
       console.log("Send payment:", {
         fromAccount: selectedAccount,
         recipient,
+        iban,
         amount,
         note,
       });
@@ -280,9 +288,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                     onChangeText={handleSearchChange}
                     placeholder={t("payment.searchPlaceholder")}
                     fullWidth
-                    onFocus={() =>
-                      setShowSearchResults(searchQuery.trim().length > 0)
-                    }
+                    onFocus={() => setShowSearchResults(searchQuery.trim().length > 0)}
                   />
                 </YStack>
               </XStack>
@@ -316,10 +322,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                   })()}
                   {searchLoading ? (
                     <YStack padding="$4" alignItems="center">
-                      <ActivityIndicator
-                        size="small"
-                        color={theme.colors.primary}
-                      />
+                      <ActivityIndicator size="small" color={theme.colors.primary} />
                       <Text
                         size="sm"
                         style={{
@@ -332,10 +335,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                     </YStack>
                   ) : searchResults.length === 0 ? (
                     <YStack padding="$4" alignItems="center">
-                      <Text
-                        size="sm"
-                        style={{ color: theme.colors.textSecondary }}
-                      >
+                      <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                         {t("payment.noSearchResults")}
                       </Text>
                     </YStack>
@@ -350,15 +350,11 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                         const displayName = isPayment
                           ? payment.recipient?.name || payment.description
                           : transaction.description;
-                        const displayAmount = isPayment
-                          ? payment.amount
-                          : Math.abs(transaction.amount);
+                        const displayAmount = isPayment ? payment.amount : Math.abs(transaction.amount);
                         const displayDate = isPayment
                           ? new Date(payment.createdAt).toLocaleDateString()
                           : new Date(transaction.date).toLocaleDateString();
-                        const displayNote = isPayment
-                          ? payment.description
-                          : transaction.category || "";
+                        const displayNote = isPayment ? payment.description : transaction.category || "";
                         const displayAccount = isPayment
                           ? payment.recipient?.iban
                             ? `${payment.recipient.iban.slice(-4)}`
@@ -366,10 +362,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                           : transaction.accountId;
 
                         return (
-                          <Pressable
-                            key={item.id}
-                            onPress={() => selectPreviousPayment(item)}
-                          >
+                          <Pressable key={item.id} onPress={() => selectPreviousPayment(item)}>
                             <YStack
                               padding="$3"
                               borderBottomWidth={1}
@@ -381,10 +374,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                                 backgroundColor: theme.colors.backgroundGray,
                               }}
                             >
-                              <XStack
-                                justifyContent="space-between"
-                                alignItems="center"
-                              >
+                              <XStack justifyContent="space-between" alignItems="center">
                                 <YStack gap="$1" flex={1}>
                                   <Text size="md" weight="semibold">
                                     {displayName}
@@ -411,11 +401,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                                     </Text>
                                   )}
                                 </YStack>
-                                <Text
-                                  size="lg"
-                                  weight="bold"
-                                  style={{ color: theme.colors.primary }}
-                                >
+                                <Text size="lg" weight="bold" style={{ color: theme.colors.primary }}>
                                   {formatCurrency(displayAmount)}
                                 </Text>
                               </XStack>
@@ -436,10 +422,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
             {loading && (
               <YStack alignItems="center" justifyContent="center" padding="$8">
                 <ActivityIndicator size="large" color={theme.colors.primary} />
-                <Text
-                  size="sm"
-                  style={{ color: theme.colors.textSecondary, marginTop: 12 }}
-                >
+                <Text size="sm" style={{ color: theme.colors.textSecondary, marginTop: 12 }}>
                   {t("common.loading")}...
                 </Text>
               </YStack>
@@ -456,11 +439,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                   }}
                 >
                   <YStack gap="$3" alignItems="center">
-                    <Text
-                      size="md"
-                      weight="semibold"
-                      style={{ color: theme.colors.error }}
-                    >
+                    <Text size="md" weight="semibold" style={{ color: theme.colors.error }}>
                       {t("common.error")}
                     </Text>
                     <Text
@@ -506,11 +485,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
               <YStack padding="$6" alignItems="center">
                 <Card style={{ padding: 16, width: "100%" }}>
                   <YStack gap="$2" alignItems="center">
-                    <Text
-                      size="md"
-                      weight="semibold"
-                      style={{ color: theme.colors.textPrimary }}
-                    >
+                    <Text size="md" weight="semibold" style={{ color: theme.colors.textPrimary }}>
                       {t("accounts.noAccounts")}
                     </Text>
                     <Text
@@ -547,29 +522,59 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                 <YStack gap="$2">
                   <Input
                     value={recipient}
-                    onChangeText={setRecipient}
+                    onChangeText={(text) => {
+                      setRecipient(text);
+                      if (errors.recipient) {
+                        setErrors({ ...errors, recipient: undefined });
+                      }
+                    }}
                     placeholder={t("payment.recipientPlaceholder")}
                     fullWidth
                   />
+                  {errors.recipient && (
+                    <Text size="sm" style={{ color: theme.colors.error, marginTop: 4 }}>
+                      {errors.recipient}
+                    </Text>
+                  )}
                 </YStack>
 
                 <YStack gap="$2">
                   <Input
                     value={iban}
-                    onChangeText={setIban}
+                    onChangeText={(text) => {
+                      setIban(text);
+                      if (errors.iban) {
+                        setErrors({ ...errors, iban: undefined });
+                      }
+                    }}
                     placeholder="IBAN"
                     fullWidth
                   />
+                  {errors.iban && (
+                    <Text size="sm" style={{ color: theme.colors.error, marginTop: 4 }}>
+                      {errors.iban}
+                    </Text>
+                  )}
                 </YStack>
 
                 <YStack gap="$2">
                   <Input
                     value={amount}
-                    onChangeText={setAmount}
+                    onChangeText={(text) => {
+                      setAmount(text);
+                      if (errors.amount) {
+                        setErrors({ ...errors, amount: undefined });
+                      }
+                    }}
                     placeholder={t("payment.amountPlaceholder")}
                     keyboardType="numeric"
                     fullWidth
                   />
+                  {errors.amount && (
+                    <Text size="sm" style={{ color: theme.colors.error, marginTop: 4 }}>
+                      {errors.amount}
+                    </Text>
+                  )}
                 </YStack>
 
                 {/* Address Fields */}
@@ -593,12 +598,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                       />
                     </YStack>
                     <YStack gap="$2" flex={1}>
-                      <Input
-                        value={city}
-                        onChangeText={setCity}
-                        placeholder={t("payment.cityPlaceholder")}
-                        fullWidth
-                      />
+                      <Input value={city} onChangeText={setCity} placeholder={t("payment.cityPlaceholder")} fullWidth />
                     </YStack>
                   </XStack>
                 ) : (
@@ -612,12 +612,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                       />
                     </YStack>
                     <YStack gap="$2">
-                      <Input
-                        value={city}
-                        onChangeText={setCity}
-                        placeholder={t("payment.cityPlaceholder")}
-                        fullWidth
-                      />
+                      <Input value={city} onChangeText={setCity} placeholder={t("payment.cityPlaceholder")} fullWidth />
                     </YStack>
                   </>
                 )}
@@ -632,12 +627,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                 </YStack>
 
                 <YStack gap="$2">
-                  <Input
-                    value={note}
-                    onChangeText={setNote}
-                    placeholder={t("payment.notePlaceholder")}
-                    fullWidth
-                  />
+                  <Input value={note} onChangeText={setNote} placeholder={t("payment.notePlaceholder")} fullWidth />
                 </YStack>
 
                 {/* Standing Payment Toggle */}
@@ -650,17 +640,10 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                   marginTop="$2"
                 >
                   <YStack gap="$1">
-                    <Text
-                      size="md"
-                      weight="semibold"
-                      style={{ color: theme.colors.textPrimary }}
-                    >
+                    <Text size="md" weight="semibold" style={{ color: theme.colors.textPrimary }}>
                       {t("payment.standingPayment")}
                     </Text>
-                    <Text
-                      size="sm"
-                      style={{ color: theme.colors.textSecondary }}
-                    >
+                    <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                       {t("payment.recurringPayment")}
                     </Text>
                   </YStack>
@@ -677,80 +660,44 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
 
                 {/* Standing Payment Fields */}
                 {isStandingPayment && (
-                  <YStack
-                    gap="$4"
-                    paddingTop="$3"
-                    borderTopWidth={1}
-                    borderTopColor="$border"
-                    marginTop="$2"
-                  >
+                  <YStack gap="$4" paddingTop="$3" borderTopWidth={1} borderTopColor="$border" marginTop="$2">
                     <YStack gap="$2">
-                      <Text
-                        size="md"
-                        weight="semibold"
-                        style={{ color: theme.colors.textPrimary }}
-                      >
+                      <Text size="md" weight="semibold" style={{ color: theme.colors.textPrimary }}>
                         {t("payment.frequency")}
                       </Text>
                       <XStack gap="$2" flexWrap="wrap">
-                        {["weekly", "monthly", "quarterly", "yearly"].map(
-                          (freq) => (
-                            <Button
-                              key={freq}
-                              variant={
-                                frequency === freq ? "primary" : "outline"
-                              }
-                              size="sm"
-                              onPress={() => setFrequency(freq)}
-                              style={{ flex: 1, minWidth: 100 }}
-                            >
-                              {t(
-                                `payment.frequency${
-                                  freq.charAt(0).toUpperCase() + freq.slice(1)
-                                }`
-                              )}
-                            </Button>
-                          )
-                        )}
+                        {["weekly", "monthly", "quarterly", "yearly"].map((freq) => (
+                          <Button
+                            key={freq}
+                            variant={frequency === freq ? "primary" : "outline"}
+                            size="sm"
+                            onPress={() => setFrequency(freq)}
+                            style={{ flex: 1, minWidth: 100 }}
+                          >
+                            {t(`payment.frequency${freq.charAt(0).toUpperCase() + freq.slice(1)}`)}
+                          </Button>
+                        ))}
                       </XStack>
                     </YStack>
 
                     {/* Date Fields Side by Side */}
                     <YStack gap="$2">
-                      <Text
-                        size="md"
-                        weight="semibold"
-                        style={{ color: theme.colors.textPrimary }}
-                      >
+                      <Text size="md" weight="semibold" style={{ color: theme.colors.textPrimary }}>
                         {t("payment.paymentPeriod")}
                       </Text>
                       <XStack gap="$3">
                         <YStack gap="$2" flex={1}>
-                          <Text
-                            size="sm"
-                            style={{ color: theme.colors.textSecondary }}
-                          >
+                          <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                             {t("payment.startDate")}
                           </Text>
-                          <DateInput
-                            value={startDate}
-                            onChange={setStartDate}
-                            placeholder="YYYY-MM-DD"
-                          />
+                          <DateInput value={startDate} onChange={setStartDate} placeholder="YYYY-MM-DD" />
                         </YStack>
 
                         <YStack gap="$2" flex={1}>
-                          <Text
-                            size="sm"
-                            style={{ color: theme.colors.textSecondary }}
-                          >
+                          <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                             {t("payment.endDate")}
                           </Text>
-                          <DateInput
-                            value={endDate}
-                            onChange={setEndDate}
-                            placeholder="YYYY-MM-DD"
-                          />
+                          <DateInput value={endDate} onChange={setEndDate} placeholder="YYYY-MM-DD" />
                         </YStack>
                       </XStack>
                       <Text
@@ -765,19 +712,13 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                     </YStack>
 
                     <YStack gap="$2">
-                      <Text
-                        size="md"
-                        weight="semibold"
-                        style={{ color: theme.colors.textPrimary }}
-                      >
+                      <Text size="md" weight="semibold" style={{ color: theme.colors.textPrimary }}>
                         {t("payment.executionDay")}
                       </Text>
                       <Input
                         value={executionDay}
                         onChangeText={setExecutionDay}
-                        placeholder={t(
-                          `payment.executionDayPlaceholder.${frequency}`
-                        )}
+                        placeholder={t(`payment.executionDayPlaceholder.${frequency}`)}
                         fullWidth
                       />
                       <Text
@@ -793,15 +734,8 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
                   </YStack>
                 )}
 
-                <Button
-                  onPress={handleSend}
-                  fullWidth
-                  size="lg"
-                  style={{ marginTop: 8 }}
-                >
-                  {isStandingPayment
-                    ? t("payment.setupStandingPayment")
-                    : t("payment.sendPayment")}
+                <Button onPress={handleSend} fullWidth size="lg" style={{ marginTop: 8 }}>
+                  {isStandingPayment ? t("payment.setupStandingPayment") : t("payment.sendPayment")}
                 </Button>
               </YStack>
             </Card>
@@ -810,11 +744,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
       </ScrollView>
 
       {/* QR Code Scanner Modal */}
-      <QRCodeScannerModal
-        visible={qrScannerVisible}
-        onClose={closeScanner}
-        onQRCodeScanned={handleQRCodeScanned}
-      />
+      <QRCodeScannerModal visible={qrScannerVisible} onClose={closeScanner} onQRCodeScanned={handleQRCodeScanned} />
     </YStack>
   );
 };

@@ -4,6 +4,7 @@ import { Tabs, useRouter, usePathname } from "expo-router";
 import { Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { YStack, Button, useAppTheme } from "@ebanking/ui";
+import { FpLogo } from "../../../../packages/ui/src/FpLogo";
 import { Home, Wallet, Send, Settings, Menu } from "lucide-react-native";
 import { Drawer } from "../components/Drawer";
 import { useDarkMode } from "../_layout";
@@ -55,11 +56,9 @@ export default function TabsLayout() {
             backgroundColor: darkMode ? "#1E293B" : "#FFFFFF",
             borderTopColor: darkMode ? "#334155" : "#E2E8F0",
           },
+          headerLeft: () => <FpLogo size={28} color="#fff" style={{ marginLeft: 16 }} />,
           headerRight: () => (
-            <Pressable
-              onPress={() => setDrawerVisible(true)}
-              style={{ marginRight: 16 }}
-            >
+            <Pressable onPress={() => setDrawerVisible(true)} style={{ marginRight: 16 }}>
               <Menu size={28} color="#fff" />
             </Pressable>
           ),
@@ -78,9 +77,7 @@ export default function TabsLayout() {
           options={{
             title: t("nav.accounts"),
             tabBarLabel: t("nav.accounts"),
-            tabBarIcon: ({ color, size }) => (
-              <Wallet size={size} color={color} />
-            ),
+            tabBarIcon: ({ color, size }) => <Wallet size={size} color={color} />,
           }}
         />
         <Tabs.Screen
@@ -96,9 +93,7 @@ export default function TabsLayout() {
           options={{
             title: t("nav.settings"),
             tabBarLabel: t("nav.settings"),
-            tabBarIcon: ({ color, size }) => (
-              <Settings size={size} color={color} />
-            ),
+            tabBarIcon: ({ color, size }) => <Settings size={size} color={color} />,
           }}
         />
       </Tabs>

@@ -33,8 +33,7 @@ export const de: Translations = {
     rememberMe: "Angemeldet bleiben",
     noAccount: "Noch kein Konto?",
     signUp: "Registrieren",
-    termsAgreement:
-      "Mit der Anmeldung stimmen Sie unseren AGB & Datenschutzrichtlinien zu",
+    termsAgreement: "Mit der Anmeldung stimmen Sie unseren AGB & Datenschutzrichtlinien zu",
     useFaceID: "Face ID verwenden",
     useTouchID: "Touch ID verwenden",
     useIrisScanner: "Iris-Scanner verwenden",
@@ -53,6 +52,19 @@ export const de: Translations = {
 
   // Payment
   payment: {
+    errors: {
+      recipientRequired: "Empfängername ist erforderlich",
+      ibanRequired: "IBAN ist erforderlich",
+      ibanInvalid: "Ungültige IBAN",
+      ibanTooShort: "IBAN ist zu kurz",
+      ibanTooLong: "IBAN ist zu lang",
+      ibanInvalidCharacters: "IBAN enthält ungültige Zeichen",
+      ibanInvalidCountry: "Ungültiger oder nicht unterstützter Ländercode",
+      ibanInvalidLength: "Ungültige IBAN-Länge für dieses Land",
+      ibanInvalidChecksum: "Ungültige IBAN-Prüfsumme",
+      amountRequired: "Betrag ist erforderlich",
+      amountInvalid: "Bitte geben Sie einen gültigen Betrag ein",
+    },
     newPayment: "Neue Zahlung",
     paymentDetails: "Zahlungsdetails",
     searchPrevious: "Frühere Zahlungen suchen",
@@ -106,14 +118,10 @@ export const de: Translations = {
     },
     executionDayHelper: {
       weekly: "Geben Sie den Wochentag für die Zahlungsausführung ein",
-      monthly:
-        "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
-      quarterly:
-        "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
-      yearly:
-        "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
-      other:
-        "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
+      monthly: "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
+      quarterly: "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
+      yearly: "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
+      other: "Geben Sie den Tag des Monats (1-31) für die Zahlungsausführung ein",
     },
 
     // Recent Recipients

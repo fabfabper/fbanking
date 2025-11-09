@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { YStack, XStack, Text, Button, useAppTheme } from "@ebanking/ui";
-import { Settings } from "lucide-react-native";
+import { FpLogo } from "../../../packages/ui/src/FpLogo";
+import { Settings } from "lucide-react";
 import { LoginScreen, DashboardScreen, AccountsScreen, PaymentScreen, SettingsScreen } from "@ebanking/screens";
 import api from "./lib/api";
 
@@ -23,9 +24,7 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
 
   return (
     <XStack backgroundColor={theme.colors.primary} padding="$4" paddingVertical="$3" gap="$3" alignItems="center">
-      <Text size="xl" weight="bold" style={{ color: theme.colors.textWhite }}>
-        {t("auth.title")}
-      </Text>
+      <FpLogo size={32} color={theme.colors.textWhite} />
       <XStack flex={1} justifyContent="center" gap="$3">
         <Button
           variant="outline"
@@ -70,7 +69,10 @@ const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         className="nav-button"
         title={t("nav.settings")}
       >
-        <Settings size={20} color={location.pathname === "/settings" ? theme.colors.primary : theme.colors.textWhite} />
+        <Settings
+          size={20}
+          stroke={location.pathname === "/settings" ? theme.colors.primary : theme.colors.textWhite}
+        />
       </Button>
       <Button
         variant="outline"
