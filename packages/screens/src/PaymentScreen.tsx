@@ -181,6 +181,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }
       // It's a Payment with recipient object
       const payment = item as Payment;
       setRecipient(payment.recipient.name);
+      setIban(payment.recipient.iban || "");
       setAmount(payment.amount.toString());
       setNote(payment.description);
       setStreet(payment.recipient.street);
@@ -191,8 +192,8 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }
     } else {
       // It's a Transaction with recipient string
       const transaction = item as Transaction;
-      // Use recipient field if available, otherwise fall back to description
       setRecipient(transaction.recipient || transaction.description);
+      setIban((transaction as any).iban || "");
       setAmount(Math.abs(transaction.amount).toString());
       setNote(transaction.description || transaction.category || "");
     }
@@ -273,10 +274,12 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }
                   style={{
                     minWidth: isWeb ? 80 : 64,
                     width: isWeb ? 80 : 64,
+                    height: 40,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    padding: 8,
+                    paddingVertical: 12,
+                    paddingHorizontal: 8,
                   }}
                   title="Scan QR Code"
                 >
@@ -355,6 +358,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }
                           ? new Date(payment.createdAt).toLocaleDateString()
                           : new Date(transaction.date).toLocaleDateString();
                         const displayNote = isPayment ? payment.description : transaction.category || "";
+                        const displayIban = isPayment ? payment.recipient?.iban || "" : (item as any).iban || "";
                         const displayAccount = isPayment
                           ? payment.recipient?.iban
                             ? `${payment.recipient.iban.slice(-4)}`
@@ -377,29 +381,14 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }
                               <XStack justifyContent="space-between" alignItems="center">
                                 <YStack gap="$1" flex={1}>
                                   <Text size="md" weight="semibold">
-                                    {displayName}
+                                    {isPayment ? payment.recipient : transaction.recipient || transaction.description}
                                   </Text>
-                                  <Text
-                                    size="sm"
-                                    style={{
-                                      color: theme.colors.textSecondary,
-                                    }}
-                                  >
-                                    {displayAccount && `****${displayAccount}`}
-                                    {displayAccount && displayDate && " • "}
+                                  <Text size="sm" style={{ color: theme.colors.textSecondary }}>
+                                    {isPayment ? payment.iban : (transaction as any).iban || ""}
+                                  </Text>
+                                  <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                                     {displayDate}
                                   </Text>
-                                  {displayNote && (
-                                    <Text
-                                      size="xs"
-                                      style={{
-                                        color: theme.colors.textSecondary,
-                                        fontStyle: "italic",
-                                      }}
-                                    >
-                                      "{displayNote}"
-                                    </Text>
-                                  )}
                                 </YStack>
                                 <Text size="lg" weight="bold" style={{ color: theme.colors.primary }}>
                                   {formatCurrency(displayAmount)}
