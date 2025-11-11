@@ -218,7 +218,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api, onNavigat
                 <Text size="sm" style={{ color: theme.colors.textSecondary }}>
                   {t("dashboard.totalBalance")}
                 </Text>
-                <Text size="3xl" weight="bold" style={{ color: theme.colors.primary }}>
+                <Text size={isWeb ? "3xl" : "2xl"} weight="bold" style={{ color: theme.colors.primary }}>
                   {formatCurrency(totalBalance)}
                 </Text>
                 {netBalance !== 0 && (

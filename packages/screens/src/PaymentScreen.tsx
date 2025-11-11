@@ -527,14 +527,22 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }
                     value={iban}
                     onChangeText={(text) => {
                       setIban(text);
-                      if (errors.iban) {
-                        setErrors({ ...errors, iban: undefined });
+                      // Live IBAN validation, but only if not empty
+                      if (text.trim().length === 0) {
+                        setErrors((prev) => ({ ...prev, iban: undefined }));
+                        return;
+                      }
+                      const validation = validateIban(text);
+                      if (!validation.valid) {
+                        setErrors((prev) => ({ ...prev, iban: t("payment.errors." + (validation.errorCode || "ibanInvalid")) }));
+                      } else {
+                        setErrors((prev) => ({ ...prev, iban: undefined }));
                       }
                     }}
                     placeholder="IBAN"
                     fullWidth
                   />
-                  {errors.iban && (
+                  {iban.trim().length > 0 && errors.iban && (
                     <Text size="sm" style={{ color: theme.colors.error, marginTop: 4 }}>
                       {errors.iban}
                     </Text>

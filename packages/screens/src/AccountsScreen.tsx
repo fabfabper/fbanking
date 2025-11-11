@@ -1,18 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  ScrollView,
-  Platform,
-  Pressable,
-  ActivityIndicator,
-} from "react-native";
+import { ScrollView, Platform, Pressable, ActivityIndicator } from "react-native";
 import { YStack, XStack, Text, Card, useAppTheme, Button } from "@ebanking/ui";
 import { formatCurrency } from "./utils/formatCurrency";
-import {
-  AccountCarousel,
-  CARD_WIDTH,
-  CARD_SPACING,
-} from "./components/AccountCarousel";
+import { AccountCarousel, CARD_WIDTH, CARD_SPACING } from "./components/AccountCarousel";
 import { TransactionList } from "./components/TransactionList";
 import type { Account, Transaction, PaginatedResponse } from "@ebanking/api";
 
@@ -24,10 +15,7 @@ interface AccountsScreenProps {
       getAccounts: () => Promise<Account[]>;
     };
     transactions: {
-      getAccountTransactions: (
-        accountId: string,
-        filters?: any
-      ) => Promise<PaginatedResponse<Transaction>>;
+      getAccountTransactions: (accountId: string, filters?: any) => Promise<PaginatedResponse<Transaction>>;
     };
   };
 }
@@ -45,14 +33,10 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
   // API state for transactions
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [transactionsLoading, setTransactionsLoading] = useState(false);
-  const [transactionsError, setTransactionsError] = useState<string | null>(
-    null
-  );
+  const [transactionsError, setTransactionsError] = useState<string | null>(null);
 
   // Filter state
-  const [transactionFilter, setTransactionFilter] = useState<
-    "all" | "incomes" | "expenses"
-  >("all");
+  const [transactionFilter, setTransactionFilter] = useState<"all" | "incomes" | "expenses">("all");
 
   // Fetch accounts from API
   useEffect(() => {
@@ -69,9 +53,7 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
         }
       } catch (err) {
         console.error("Failed to fetch accounts:", err);
-        setAccountsError(
-          err instanceof Error ? err.message : "Failed to fetch accounts"
-        );
+        setAccountsError(err instanceof Error ? err.message : "Failed to fetch accounts");
       } finally {
         setAccountsLoading(false);
       }
@@ -85,19 +67,14 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
     try {
       setTransactionsLoading(true);
       setTransactionsError(null);
-      const response = await api.transactions.getAccountTransactions(
-        accountId,
-        {
-          limit: 10,
-        }
-      );
+      const response = await api.transactions.getAccountTransactions(accountId, {
+        limit: 10,
+      });
       // Extract the data array from the paginated response
       setTransactions(response.data);
     } catch (err) {
       console.error("Failed to fetch transactions:", err);
-      setTransactionsError(
-        err instanceof Error ? err.message : "Failed to fetch transactions"
-      );
+      setTransactionsError(err instanceof Error ? err.message : "Failed to fetch transactions");
     } finally {
       setTransactionsLoading(false);
     }
@@ -122,13 +99,7 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
   // Loading state
   if (accountsLoading) {
     return (
-      <YStack
-        flex={1}
-        backgroundColor="$backgroundGray"
-        justifyContent="center"
-        alignItems="center"
-        gap="$4"
-      >
+      <YStack flex={1} backgroundColor="$backgroundGray" justifyContent="center" alignItems="center" gap="$4">
         <ActivityIndicator size="large" color={theme.colors.primary} />
         <Text size="md" style={{ color: theme.colors.textSecondary }}>
           {t("common.loading")}
@@ -151,16 +122,11 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
         <Text size="xl" weight="bold" style={{ color: theme.colors.error }}>
           {t("common.error")}
         </Text>
-        <Text
-          size="md"
-          style={{ color: theme.colors.textSecondary, textAlign: "center" }}
-        >
+        <Text size="md" style={{ color: theme.colors.textSecondary, textAlign: "center" }}>
           {accountsError}
         </Text>
         <Button onPress={() => window.location.reload()}>
-          <Text style={{ color: theme.colors.textWhite }}>
-            {t("common.retry")}
-          </Text>
+          <Text style={{ color: theme.colors.textWhite }}>{t("common.retry")}</Text>
         </Button>
       </YStack>
     );
@@ -180,10 +146,7 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
         <Text size="xl" weight="bold">
           {t("accounts.noAccounts")}
         </Text>
-        <Text
-          size="md"
-          style={{ color: theme.colors.textSecondary, textAlign: "center" }}
-        >
+        <Text size="md" style={{ color: theme.colors.textSecondary, textAlign: "center" }}>
           {t("accounts.noAccountsDescription")}
         </Text>
       </YStack>
@@ -221,14 +184,8 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
             <Text size="md" style={{ color: theme.colors.error }}>
               {transactionsError}
             </Text>
-            <Button
-              onPress={() =>
-                selectedAccount && fetchTransactions(selectedAccount.id)
-              }
-            >
-              <Text style={{ color: theme.colors.textWhite }}>
-                {t("common.retry")}
-              </Text>
+            <Button onPress={() => selectedAccount && fetchTransactions(selectedAccount.id)}>
+              <Text style={{ color: theme.colors.textWhite }}>{t("common.retry")}</Text>
             </Button>
           </YStack>
         ) : transactions.length === 0 ? (
@@ -236,10 +193,7 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
             <Text size="md" weight="semibold">
               {t("accounts.noTransactions")}
             </Text>
-            <Text
-              size="sm"
-              style={{ color: theme.colors.textSecondary, textAlign: "center" }}
-            >
+            <Text size="sm" style={{ color: theme.colors.textSecondary, textAlign: "center" }}>
               {t("accounts.noTransactionsDescription")}
             </Text>
           </YStack>
@@ -251,28 +205,18 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                 <Pressable
                   onPress={() => setTransactionFilter("all")}
                   style={{
-                    backgroundColor:
-                      transactionFilter === "all"
-                        ? theme.colors.primary
-                        : theme.colors.background,
+                    backgroundColor: transactionFilter === "all" ? theme.colors.primary : theme.colors.background,
                     paddingHorizontal: isWeb ? 20 : 16,
                     paddingVertical: isWeb ? 10 : 8,
                     borderRadius: 20,
                     borderWidth: 1,
-                    borderColor:
-                      transactionFilter === "all"
-                        ? theme.colors.primary
-                        : theme.colors.border,
+                    borderColor: transactionFilter === "all" ? theme.colors.primary : theme.colors.border,
                   }}
                 >
                   <Text
                     size="sm"
                     weight="semibold"
-                    color={
-                      transactionFilter === "all"
-                        ? "#FFFFFF"
-                        : theme.colors.textPrimary
-                    }
+                    color={transactionFilter === "all" ? "#FFFFFF" : theme.colors.textPrimary}
                   >
                     {t("accounts.filterAll") || "All"}
                   </Text>
@@ -280,28 +224,18 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                 <Pressable
                   onPress={() => setTransactionFilter("incomes")}
                   style={{
-                    backgroundColor:
-                      transactionFilter === "incomes"
-                        ? theme.colors.success
-                        : theme.colors.background,
+                    backgroundColor: transactionFilter === "incomes" ? theme.colors.success : theme.colors.background,
                     paddingHorizontal: isWeb ? 20 : 16,
                     paddingVertical: isWeb ? 10 : 8,
                     borderRadius: 20,
                     borderWidth: 1,
-                    borderColor:
-                      transactionFilter === "incomes"
-                        ? theme.colors.success
-                        : theme.colors.border,
+                    borderColor: transactionFilter === "incomes" ? theme.colors.success : theme.colors.border,
                   }}
                 >
                   <Text
                     size="sm"
                     weight="semibold"
-                    color={
-                      transactionFilter === "incomes"
-                        ? "#FFFFFF"
-                        : theme.colors.textPrimary
-                    }
+                    color={transactionFilter === "incomes" ? "#FFFFFF" : theme.colors.textPrimary}
                   >
                     {t("accounts.filterIncomes") || "Incomes"}
                   </Text>
@@ -309,28 +243,18 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
                 <Pressable
                   onPress={() => setTransactionFilter("expenses")}
                   style={{
-                    backgroundColor:
-                      transactionFilter === "expenses"
-                        ? theme.colors.error
-                        : theme.colors.background,
+                    backgroundColor: transactionFilter === "expenses" ? theme.colors.error : theme.colors.background,
                     paddingHorizontal: isWeb ? 20 : 16,
                     paddingVertical: isWeb ? 10 : 8,
                     borderRadius: 20,
                     borderWidth: 1,
-                    borderColor:
-                      transactionFilter === "expenses"
-                        ? theme.colors.error
-                        : theme.colors.border,
+                    borderColor: transactionFilter === "expenses" ? theme.colors.error : theme.colors.border,
                   }}
                 >
                   <Text
                     size="sm"
                     weight="semibold"
-                    color={
-                      transactionFilter === "expenses"
-                        ? "#FFFFFF"
-                        : theme.colors.textPrimary
-                    }
+                    color={transactionFilter === "expenses" ? "#FFFFFF" : theme.colors.textPrimary}
                   >
                     {t("accounts.filterExpenses") || "Expenses"}
                   </Text>
@@ -339,11 +263,7 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
 
               <TransactionList
                 transactions={filteredTransactions}
-                emptyMessage={
-                  transactionFilter !== "all"
-                    ? t("accounts.noTransactions")
-                    : "No transactions found"
-                }
+                emptyMessage={transactionFilter !== "all" ? t("accounts.noTransactions") : "No transactions found"}
               />
             </YStack>
           </ScrollView>

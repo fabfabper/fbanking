@@ -155,9 +155,9 @@ export const de: Translations = {
     expenses: "Ausgaben",
     netBalance: "Nettosaldo",
     quickActions: "Schnellzugriff",
-    transferMoney: "Geld überweisen",
-    payBills: "Rechnungen bezahlen",
-    viewAccounts: "Konten anzeigen",
+    transferMoney: "Zahlung",
+    payBills: "Rechnungen",
+    viewAccounts: "Konten",
     recentTransactions: "Letzte Transaktionen",
   },
 
