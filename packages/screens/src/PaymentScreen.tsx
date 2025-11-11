@@ -534,7 +534,10 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }
                       }
                       const validation = validateIban(text);
                       if (!validation.valid) {
-                        setErrors((prev) => ({ ...prev, iban: t("payment.errors." + (validation.errorCode || "ibanInvalid")) }));
+                        setErrors((prev) => ({
+                          ...prev,
+                          iban: t("payment.errors." + (validation.errorCode || "ibanInvalid")),
+                        }));
                       } else {
                         setErrors((prev) => ({ ...prev, iban: undefined }));
                       }
