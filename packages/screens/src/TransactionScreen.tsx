@@ -55,7 +55,14 @@ export const TransactionScreen: React.FC<TransactionScreenProps> = ({ transactio
   };
 
   return (
-    <YStack flex={1} alignItems="center" justifyContent="center" padding="$4" position="relative">
+    <YStack
+      flex={1}
+      alignItems="center"
+      justifyContent="center"
+      padding="$4"
+      position="relative"
+      style={{ backgroundColor: theme.colors.cardBg }}
+    >
       {/* Header */}
       <XStack justifyContent="flex-end" alignItems="center" width="100%" maxWidth={400} marginBottom={16}>
         <Button onPress={onClose} variant="ghost" size="sm" radius="pill">

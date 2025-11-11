@@ -39,7 +39,6 @@ export const TransactionDetailDrawer: React.FC<Props> = ({ isWeb, visible, trans
             right: 0,
             width: 400,
             maxHeight: "80vh",
-            background: theme.colors.backgroundElevatedLight,
             boxShadow: "-2px 0 12px rgba(0,0,0,0.15)",
             zIndex: 9999,
             transition: "transform 0.3s",
