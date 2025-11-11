@@ -1,4 +1,18 @@
 export const en = {
+  qr: {
+    title: "Scan QR Code",
+    success: "QR Code Scanned Successfully! ✓",
+    scanAnother: "Scan Another",
+    initializingCamera: "Initializing camera...",
+    positionFrame: "Position the QR code within the frame",
+    loading: "Loading scanner...",
+    requestingPermission: "Requesting camera permission...",
+    permissionRequiredTitle: "Camera Permission Required",
+    permissionRequiredDescription: "Please grant camera permission to scan QR codes.",
+    close: "Close",
+    cancel: "Cancel",
+    scanAgain: "Scan Again",
+  },
   // Common
   common: {
     email: "Email",

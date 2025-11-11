@@ -266,35 +266,30 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }
           {/* Search Field */}
           <YStack paddingHorizontal="$6" paddingBottom="$4" zIndex={1000}>
             <YStack gap="$2" position="relative">
-              <XStack gap="$2" alignItems="center">
-                <Button
-                  variant="outline"
-                  size="md"
+              <YStack position="relative" width="100%">
+                <Input
+                  value={searchQuery}
+                  onChangeText={handleSearchChange}
+                  placeholder={t("payment.searchPlaceholder")}
+                  fullWidth
+                  style={{ paddingRight: 40 }}
+                  onFocus={() => setShowSearchResults(searchQuery.trim().length > 0)}
+                />
+                <Pressable
                   onPress={openScanner}
                   style={{
-                    minWidth: isWeb ? 80 : 64,
-                    width: isWeb ? 80 : 64,
-                    height: 40,
-                    display: "flex",
-                    alignItems: "center",
+                    position: "absolute",
+                    right: 8,
+                    top: 0,
+                    height: "100%",
                     justifyContent: "center",
-                    paddingVertical: 12,
-                    paddingHorizontal: 8,
+                    alignItems: "center",
                   }}
-                  title="Scan QR Code"
+                  accessibilityLabel={t("payment.scanQr")}
                 >
                   <QrCode size={24} color={theme.colors.primary} />
-                </Button>
-                <YStack flex={1}>
-                  <Input
-                    value={searchQuery}
-                    onChangeText={handleSearchChange}
-                    placeholder={t("payment.searchPlaceholder")}
-                    fullWidth
-                    onFocus={() => setShowSearchResults(searchQuery.trim().length > 0)}
-                  />
-                </YStack>
-              </XStack>
+                </Pressable>
+              </YStack>
 
               {/* Search Results Dropdown */}
               {showSearchResults && (
@@ -662,6 +657,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }
                             size="sm"
                             onPress={() => setFrequency(freq)}
                             style={{ flex: 1, minWidth: 100 }}
+                            radius="pill"
                           >
                             {t(`payment.frequency${freq.charAt(0).toUpperCase() + freq.slice(1)}`)}
                           </Button>
@@ -723,7 +719,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }
                   </YStack>
                 )}
 
-                <Button onPress={handleSend} fullWidth size="lg" style={{ marginTop: 8 }}>
+                <Button onPress={handleSend} fullWidth size="lg" style={{ marginTop: 8 }} radius="pill">
                   {isStandingPayment ? t("payment.setupStandingPayment") : t("payment.sendPayment")}
                 </Button>
               </YStack>

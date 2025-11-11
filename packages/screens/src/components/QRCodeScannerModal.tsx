@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Platform, StyleSheet, Dimensions, View } from "react-native";
 import { YStack, XStack, Text, Button } from "@ebanking/ui";
 
@@ -27,6 +28,7 @@ interface QRCodeScannerModalProps {
 }
 
 export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({ visible, onClose, onQRCodeScanned }) => {
+  const { t } = useTranslation();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [CameraView, setCameraView] = useState<any>(null);
@@ -162,7 +164,7 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({ visible,
         <YStack backgroundColor="$backgroundGray" padding="$6" gap="$4" style={styles.webModal} alignItems="center">
           <XStack justifyContent="space-between" width="100%" alignItems="center">
             <Text size="xl" weight="bold">
-              Scan QR Code
+              {t("qr.title")}
             </Text>
             <Button variant="ghost" onPress={handleClose} size="sm">
               <Text size="lg">✕</Text>
@@ -184,10 +186,10 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({ visible,
           {scanned && (
             <YStack gap="$3" alignItems="center" paddingTop="$4">
               <Text size="lg" weight="bold" style={{ color: "#10B981" }}>
-                QR Code Scanned Successfully! ✓
+                {t("qr.success")}
               </Text>
               <Button onPress={handleScanAgain}>
-                <Text>Scan Another</Text>
+                <Text>{t("qr.scanAnother")}</Text>
               </Button>
             </YStack>
           )}
@@ -195,14 +197,14 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({ visible,
           {!isScanning && !scanned && (
             <YStack gap="$3" alignItems="center" paddingTop="$4">
               <Text size="md" style={{ textAlign: "center" }}>
-                Initializing camera...
+                {t("qr.initializingCamera")}
               </Text>
             </YStack>
           )}
 
           {isScanning && !scanned && (
             <Text size="sm" style={{ opacity: 0.7, textAlign: "center" }}>
-              Position the QR code within the frame
+              {t("qr.positionFrame")}
             </Text>
           )}
         </YStack>
@@ -215,7 +217,7 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({ visible,
     return (
       <View style={styles.container}>
         <YStack flex={1} backgroundColor="$backgroundGray" justifyContent="center" alignItems="center" padding="$6">
-          <Text size="lg">Loading scanner...</Text>
+          <Text size="lg">{t("qr.loading")}</Text>
         </YStack>
       </View>
     );
@@ -225,7 +227,7 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({ visible,
     return (
       <View style={styles.container}>
         <YStack flex={1} backgroundColor="$backgroundGray" justifyContent="center" alignItems="center" padding="$6">
-          <Text size="lg">Requesting camera permission...</Text>
+          <Text size="lg">{t("qr.requestingPermission")}</Text>
         </YStack>
       </View>
     );
@@ -243,13 +245,13 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({ visible,
           gap="$4"
         >
           <Text size="lg" weight="bold">
-            Camera Permission Required
+            {t("qr.permissionRequiredTitle")}
           </Text>
           <Text size="md" style={{ textAlign: "center" }}>
-            Please grant camera permission to scan QR codes.
+            {t("qr.permissionRequiredDescription")}
           </Text>
           <Button onPress={handleClose}>
-            <Text>Close</Text>
+            <Text>{t("qr.close")}</Text>
           </Button>
         </YStack>
       </View>
@@ -272,7 +274,7 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({ visible,
         {/* Header */}
         <XStack justifyContent="space-between" alignItems="center">
           <Text size="xl" weight="bold" style={styles.whiteText}>
-            Scan QR Code
+            {t("qr.title")}
           </Text>
         </XStack>
 
@@ -289,20 +291,20 @@ export const QRCodeScannerModal: React.FC<QRCodeScannerModalProps> = ({ visible,
           {scanned && (
             <>
               <Text size="lg" weight="bold" style={styles.successText}>
-                QR Code Scanned! ✓
+                {t("qr.success")}
               </Text>
               <Button onPress={handleScanAgain}>
-                <Text>Scan Again</Text>
+                <Text>{t("qr.scanAgain")}</Text>
               </Button>
             </>
           )}
           {!scanned && (
             <Text size="md" style={styles.whiteText}>
-              Position the QR code within the frame
+              {t("qr.positionFrame")}
             </Text>
           )}
           <Button onPress={handleClose}>
-            <Text>Cancel</Text>
+            <Text>{t("qr.cancel")}</Text>
           </Button>
         </YStack>
       </YStack>

@@ -1,6 +1,20 @@
 import { Translations } from "./en";
 
 export const de: Translations = {
+  qr: {
+    title: "QR-Code scannen",
+    success: "QR-Code erfolgreich gescannt! ✓",
+    scanAnother: "Weitere scannen",
+    initializingCamera: "Kamera wird initialisiert...",
+    positionFrame: "Positioniere den QR-Code im Rahmen",
+    loading: "Scanner wird geladen...",
+    requestingPermission: "Kameraberechtigung wird angefordert...",
+    permissionRequiredTitle: "Kameraberechtigung erforderlich",
+    permissionRequiredDescription: "Bitte erlaube den Kamerazugriff, um QR-Codes zu scannen.",
+    close: "Schließen",
+    cancel: "Abbrechen",
+    scanAgain: "Erneut scannen",
+  },
   // Common
   common: {
     email: "E-Mail",

@@ -10,10 +10,7 @@ interface SettingsScreenProps {
   onToggleDarkMode?: (value: boolean) => void;
 }
 
-export const SettingsScreen: React.FC<SettingsScreenProps> = ({
-  darkMode = false,
-  onToggleDarkMode,
-}) => {
+export const SettingsScreen: React.FC<SettingsScreenProps> = ({ darkMode = false, onToggleDarkMode }) => {
   const { t, i18n } = useTranslation();
   const { theme } = useAppTheme();
   const currentLanguage = i18n.language;
@@ -52,6 +49,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                   size="md"
                   onPress={() => handleLanguageChange("en")}
                   style={{ flex: 1, minWidth: 120 }}
+                  radius="pill"
                 >
                   English
                 </Button>
@@ -60,6 +58,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                   size="md"
                   onPress={() => handleLanguageChange("de")}
                   style={{ flex: 1, minWidth: 120 }}
+                  radius="pill"
                 >
                   Deutsch
                 </Button>
@@ -87,19 +86,13 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                 </Text>
               </YStack>
 
-              <XStack
-                justifyContent="space-between"
-                alignItems="center"
-                paddingVertical="$2"
-              >
+              <XStack justifyContent="space-between" alignItems="center" paddingVertical="$2">
                 <YStack gap="$1">
                   <Text size="md" weight="semibold">
                     {t("settings.appearance.darkMode")}
                   </Text>
                   <Text size="sm" style={{ color: theme.colors.textSecondary }}>
-                    {darkMode
-                      ? t("settings.appearance.darkModeEnabled")
-                      : t("settings.appearance.lightModeEnabled")}
+                    {darkMode ? t("settings.appearance.darkModeEnabled") : t("settings.appearance.lightModeEnabled")}
                   </Text>
                 </YStack>
                 <Switch
@@ -136,15 +129,11 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
               </YStack>
 
               <YStack gap="$3">
-                <XStack
-                  justifyContent="space-between"
-                  alignItems="center"
-                  paddingVertical="$2"
-                >
+                <XStack justifyContent="space-between" alignItems="center" paddingVertical="$2">
                   <Text size="md" weight="medium">
                     {t("settings.security.changePassword")}
                   </Text>
-                  <Button variant="outline" size="sm" disabled>
+                  <Button variant="outline" size="sm" disabled radius="pill">
                     {t("common.edit")}
                   </Button>
                 </XStack>
@@ -194,11 +183,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
               </YStack>
 
               <YStack gap="$3">
-                <XStack
-                  justifyContent="space-between"
-                  alignItems="center"
-                  paddingVertical="$2"
-                >
+                <XStack justifyContent="space-between" alignItems="center" paddingVertical="$2">
                   <Text size="md" weight="medium">
                     {t("settings.notifications.email")}
                   </Text>
@@ -264,12 +249,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
                   </Text>
                 </XStack>
 
-                <XStack
-                  justifyContent="space-between"
-                  paddingVertical="$2"
-                  borderTopWidth={1}
-                  borderTopColor="$border"
-                >
+                <XStack justifyContent="space-between" paddingVertical="$2" borderTopWidth={1} borderTopColor="$border">
                   <Text size="md" style={{ color: theme.colors.textSecondary }}>
                     {t("settings.about.buildNumber")}
                   </Text>

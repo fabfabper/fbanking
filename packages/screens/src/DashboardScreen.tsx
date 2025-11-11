@@ -424,6 +424,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api, onNavigat
                 padding: 8,
               }}
               title="Scan QR Code"
+              radius="pill"
             >
               <QrCode size={24} color={theme.colors.primary} />
             </Button>
@@ -432,6 +433,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api, onNavigat
               size="md"
               onPress={() => onNavigateToPayment?.()}
               style={{ flex: 1, minWidth: 140 }}
+              radius="pill"
             >
               {t("dashboard.transferMoney")}
             </Button>
@@ -440,6 +442,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api, onNavigat
               size="md"
               onPress={() => onNavigateToPayment?.()}
               style={{ flex: 1, minWidth: 140 }}
+              radius="pill"
             >
               {t("dashboard.payBills")}
             </Button>
@@ -448,6 +451,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api, onNavigat
               size="md"
               onPress={() => onNavigateToAccounts?.()}
               style={{ flex: 1, minWidth: 140 }}
+              radius="pill"
             >
               {t("dashboard.viewAccounts")}
             </Button>

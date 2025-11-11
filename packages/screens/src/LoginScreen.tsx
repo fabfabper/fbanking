@@ -163,6 +163,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                 shadowRadius: 8,
                 elevation: 3,
               }}
+              radius="pill"
             >
               {t("common.signIn")}
             </Button>
@@ -181,6 +182,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                   fullWidth
                   size="lg"
                   disabled={isAuthenticating}
+                  radius="pill"
                 >
                   {isAuthenticating ? (
                     <XStack gap="$2" alignItems="center">

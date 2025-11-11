@@ -26,6 +26,11 @@ export const Button = styled(TamaguiButton, {
   },
 
   variants: {
+    radius: {
+      pill: {
+        borderRadius: 9999,
+      },
+    },
     variant: {
       primary: {
         backgroundColor: "$primary",
