@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, Platform, Pressable, ActivityIndicator } from "react-native";
+import { ScrollView, Platform, Pressable, ActivityIndicator, Animated } from "react-native";
 import { YStack, XStack, Text, Card, useAppTheme, Button } from "@ebanking/ui";
 import { formatCurrency } from "./utils/formatCurrency";
 import { AccountCarousel, CARD_WIDTH, CARD_SPACING } from "./components/AccountCarousel";
 import { TransactionList } from "./components/TransactionList";
 import type { Account, Transaction, PaginatedResponse } from "@ebanking/api";
+import { TransactionDetailDrawer } from "./components/TransactionDetailDrawer";
 
 const isWeb = Platform.OS === "web";
 
@@ -37,6 +38,11 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
 
   // Filter state
   const [transactionFilter, setTransactionFilter] = useState<"all" | "incomes" | "expenses">("all");
+
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [sheetVisible, setSheetVisible] = useState(false);
+  const sheetAnim = useRef(new Animated.Value(0)).current;
 
   // Fetch accounts from API
   useEffect(() => {
@@ -86,6 +92,31 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
     if (accounts[index]) {
       fetchTransactions(accounts[index].id);
     }
+  };
+
+  const handleTransactionClick = (tx: Transaction) => {
+    setSelectedTransaction(tx);
+    if (isWeb) {
+      setDrawerVisible(true);
+    } else {
+      setSheetVisible(true);
+      Animated.timing(sheetAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  };
+
+  const handleClose = () => {
+    setDrawerVisible(false);
+    setSheetVisible(false);
+    setSelectedTransaction(null);
+    Animated.timing(sheetAnim, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
   };
 
   // Filter transactions based on selected filter
@@ -264,11 +295,19 @@ export const AccountsScreen: React.FC<AccountsScreenProps> = ({ api }) => {
               <TransactionList
                 transactions={filteredTransactions}
                 emptyMessage={transactionFilter !== "all" ? t("accounts.noTransactions") : "No transactions found"}
+                onTransactionClick={handleTransactionClick}
               />
             </YStack>
           </ScrollView>
         )}
       </YStack>
+      <TransactionDetailDrawer
+        isWeb={isWeb}
+        visible={isWeb ? drawerVisible : sheetVisible}
+        transaction={selectedTransaction}
+        onClose={handleClose}
+        sheetAnim={sheetAnim}
+      />
     </YStack>
   );
 };
