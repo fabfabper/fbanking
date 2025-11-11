@@ -23,6 +23,7 @@ export const lightColors = {
   // Backgrounds
   background: "#F9FAFB",
   backgroundGray: "#F3F4F6",
+  backgroundElevatedLight: "#FFFFFF",
   cardBg: "#FFFFFF",
 
   // Text colors
@@ -74,6 +75,7 @@ export const darkColors = {
   // Backgrounds
   background: "#0F172A",
   backgroundGray: "#1E293B",
+  backgroundElevatedLight: "#273447",
   cardBg: "#1E293B",
 
   // Text colors
