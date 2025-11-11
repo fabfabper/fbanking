@@ -32,6 +32,8 @@ export const de: Translations = {
     error: "Fehler",
     retry: "Wiederholen",
     or: "oder",
+    share: "Teilen",
+    copy: "Kopieren",
   },
 
   // Auth/Login
@@ -235,5 +237,17 @@ export const de: Translations = {
       version: "Version",
       buildNumber: "Build-Nummer",
     },
+  },
+
+  // Transaction Screen
+  transaction: {
+    id: "Transaktions-ID",
+    details: "Transaktionsdetails",
+    amount: "Betrag",
+    date: "Datum",
+    recipient: "Empfänger",
+    description: "Beschreibung",
+    category: "Kategorie",
+    notFound: "Transaktion nicht gefunden",
   },
 };

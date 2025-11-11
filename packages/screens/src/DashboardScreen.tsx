@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, Platform, Dimensions, ActivityIndicator, Alert } from "react-native";
+import { ScrollView, Platform, Dimensions, ActivityIndicator, Alert, Animated } from "react-native";
 import { YStack, XStack, Text, Card, Button, useAppTheme } from "@ebanking/ui";
 import { QrCode } from "lucide-react-native";
 import {
@@ -21,6 +21,7 @@ import { useQRCodeScanner } from "./hooks/useQRCodeScanner";
 import { formatCurrency } from "./utils/formatCurrency";
 import { TransactionList } from "./components/TransactionList";
 import { QRCodeScannerModal } from "./components/QRCodeScannerModal";
+import { TransactionScreen } from "./TransactionScreen";
 import type { Account, Transaction, ExpenseByCategory, IncomeExpenseSummary } from "@ebanking/api";
 
 const { width: screenWidth } = Dimensions.get("window");
@@ -80,6 +81,10 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api, onNavigat
   );
   const [netBalance, setNetBalance] = useState(0);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+  const [sheetVisible, setSheetVisible] = useState(false);
+  const sheetAnim = useRef(new Animated.Value(0)).current;
 
   // Color palette for charts
   const chartColors = ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6", "#EC4899", "#14B8A6"];
@@ -146,6 +151,31 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api, onNavigat
 
   const handleScannerClose = () => {
     closeScanner();
+  };
+
+  const handleTransactionClick = (tx: Transaction) => {
+    setSelectedTransaction(tx);
+    if (isWeb) {
+      setDrawerVisible(true);
+    } else {
+      setSheetVisible(true);
+      Animated.timing(sheetAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+  };
+
+  const handleClose = () => {
+    setDrawerVisible(false);
+    setSheetVisible(false);
+    setSelectedTransaction(null);
+    Animated.timing(sheetAnim, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
   };
 
   // Loading state
@@ -463,7 +493,11 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api, onNavigat
           <Text size="xl" weight="bold" style={{ marginBottom: 4 }}>
             {t("dashboard.recentTransactions")}
           </Text>
-          <TransactionList transactions={transactions} emptyMessage="No recent transactions" />
+          <TransactionList
+            transactions={transactions}
+            emptyMessage="No recent transactions"
+            onTransactionClick={handleTransactionClick}
+          />
         </YStack>
       </ScrollView>
 
@@ -473,6 +507,55 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ api, onNavigat
         onClose={handleScannerClose}
         onQRCodeScanned={handleQRCodeScanned}
       />
+
+      {/* Transaction Detail Drawer (Web) */}
+      {isWeb && drawerVisible && selectedTransaction && (
+        <div
+          style={{
+            position: "fixed",
+            top: "50%",
+            right: 0,
+            width: 400,
+            maxHeight: "80vh",
+            background: theme.colors.cardBg,
+            boxShadow: "-2px 0 12px rgba(0,0,0,0.15)",
+            zIndex: 9999,
+            transition: "transform 0.3s",
+            transform: drawerVisible ? "translate(0, -50%)" : "translate(100%, -50%)",
+            display: "flex",
+            flexDirection: "column",
+            borderRadius: "16px 0 0 16px",
+            overflowY: "auto",
+          }}
+        >
+          <TransactionScreen transaction={selectedTransaction} onClose={handleClose} />
+        </div>
+      )}
+
+      {/* Transaction Bottom Sheet (Mobile) */}
+      {!isWeb && sheetVisible && selectedTransaction && (
+        <Animated.View
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: "50%",
+            backgroundColor: theme.colors.cardBg,
+            borderTopLeftRadius: 24,
+            borderTopRightRadius: 24,
+            zIndex: 9999,
+            transform: [{ translateY: sheetAnim.interpolate({ inputRange: [0, 1], outputRange: [400, 0] }) }],
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: -4 },
+            shadowOpacity: 0.15,
+            shadowRadius: 12,
+            elevation: 8,
+          }}
+        >
+          <TransactionScreen transaction={selectedTransaction} onClose={handleClose} />
+        </Animated.View>
+      )}
     </YStack>
   );
 };

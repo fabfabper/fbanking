@@ -1,4 +1,4 @@
-import { PaymentScreen } from "@ebanking/screens";
+import { NewPaymentScreen } from "@ebanking/screens";
 import { useLocalSearchParams } from "expo-router";
 import { View, Text } from "react-native";
 import api from "../../lib/api";
@@ -26,12 +26,9 @@ export default function Payment() {
           }
         : undefined;
 
-    console.log(
-      "[Payment] Parsed initialData:",
-      JSON.stringify(initialData, null, 2)
-    );
+    console.log("[Payment] Parsed initialData:", JSON.stringify(initialData, null, 2));
 
-    return <PaymentScreen api={api} initialData={initialData} />;
+    return <NewPaymentScreen api={api} initialData={initialData} />;
   } catch (error) {
     console.error("[Payment] Error rendering:", error);
     return (
@@ -43,9 +40,7 @@ export default function Payment() {
           padding: 20,
         }}
       >
-        <Text style={{ color: "red", marginBottom: 10 }}>
-          Error loading payment screen
-        </Text>
+        <Text style={{ color: "red", marginBottom: 10 }}>Error loading payment screen</Text>
         <Text>{error instanceof Error ? error.message : String(error)}</Text>
       </View>
     );

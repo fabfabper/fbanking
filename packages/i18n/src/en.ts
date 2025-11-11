@@ -30,6 +30,8 @@ export const en = {
     error: "Error",
     retry: "Retry",
     or: "or",
+    share: "Share",
+    copy: "Copy",
   },
 
   // Auth/Login
@@ -232,6 +234,18 @@ export const en = {
       version: "Version",
       buildNumber: "Build Number",
     },
+  },
+
+  // Transaction Screen
+  transaction: {
+    id: "Transaction ID",
+    details: "Transaction Details",
+    amount: "Amount",
+    date: "Date",
+    recipient: "Recipient",
+    description: "Description",
+    category: "Category",
+    notFound: "Transaction not found",
   },
 };
 

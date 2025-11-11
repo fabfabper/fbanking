@@ -4,7 +4,7 @@ import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-
 import { YStack, XStack, Text, Button, useAppTheme } from "@ebanking/ui";
 import { FpLogo } from "../../../packages/ui/src/FpLogo";
 import { Settings } from "lucide-react";
-import { LoginScreen, DashboardScreen, AccountsScreen, PaymentScreen, SettingsScreen } from "@ebanking/screens";
+import { LoginScreen, DashboardScreen, AccountsScreen, NewPaymentScreen, SettingsScreen } from "@ebanking/screens";
 import api from "./lib/api";
 
 const Navigation: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
@@ -114,9 +114,9 @@ const PaymentRouteWrapper: React.FC<{ api: typeof api }> = ({ api }) => {
   console.log("[Web Payment] Initial data:", initialData);
 
   try {
-    return <PaymentScreen api={api} initialData={initialData} />;
+    return <NewPaymentScreen api={api} initialData={initialData} />;
   } catch (error) {
-    console.error("[Web Payment] Error rendering PaymentScreen:", error);
+    console.error("[Web Payment] Error rendering NewPaymentScreen:", error);
     return (
       <div style={{ padding: 20, color: "red" }}>
         <h2>Error loading payment screen</h2>

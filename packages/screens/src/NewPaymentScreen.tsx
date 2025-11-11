@@ -37,7 +37,8 @@ interface PaymentScreenProps {
   };
 }
 
-export const PaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }) => {
+export const NewPaymentScreen: React.FC<PaymentScreenProps> = ({ api, initialData }) => {
+  // ...existing code...
   const { t } = useTranslation();
   const { theme } = useAppTheme();
   const [selectedAccountIndex, setSelectedAccountIndex] = useState(0);
