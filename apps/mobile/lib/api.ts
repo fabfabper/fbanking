@@ -15,24 +15,24 @@ const getBaseURL = () => {
   if (__DEV__) {
     if (Platform.OS === "android") {
       // Android emulator uses 10.0.2.2 to access host machine's localhost
-      const url = "http://172.20.10.2:3000/ebanking";
+      const url = "https://mockoon-h3cmaxc5f6fuc4da.canadacentral-01.azurewebsites.net:3001/ebanking";
       console.log("[API] Using Android emulator URL:", url);
       return url;
     } else if (Platform.OS === "ios") {
       // iOS simulator can use localhost
-      const url = "http://172.20.10.2:3000/ebanking";
+      const url = "https://mockoon-h3cmaxc5f6fuc4da.canadacentral-01.azurewebsites.net:3001/ebanking";
       console.log("[API] Using iOS simulator URL:", url);
       return url;
     } else {
       // Web or other platforms
-      const url = "http://172.20.10.2:3000/ebanking";
+      const url = "https://mockoon-h3cmaxc5f6fuc4da.canadacentral-01.azurewebsites.net:3001/ebanking";
       console.log("[API] Using default URL:", url);
       return url;
     }
   }
 
   // For production, use your production API URL
-  return "https://api.yourbank.com/ebanking";
+  return "https://mockoon-h3cmaxc5f6fuc4da.canadacentral-01.azurewebsites.net:3001/ebanking";
 };
 
 // Create the API service with the backend URL

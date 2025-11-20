@@ -1,0 +1,50 @@
+name: Build Mockoon Docker Image and Deploy to Azure Web App for Containers
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set variables
+        run: |
+          echo "ACR_NAME=${{ secrets.ACR_NAME }}" >> $GITHUB_ENV
+          echo "RESOURCE_GROUP=${{ secrets.AZURE_RESOURCE_GROUP }}" >> $GITHUB_ENV
+          echo "WEBAPP_NAME=${{ secrets.AZURE_WEBAPP_NAME }}" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        run: |
+          IMAGE_TAG=${{ secrets.ACR_NAME }}.azurecr.io/mockoon:${{ github.sha }}
+          # Build from repository root so the Dockerfile can COPY files from packages/
+          docker build -f deployments/mockoon/Dockerfile -t $IMAGE_TAG .
+
+      - name: Login to ACR
+        run: |
+          az acr login --name ${{ secrets.ACR_NAME }}
+
+      - name: Push image to ACR
+        run: |
+          IMAGE_TAG=${{ secrets.ACR_NAME }}.azurecr.io/mockoon:${{ github.sha }}
+          docker push $IMAGE_TAG
+
+      - name: Configure Web App to use container image
+        run: |
+          IMAGE_TAG=${{ secrets.ACR_NAME }}.azurecr.io/mockoon:${{ github.sha }}
+          az webapp config container set --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --docker-custom-image-name $IMAGE_TAG
+
+# Required secrets:
+# - AZURE_CREDENTIALS : Service principal JSON for `azure/login` (see azure/login docs)
+# - ACR_NAME : ACR registry name (no .azurecr.io suffix)
+# - AZURE_RESOURCE_GROUP : resource group where the Web App is located
+# - AZURE_WEBAPP_NAME : name of the Web App for Containers in Azure
+# Ensure the Web App is created (Linux, single container) and has permissions to pull from the ACR (use Managed Identity or grant pull role).

@@ -1,0 +1,55 @@
+name: Build & Publish Expo (EAS)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  eas_build_publish:
+    runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      EAS_BUILD_PROFILE: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install repo dependencies
+        run: |
+          npm ci
+
+      - name: Install mobile app deps
+        run: |
+          cd apps/mobile && npm ci
+
+      - name: Install EAS CLI
+        run: |
+          npm install -g eas-cli
+
+      - name: Show Expo account (debug)
+        run: |
+          npx expo whoami || true
+
+      - name: Configure EAS credentials (optional)
+        run: |
+          echo "Ensure any required credentials (Apple/Google) are available in EAS or handled interactively."
+
+      - name: Trigger EAS build
+        run: |
+          cd apps/mobile
+          npx eas build --non-interactive --platform all --profile $EAS_BUILD_PROFILE
+
+      - name: Publish to Expo (optional)
+        run: |
+          cd apps/mobile
+          npx eas submit --non-interactive --platform all || true
+
+# Secrets required:
+# - EXPO_TOKEN : an Expo access token (set via `expo login` locally and `expo token:create`)
+# Additional setup may be required for EAS builds (Apple credentials, Google service accounts).
+# This workflow assumes you manage those credentials via EAS and Azure/certs as needed.
