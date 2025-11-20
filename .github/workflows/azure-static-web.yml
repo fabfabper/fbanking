@@ -2,7 +2,7 @@ name: Deploy Web to Azure Static Web Apps
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build_and_deploy:

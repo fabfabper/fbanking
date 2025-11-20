@@ -2,7 +2,7 @@ name: Build & Publish Expo (EAS)
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   eas_build_publish:
